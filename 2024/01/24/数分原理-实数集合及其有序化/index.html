@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1不知道为什么latex渲染的乱七八糟的,以后再改吧 扩充有理数集的必要数学上,可以表达为两个整数比的数 ($\frac{a}{b},b\neq0$) 被定义为有理数.但仅仅定义有理数对我们是不够的,有许多算式的解无法用有理数表示,如$\sqrt2$.证明如下:$$\begin{align} 假定有最简分数\frac{p}{q}存在,使得(\frac{p}{q})^2&#x3D;2\p和q无公因子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数分原理_实数集合及其有序化">
+<meta property="og:url" content="https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/index.html">
+<meta property="og:site_name" content="Digital Odyssey">
+<meta property="og:description" content="1不知道为什么latex渲染的乱七八糟的,以后再改吧 扩充有理数集的必要数学上,可以表达为两个整数比的数 ($\frac{a}{b},b\neq0$) 被定义为有理数.但仅仅定义有理数对我们是不够的,有许多算式的解无法用有理数表示,如$\sqrt2$.证明如下:$$\begin{align} 假定有最简分数\frac{p}{q}存在,使得(\frac{p}{q})^2&#x3D;2\p和q无公因子">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-24T11:33:54.000Z">
+<meta property="article:modified_time" content="2024-01-24T11:49:54.496Z">
+<meta property="article:author" content="NihilDigit">
+<meta property="article:tag" content="Notes">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>数分原理_实数集合及其有序化</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/01/22/cs61a-lec1-function/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&text=数分原理_实数集合及其有序化"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&is_video=false&description=数分原理_实数集合及其有序化"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=数分原理_实数集合及其有序化&body=Check out this article: https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&name=数分原理_实数集合及其有序化&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&t=数分原理_实数集合及其有序化"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%85%85%E6%9C%89%E7%90%86%E6%95%B0%E9%9B%86%E7%9A%84%E5%BF%85%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">扩充有理数集的必要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Dedekind%E5%88%86%E5%89%B2%E5%AE%9A%E4%B9%89%E6%97%A0%E7%90%86%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">利用Dedekind分割定义无理数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E7%9A%84%E6%9C%89%E5%BA%8F%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">实数集合的有序化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E5%BC%95%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">两个引理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E9%99%90%E5%B0%8F%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">无限小数的表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%80%A7"><span class="toc-number">6.</span> <span class="toc-text">实数集合的连续性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E9%9B%86%E7%9A%84%E7%95%8C"><span class="toc-number">7.</span> <span class="toc-text">数集的界</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        数分原理_实数集合及其有序化
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">NihilDigit</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-01-24T11:33:54.000Z" class="dt-published" itemprop="datePublished">2024-01-24</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Math/" rel="tag">Math</a>, <a class="p-category" href="/tags/Notes/" rel="tag">Notes</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">不知道为什么latex渲染的乱七八糟的,以后再改吧</span><br></pre></td></tr></table></figure>
+<h3 id="扩充有理数集的必要"><a href="#扩充有理数集的必要" class="headerlink" title="扩充有理数集的必要"></a>扩充有理数集的必要</h3><p>数学上,可以表达为两个整数比的数 ($\frac{a}{b},b\neq0$) 被定义为<strong>有理数</strong>.<br>但仅仅定义有理数对我们是不够的,有许多算式的解无法用有理数表示,如$\sqrt2$.<br>证明如下:<br>$$\begin{align} 假定有最简分数\frac{p}{q}存在,使得(\frac{p}{q})^2&#x3D;2\p和q无公因子,p^2&#x3D;2q^2,则p是偶数,q是奇数\又因为q^2&#x3D;\frac{p^2}{2},推出q是偶数\得到矛盾,证明分数\frac{p}{q}不存在 \end{align}$$<br>我们将这类无法用整数比表示的数称为<strong>无理数</strong>.</p>
+<h3 id="利用Dedekind分割定义无理数"><a href="#利用Dedekind分割定义无理数" class="headerlink" title="利用Dedekind分割定义无理数"></a>利用Dedekind分割定义无理数</h3><p>将所有有理数分成两个非空的集合$A$, $A’$,</p>
+<p>如果这两个集合满足:</p>
+<ul>
+<li>所有有理数在且只在$A$或$A’$两个集合中的一个中</li>
+<li>集合$A$中每一个数$a$小于集合$A’$中每一个数$a’$</li>
+</ul>
+<p>则称这种分法为<strong>分割</strong>,集合$A$称之为分割的<strong>下类</strong>,集合$A’$称之为分割的<strong>上类</strong>,分割用$A|A’$表示,</p>
+<p>令$a$为有理数,对有理数集合进行分割:<br>$$A&#x3D;(-\infty, a), A’&#x3D;[a,+\infty)$$</p>
+<p>但当$a$为无理数时,无论怎样逼近,这两个数集中间都会有一个”空隙”:<br>$$A&#x3D;(-\infty, a), A’&#x3D;(a,+\infty)$$</p>
+<p>将无理数$a$定义为这两个数集中间缺少的<strong>界数</strong>,于是我们获得了对无理数的精确定义.</p>
+<h3 id="实数集合的有序化"><a href="#实数集合的有序化" class="headerlink" title="实数集合的有序化"></a>实数集合的有序化</h3><p>有理数和无理数统称为<strong>实数</strong><br>我们可以用分割来定义一个实数:<br>$$\begin{aligned}对于由两个分割A|A’和B|B’定义的两个实数a和b\A|A’&#x3D;B|B’等价于 a&#x3D;b\end{aligned}$$<br>现在来建立关于实数的<strong>大于</strong>&#x2F;<strong>小于</strong>概念:<br>$$有两个实数a和b,分别由分割A|A’和B|B’定义$$</p>
+<ul>
+<li>具有较大的下类的数较大:<br>$$B\in A\Rightarrow b&lt;a$$</li>
+<li>具有较小的下类的数较小:<br>$$A\in B\Rightarrow a&lt;b$$<br>可以推出,在任意两个实数$a$和$b$之间必有而且只有下列三种关系之一:<br>$$a&gt;b,a&lt;b,a&#x3D;b$$<br>显然实数之间的大小关系具有**传递性**:<br>$$\begin{aligned}a&gt;b,b&gt;c\Rightarrow a&gt;c\a&lt;b,b&lt;c\Rightarrow a&lt;c\end{aligned}$$</li>
+</ul>
+<h3 id="两个引理"><a href="#两个引理" class="headerlink" title="两个引理"></a>两个引理</h3><p>$$\begin{aligned}引理1:对于实数a,b,若a&gt;<br>b,总有无穷多个有理数r满足a&gt;r&gt;b\end{aligned}$$<br>$$\begin{aligned}引理2:如果对于任意小的正有理数e,\都存在一个包含实数a和b的区间[s’,s]&lt;e\那么a和b必定相等\end{aligned}$$<br>对引理2进行证明:<br>$$\begin{aligned}利用反证法,假定a\neq b\根据引理1,可以在a和b中插入两个有理数r和r’\得到a&gt;r’&gt;r&gt;b或b&gt;r’&gt;r&gt;a\构造[s’,s],保证a,b\in[s’,s]\一定有s’&gt;r’&gt;r&gt;s\推得s’-s&gt;r’-r&gt;0\此时,s’-s必须大于一个确定的数r’-r&gt;0\这与s’-s&lt;e矛盾,所以引理2成立\end{aligned}$$<br>通过证明引理2,我们得到了实数的紧密性:<br>$$如果不存在一个足够小的e来区分实数a和b,那么这两个数实际上相等$$</p>
+<h3 id="无限小数的表示法"><a href="#无限小数的表示法" class="headerlink" title="无限小数的表示法"></a>无限小数的表示法</h3><p>考虑一个由分割$A|A’$定义的无限小数$a$:<br>$$\begin{aligned} 在A中一定可以找到整数M&lt;a,\<br>将M逐次加1,可以得到整数C使得C&lt;a&lt;C+1.\<br>增加C的精度,得到C.c_1&lt;a&lt;C.c_1+10^{-1}\<br>继续增加C的精度,可以得到第n个数字c_n:\C.c_1c_2…c_n&lt;a&lt;C.c_1c_2…c_n+10^{-n}\在这个过程中,我们得到的C.c_1c_2…c_n…可以看作是实数a的一种表示\end{aligned}$$</p>
+<p>对于数$a$的近似值$C_n&#x3D;C.c_1c_2…c_n$与$C_n’&#x3D;C.c_1c_2…c_n+10^{-1}$:<br>$$\begin{aligned}C_n’与C_n的差为10^{-n}\这个差数随着n的增大,可以小于任意有理数e&gt;0\根据引理2,可以得出:\随着n的增大,最终C_n会等于C_n’\end{aligned}$$<br>借此可以得出,$0.999…&#x3D;1$.</p>
+<p>对于一个无限不循环小数$a$:<br>$$\begin{aligned}将所有小于a的C_n放入下类A,所有大于a的C_n’放入上类A’\用这个分割定义实数a\\end{aligned}$$<br>由此可见,一个无限不循环小数可以用无理数表示.<br>当$n$足够大时,可以用$C_n$和$C_n’$近似定义无限不循环小数$a$.</p>
+<h3 id="实数集合的连续性"><a href="#实数集合的连续性" class="headerlink" title="实数集合的连续性"></a>实数集合的连续性</h3><p>不同与有理数集,对实数集的分割总可以找到产生这个分割的界数<br>$$\begin{aligned}Dedekind基本定理:对于实数集合中任何的分割A|A’,存在有产生这个分割的实数b,\b一定是下类A中的最大数或上类A’中的最小数\end{aligned}$$</p>
+<p>对于有理数$b$,基本定理显然成立,<br>假设$b$是无理数,对基本定理进行证明:<br>$$\begin{aligned}用B,B’表示A,A’中所有有理数的集合\1)如果b\in A\利用反证法,假设存在a&gt;b\根据引理1,有a&gt;r&gt;b\r\in B,所以r\in A\得出矛盾:定义b的下类中,存在r&gt;b\2)如果b\in A’\利用反证法,假设存在a&lt;b\根据引理1,有a&lt;r&lt;b\r\in B’,所以r\in A’\得出矛盾:定义b的上类中,存在r&lt;b\end{aligned}$$</p>
+<h3 id="数集的界"><a href="#数集的界" class="headerlink" title="数集的界"></a>数集的界</h3><p>如果对于集合$X&#x3D;{x}$存在数$M$,使得一切$x\leq M$,我们称这个集合是<strong>上有界</strong>的,数$M$是集合的一个<strong>上界</strong><br>与此类似,如果存在数$N$,使得一切$x\geq m$,我们称这个集合是<strong>下有界</strong>的,数$m$是集合的一个<strong>下界</strong><br>如果一个集合是上(下)有界的集合,我们称最小(大)的界为<strong>上(下)确界</strong>,该集合在确界之外有无穷多个界<br>确界的记法为:<br>$$M^*(上确界)&#x3D;supX&#x3D;sup{x},m^*(下确界)&#x3D;infX&#x3D;inf{x}$$</p>
+<p>根据<strong>Dedekind基本定理</strong>,我们可以推导出<strong>确界原理</strong>:<br>$$确界原理:如果集合X&#x3D;{x}是上(下)有界的,则它一定有上(下)确界$$<br>我们就上确界来进行论证:<br>$$\begin{aligned}1)在集合X中可以找到最大的数\overline x\于是有x\leq\overline x,\overline x就是集合的x上确界\2)在集合X中无法找到最大的数\overline x\将集合X的一切上界a’归入上类A’,其余一切实数a归入下类A\A和A’形成了一个分割,根据基本定理:\存在实数b\in A’大于任意x\in X,b即为集合X的上确界\end{aligned}$$<br>类似可以推出下确界的存在性</p>
+<p>最后,我们做出以下规定:<br>$$\begin{aligned}如果X&#x3D;{x}不是上有界的,则supX&#x3D;+\infty\如果X&#x3D;{x}不是下有界的,则infX&#x3D;-\infty\end{aligned}$$</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%85%85%E6%9C%89%E7%90%86%E6%95%B0%E9%9B%86%E7%9A%84%E5%BF%85%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">扩充有理数集的必要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Dedekind%E5%88%86%E5%89%B2%E5%AE%9A%E4%B9%89%E6%97%A0%E7%90%86%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">利用Dedekind分割定义无理数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E7%9A%84%E6%9C%89%E5%BA%8F%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">实数集合的有序化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E5%BC%95%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">两个引理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E9%99%90%E5%B0%8F%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">无限小数的表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%80%A7"><span class="toc-number">6.</span> <span class="toc-text">实数集合的连续性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E9%9B%86%E7%9A%84%E7%95%8C"><span class="toc-number">7.</span> <span class="toc-text">数集的界</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&text=数分原理_实数集合及其有序化"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&is_video=false&description=数分原理_实数集合及其有序化"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=数分原理_实数集合及其有序化&body=Check out this article: https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&title=数分原理_实数集合及其有序化"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&name=数分原理_实数集合及其有序化&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/01/24/%E6%95%B0%E5%88%86%E5%8E%9F%E7%90%86-%E5%AE%9E%E6%95%B0%E9%9B%86%E5%90%88%E5%8F%8A%E5%85%B6%E6%9C%89%E5%BA%8F%E5%8C%96/&t=数分原理_实数集合及其有序化"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    NihilDigit
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
