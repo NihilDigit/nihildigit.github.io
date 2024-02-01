@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="C语言是在1970年代作为一种系统编程语言开发的，即使经过这么长时间，它仍然非常流行。 系统编程语言旨在提供性能和对底层硬件的易访问性的同时提供高级编程功能。虽然其他编程语言可能提供更新的语言功能，但它们的编译器和库通常是用C语言编写的。卡尔·萨根曾经说过：“如果你想要从头开始制作一个苹果派，你首先必须创造宇宙。” C语言的发明者并没有创造宇宙，他们设计C语言以适用于各种不同体系结构的硬件。这些硬">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EffectiveC_00_引言">
+<meta property="og:url" content="https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/index.html">
+<meta property="og:site_name" content="Digital Odyssey">
+<meta property="og:description" content="C语言是在1970年代作为一种系统编程语言开发的，即使经过这么长时间，它仍然非常流行。 系统编程语言旨在提供性能和对底层硬件的易访问性的同时提供高级编程功能。虽然其他编程语言可能提供更新的语言功能，但它们的编译器和库通常是用C语言编写的。卡尔·萨根曾经说过：“如果你想要从头开始制作一个苹果派，你首先必须创造宇宙。” C语言的发明者并没有创造宇宙，他们设计C语言以适用于各种不同体系结构的硬件。这些硬">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-01T14:22:07.000Z">
+<meta property="article:modified_time" content="2024-02-01T14:23:23.220Z">
+<meta property="article:author" content="NihilDigit">
+<meta property="article:tag" content="CS">
+<meta property="article:tag" content="book">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EffectiveC_00_引言</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/02/01/EffectiveC-01-%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8C/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/01/22/cs61a-lec1-function/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&text=EffectiveC_00_引言"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&is_video=false&description=EffectiveC_00_引言"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EffectiveC_00_引言&body=Check out this article: https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&name=EffectiveC_00_引言&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&t=EffectiveC_00_引言"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#C%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8F%B2"><span class="toc-number">1.</span> <span class="toc-text">C语言简史</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C%E6%A0%87%E5%87%86"><span class="toc-number">2.</span> <span class="toc-text">C标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CERT-C-%E7%BC%96%E7%A8%8B%E6%A0%87%E5%87%86"><span class="toc-number">3.</span> <span class="toc-text">CERT C 编程标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E6%9C%AC%E4%B9%A6%E6%98%AF%E5%86%99%E7%BB%99%E8%B0%81%E7%9A%84"><span class="toc-number">4.</span> <span class="toc-text">这本书是写给谁的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E6%9C%AC%E4%B9%A6%E9%87%8C%E6%9C%89%E4%BB%80%E4%B9%88"><span class="toc-number">5.</span> <span class="toc-text">这本书里有什么</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        EffectiveC_00_引言
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">NihilDigit</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-02-01T14:22:07.000Z" class="dt-published" itemprop="datePublished">2024-02-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/CS/" rel="tag">CS</a>, <a class="p-category" href="/tags/book/" rel="tag">book</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>C语言是在1970年代作为一种系统编程语言开发的，即使经过这么长时间，它仍然非常流行。</p>
+<p>系统编程语言旨在提供性能和对底层硬件的易访问性的同时提供高级编程功能。虽然其他编程语言可能提供更新的语言功能，但它们的编译器和库通常是用C语言编写的。卡尔·萨根曾经说过：“如果你想要从头开始制作一个苹果派，你首先必须创造宇宙。”</p>
+<p>C语言的发明者并没有创造宇宙，他们设计C语言以适用于各种不同体系结构的硬件。这些硬件受到物理学和数学的限制，因此直接建立在硬件上的C语言，对于不断演进的硬件特性（例如矢量化指令）更为敏感，这也就是为什么许多高级语言依赖于C语言来提高效率。</p>
+<p>根据TIOBE指数，自2001年以来，C语言一直是最受欢迎的编程语言之一，要么排名第一，要么排名第二。C语言是TIOBE在2019年评选的年度编程语言。对于C语言的流行， <em>C语言精神</em> 也是一个重要因素：</p>
+<ul>
+<li>信任程序员。一般来说，C语言假设程序员知道自己在做什么，并允许他们去做。然而，这并不总是一件好事（例如，如果程序员不知道自己在做什么）。</li>
+<li>不限制程序员去执行必要的任务。由于C语言是一种系统编程语言，它必须能够处理各种低级任务。</li>
+<li>保持语言简洁。C语言与硬件密切相关，且有较小的资源占用。</li>
+<li>只提供唯一的操作方法。也被称为机制保守，C语言试图限制引入重复机制。</li>
+<li>让程序运行更快，即使不能保证可移植性。允许你编写效率最高的代码是首要任务，由程序员确保代码的可移植性、安全性和可靠性。</li>
+</ul>
+<h3 id="C语言简史"><a href="#C语言简史" class="headerlink" title="C语言简史"></a>C语言简史</h3><p>C语言是最初由丹尼斯·里奇（Dennis Ritchie）和肯·汤普森（Ken Thompson）于1972年在贝尔电话实验室开发。</p>
+<p>布莱恩·克尼根（Brian Kernighan）与丹尼斯·里奇（Dennis Ritchie）合著的《C程序设计语言》（K&amp;R 1988）是一本里程碑式的书籍，对C语言的普及和发展产生了深远影响。</p>
+<p>1983年，为了统一C语言的多个方言和版本，美国国家标准协会（ANSI）成立了X3J11委员会，负责制定C语言的标准规范。1989年，该标准被正式批准为ANSI X3.159-1989，名为“编程语言C”，这一版本俗称为ANSI C或C89。</p>
+<p>1990年，ANSI C标准被国际标准化组织（ISO）和国际电工委员会（IEC）的联合技术委员会无修改地采纳，并发布为C标准的第一版，即ISO&#x2F;IEC 9899:1990，通常称为C90。<br>此后，C语言标准经历了几次重要的更新。C99（ISO&#x2F;IEC 9899:1999）作为第二版，引入了一些重要的新特性，如新的数据类型、库函数、以及对程序结构的改进等。<br>C11（ISO&#x2F;IEC 9899:2011）作为第三版，进一步增强了语言的功能和安全性，加入了新的并行编程支持等特性。</p>
+<p>截止到2020年，C标准的最新版本是C17（ISO&#x2F;IEC 9899:2018），即第四版。C17主要是对C11的技术修正和小幅度改进，没有引入重大的新特性，旨在提高C语言的稳定性和可移植性。</p>
+<p>此外，ISO&#x2F;IEC一直在积极开发C语言的下一个主要修订版，暂时被称为C2x。计划中的C2x旨在进一步完善语言标准，解决现存标准的一些问题，并可能引入新的特性以适应现代编程的需求。</p>
+<p>根据JetBrains的2018年的调查数据，52%的C程序员使用C99，36%使用C11，23%使用嵌入式版本的C。</p>
+<h3 id="C标准"><a href="#C标准" class="headerlink" title="C标准"></a>C标准</h3><p>C标准（ISO&#x2F;IEC 9899:2018）定义了C语言，并且是关于语言行为的最终权威。虽然标准有时可能会显得晦涩难懂，但如果你打算编写可移植、安全和可靠的代码，你就需要理解它。</p>
+<p>C标准允许实现在不同的硬件平台上以最优效率运行，为实现这一目标，标准中引入了<em>实现</em>，它被定义如下：</p>
+<blockquote>
+<p>在特定的翻译环境下运行的一组特定软件，受特定控制选项控制，用于翻译程序并支持在特定执行环境中执行函数的过程。</p>
+</blockquote>
+<p>这个定义表明，每个编译器配合特定一组命令行标志以及C标准库被视为一个独立的实现，不同的实现可以具有明显不同的实现定义行为。</p>
+<p>在GNU编译器集合（GCC）中，这一点尤其明显，它使用”-std&#x3D;”标志来确定语言标准。该选项的可能值包括c89、c90、c99、c11、c17、c18和c2x。默认值取决于编译器的版本。如果没有给出C语言方言选项，GCC 10的默认值是”-std&#x3D;gnu17”，它提供了对C语言的扩展功能。</p>
+<p>为了确保可移植性，请指定你正在使用的标准。为了使用新的语言特性，请指定一个较新的标准。在2019年，使用GCC 8及更高版本时，一个不错的选择是”-std&#x3D;c17”。</p>
+<p>由于不同的实现具有各种不同的行为，而且其中一些行为是未定义的，因此你不能仅通过编写简单的测试程序来理解C语言的行为[^1]。</p>
+<p>当使用不同的实现在不同的平台上编译代码时，甚至同一个实现使用不同的标志或不同的C标准库实现时，代码的行为都可能有所不同。代码的行为甚至可能在编译器的不同版本之间有所变化！</p>
+<p>C标准是唯一明确规定了哪些行为适用于所有实现，并且考虑到可变性的文档。</p>
+<p>这主要是在开发可移植代码时需要考虑的问题，但也可能影响到代码的安全性和可靠性。</p>
+<h3 id="CERT-C-编程标准"><a href="#CERT-C-编程标准" class="headerlink" title="CERT C 编程标准"></a>CERT C 编程标准</h3><p>《CERT® C编程标准，第二版：98条用于开发安全、可靠和安全系统的规则（Seacord 2014）》是一本参考书，由我在卡内基梅隆大学软件工程研究所管理安全编码团队期间编写。这本书包含了关于常见的C编程错误以及如何纠正它们的示例。在本书中，我们引用了其中的一些规则，作为关于特定C语言编程主题的详细信息的来源。</p>
+<h3 id="这本书是写给谁的"><a href="#这本书是写给谁的" class="headerlink" title="这本书是写给谁的"></a>这本书是写给谁的</h3><p>这本书是关于C语言的入门指南。它的目标是尽可能地让任何想学习C编程的人都能理解，而不会过于简化内容。</p>
+<p>换句话说，我们没有像许多其他初级教材和课程那样过度简化C编程。这些过于简化的参考资料可能会教你如何使代码编译和运行，但代码可能仍然是错误的。从这些资源中学习C编程的开发人员通常会开发出次标准的、有缺陷的、不安全的代码，最终需要重写（通常是很快）。希望这些开发人员最终能够从他们组织中的高级开发人员那里受益，后者将帮助他们摆脱关于在C中编程的有害误解，并帮助他们开始开发专业质量的C代码。</p>
+<p>这本书将快速教你如何编写正确、可移植、专业质量的代码，为开发安全关键和安全关键系统打下基础，并可能教你一些即使在你的组织中的高级开发人员也不知道的东西。</p>
+<p>本书是一本精炼的介绍性书籍，涵盖了关键的C语言编程知识，将帮助你很快开始编写程序、解决问题并构建可工作的系统。书中的代码示例是符合惯例且简单明了的。这本书旨在提供对C编程的有效入门，让读者能够迅速掌握C语言的基础概念和技能，并开始应用它们来解决实际问题和构建功能性系统。这本书的编程示例和技巧将有助于你写出更具可读性和可维护性的C代码。</p>
+<p>在本书中，你将学习C语言中的基本编程概念，并通过每个主题的练习来练习编写高质量的代码。你还将了解开发正确、安全的C代码的良好软件工程实践。你可以访问这本书的<a target="_blank" rel="noopener" href="https://www.nostarch.com/effective_c/">网页</a>，以获取更新和额外的材料。</p>
+<p>如果在完成本书后，你有兴趣了解更多关于在C、C++或其他语言中进行安全编码的信息，请查看NCC Group提供的<a target="_blank" rel="noopener" href="https://www.nccgroup.trust/us/our-services/cyber-security/security-training/secure-coding/">培训课程</a>。</p>
+<h3 id="这本书里有什么"><a href="#这本书里有什么" class="headerlink" title="这本书里有什么"></a>这本书里有什么</h3><p>这本书以一个简介性的章节开始，涵盖了足够的材料，让你从一开始就能开始编程。之后，我们会回过头来探讨语言的基本构建块。这本书最后的两个章节将向你展示如何从这些基本构建块组成实际的系统，以及如何调试、测试和分析你编写的代码。各章的主题如下：</p>
+<ol>
+<li>开始使用C<br>你将编写一个简单的C程序，熟悉如何使用<code>main</code>函数。还将探讨一些编辑器和编译器的选项。</li>
+<li>对象、函数和类型<br>本章探讨了声明变量和函数等基础知识。还会介绍如何使用基本类型的原则。</li>
+<li>算术类型<br>你将了解两种算术数据类型：整型和浮点型。</li>
+<li>表达式和运算符<br>你将学习运算符以及如何编写简单的表达式来执行各种对象类型上的操作。</li>
+<li>控制流<br>你将学习如何控制单个语句的评估顺序。从表达式语句和定义要执行的工作的复合语句开始。然后，将涵盖三种语句类型，确定执行哪些代码块以及执行顺序：选择、迭代和跳转语句。</li>
+<li>动态分配内存<br>您将学习有关在运行时从堆中动态分配内存的内容。动态分配的内存在程序运行时分配，适用于那些在运行前无法确定确切内存需求的情况，这种机制非常实用。</li>
+<li>字符和字符串<br>你将了解各种字符集，包括ASCII和Unicode，可以用来组成字符串。你将学习如何使用C标准库、边界检查接口以及POSIX和Windows API来表示和操作字符串。</li>
+<li>输入&#x2F;输出<br>本章将教你如何执行输入&#x2F;输出（I&#x2F;O）操作，从终端和文件系统读取数据，或将数据写入终端和文件系统。I&#x2F;O涉及信息进入或离开程序的所有方式，没有它，你的程序将是无用的。我们将介绍使用C标准流和POSIX文件描述符的技巧。</li>
+<li>预处理器<br>你将学习如何使用预处理器来包含文件、定义对象和函数宏，并根据特定实现特性有条件地包含代码。</li>
+<li>程序结构<br>你将学习如何将程序结构化为多个由源文件和包含文件组成的翻译单元。还将学习如何将多个目标文件链接在一起创建库和可执行文件。</li>
+<li>调试、测试和分析<br>本章描述了生成正确程序的工具和技术，包括编译时和运行时断言、调试、测试、静态分析和动态分析。该章还讨论了在软件开发过程的不同阶段推荐使用哪些编译器标志。</li>
+</ol>
+<p>你即将开始一段旅程，通过这段旅程，你将成为一位崭露头角但专业的C语言开发人员。</p>
+<p>[^1]: <a target="_blank" rel="noopener" href="https://godbolt.org/">https://godbolt.org/</a> 可以帮助你</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#C%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8F%B2"><span class="toc-number">1.</span> <span class="toc-text">C语言简史</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C%E6%A0%87%E5%87%86"><span class="toc-number">2.</span> <span class="toc-text">C标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CERT-C-%E7%BC%96%E7%A8%8B%E6%A0%87%E5%87%86"><span class="toc-number">3.</span> <span class="toc-text">CERT C 编程标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E6%9C%AC%E4%B9%A6%E6%98%AF%E5%86%99%E7%BB%99%E8%B0%81%E7%9A%84"><span class="toc-number">4.</span> <span class="toc-text">这本书是写给谁的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E6%9C%AC%E4%B9%A6%E9%87%8C%E6%9C%89%E4%BB%80%E4%B9%88"><span class="toc-number">5.</span> <span class="toc-text">这本书里有什么</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&text=EffectiveC_00_引言"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&is_video=false&description=EffectiveC_00_引言"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EffectiveC_00_引言&body=Check out this article: https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&title=EffectiveC_00_引言"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&name=EffectiveC_00_引言&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/01/EffectiveC-00-%E5%BC%95%E8%A8%80/&t=EffectiveC_00_引言"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    NihilDigit
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
