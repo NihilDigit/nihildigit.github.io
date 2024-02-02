@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="在本章中，你将学习对象、函数和类型。我们将探讨如何声明变量（带有标识符的对象）和函数，获取对象的地址，并解引用那些对象指针。你已经看到了C程序员可用的一些类型。你在本章中将学到的第一件事是我很久之后才意识到的：C中的每一个类型要么是一个对象类型，要么是一个函数类型。 对象、函数、类型和指针一个对象是一块用来表示值的存储区域。准确来说，C标准（ISO&#x2F;IEC 9899:2018）将对象定义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EffectiveC_02_对象、函数和类型">
+<meta property="og:url" content="https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Digital Odyssey">
+<meta property="og:description" content="在本章中，你将学习对象、函数和类型。我们将探讨如何声明变量（带有标识符的对象）和函数，获取对象的地址，并解引用那些对象指针。你已经看到了C程序员可用的一些类型。你在本章中将学到的第一件事是我很久之后才意识到的：C中的每一个类型要么是一个对象类型，要么是一个函数类型。 对象、函数、类型和指针一个对象是一块用来表示值的存储区域。准确来说，C标准（ISO&#x2F;IEC 9899:2018）将对象定义">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-02T14:21:34.000Z">
+<meta property="article:modified_time" content="2024-02-02T14:22:05.761Z">
+<meta property="article:author" content="NihilDigit">
+<meta property="article:tag" content="CS">
+<meta property="article:tag" content="book">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EffectiveC_02_对象、函数和类型</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/02/01/EffectiveC-01-%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8C/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&text=EffectiveC_02_对象、函数和类型"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&is_video=false&description=EffectiveC_02_对象、函数和类型"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EffectiveC_02_对象、函数和类型&body=Check out this article: https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&name=EffectiveC_02_对象、函数和类型&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&t=EffectiveC_02_对象、函数和类型"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E3%80%81%E7%B1%BB%E5%9E%8B%E5%92%8C%E6%8C%87%E9%92%88"><span class="toc-number">1.</span> <span class="toc-text">对象、函数、类型和指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%8F%98%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">声明变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%A4%9A%E4%B8%AA%E5%8F%98%E9%87%8F"><span class="toc-number">2.1.</span> <span class="toc-text">声明多个变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%80%BC%EF%BC%88%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%B0%9D%E8%AF%95%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">交换值（第一次尝试）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%80%BC%EF%BC%88%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%B0%9D%E8%AF%95%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">交换值（第二次尝试）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">5.</span> <span class="toc-text">作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E6%9C%9F"><span class="toc-number">6.</span> <span class="toc-text">存储期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E9%BD%90"><span class="toc-number">7.</span> <span class="toc-text">对齐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E7%B1%BB%E5%9E%8B"><span class="toc-number">8.</span> <span class="toc-text">对象类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E5%9E%8B"><span class="toc-number">8.1.</span> <span class="toc-text">布尔型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%9E%8B"><span class="toc-number">8.2.</span> <span class="toc-text">字符型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E5%9E%8B"><span class="toc-number">8.3.</span> <span class="toc-text">数值型</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E5%9E%8B"><span class="toc-number">8.3.1.</span> <span class="toc-text">整数型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%9E%8B"><span class="toc-number">8.3.2.</span> <span class="toc-text">枚举型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E5%9E%8B"><span class="toc-number">8.3.3.</span> <span class="toc-text">浮点型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A9%BA%E5%9E%8B"><span class="toc-number">8.3.4.</span> <span class="toc-text">空型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-number">9.</span> <span class="toc-text">函数类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E5%9E%8B"><span class="toc-number">10.</span> <span class="toc-text">派生类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">10.1.</span> <span class="toc-text">指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-number">10.2.</span> <span class="toc-text">数组</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E5%AE%9A%E4%B9%89"><span class="toc-number">10.2.1.</span> <span class="toc-text">类型定义</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93"><span class="toc-number">10.3.</span> <span class="toc-text">结构体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E5%90%88%E4%BD%93"><span class="toc-number">10.4.</span> <span class="toc-text">联合体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%87%E7%AD%BE"><span class="toc-number">10.5.</span> <span class="toc-text">标签</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-number">11.</span> <span class="toc-text">限定符</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#const"><span class="toc-number">11.1.</span> <span class="toc-text">const</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#volatile"><span class="toc-number">11.2.</span> <span class="toc-text">volatile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#restrict"><span class="toc-number">11.3.</span> <span class="toc-text">restrict</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0"><span class="toc-number">12.</span> <span class="toc-text">练习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">13.</span> <span class="toc-text">小结</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        EffectiveC_02_对象、函数和类型
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">NihilDigit</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-02-02T14:21:34.000Z" class="dt-published" itemprop="datePublished">2024-02-02</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/CS/" rel="tag">CS</a>, <a class="p-category" href="/tags/book/" rel="tag">book</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>在本章中，你将学习对象、函数和类型。我们将探讨如何声明变量（带有标识符的对象）和函数，获取对象的地址，并解引用那些对象指针。你已经看到了C程序员可用的一些类型。你在本章中将学到的第一件事是我很久之后才意识到的：C中的每一个类型要么是一个<em>对象</em>类型，要么是一个<em>函数</em>类型。</p>
+<h3 id="对象、函数、类型和指针"><a href="#对象、函数、类型和指针" class="headerlink" title="对象、函数、类型和指针"></a>对象、函数、类型和指针</h3><p>一个<em>对象</em>是一块用来表示值的存储区域。准确来说，C标准（ISO&#x2F;IEC 9899:2018）将对象定义为“执行环境中的数据存储区域，其内容可以表示值”，并且“在引用时，可以将对象解释为具有特定类型。” 变量就是一种对象。</p>
+<p><em>变量</em>具有声明的<em>类型</em>，告诉您其值表示的对象类型。例如，具有<code>int</code>类型的对象包含整数值。<br>类型很重要，因为表示一个类型对象的位集合，如果解释为不同类型的对象，可能会具有不同的值。例如，数字<code>1</code>在IEEE 754（IEEE浮点运算标准）中用位模式<code>0x3f800000</code>表示（IEEE 754-2008）。但如果您将相同的位模式解释为整数，您将得到<code>1065353216</code>而不是<code>1</code>。</p>
+<p><em>函数</em>不是对象，但具有类型，函数类型由其返回类型以及参数的数量和类型来描述。</p>
+<p>C语言中还有<em>指针</em>，可以将其看作是<em>地址</em>——内存中存储对象或函数的位置。<br>指针类型由指针指向的类型所确定，一个指向整型的指针可以被称为<em>整型指针</em>。</p>
+<p>由于对象和函数是不同的东西，因此对象指针和函数指针也是不同的东西，不应该相混淆。在接下来的部分中，您将编写一个简单的程序，尝试交换两个变量的值，以帮助您更好地理解对象、函数、指针和类型。</p>
+<h3 id="声明变量"><a href="#声明变量" class="headerlink" title="声明变量"></a>声明变量</h3><p>当您声明一个变量时，您为它分配一个类型并为它提供一个名称，或称为<em>标识符</em>，以便引用该变量。</p>
+<p>在<code>清单2-1</code>中，声明了两个具有初始值的整数对象。这个简单的程序还声明了一个名为”swap”的函数，但没有定义该函数来交换这些值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>; <span class="comment">//函数定义在清单2-2中</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">21</span>;</span><br><span class="line">	<span class="type">int</span> b = <span class="number">17</span>;</span><br><span class="line">	</span><br><span class="line">	swap(a, b);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;main: a = %d, b = %d\n&quot;</span>, a, b);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>清单2-1：交换两个整数</code></p>
+<p>这个示例程序展示了包含在<code>&#123;&#125;</code>字符之间的主函数的单一代码块，这被称为<em>复合语句</em>。</p>
+<p>我们在<code>main</code>函数内定义了两个变量<code>a</code>和<code>b</code>，并且声明这些变量的类型为<code>int</code>，分别将它们初始化为<code>21</code>和<code>17</code>。然后，<code>main</code>数调用<code>swap</code>函数来尝试交换这两个整数的值。程序中声明了<code>swap</code>函数，但没有定义。我们将在本节的后面部分看一些可能的实现方式。</p>
+<h4 id="声明多个变量"><a href="#声明多个变量" class="headerlink" title="声明多个变量"></a>声明多个变量</h4><p>您可以在任何单个声明中声明多个变量，但如果这些变量是指针或数组，或者这些变量是不同的类型，这样做可能会变得混乱。例如，以下声明都是正确的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *src, c;</span><br><span class="line"><span class="type">int</span> x, y[<span class="number">5</span>];</span><br><span class="line"><span class="type">int</span> m[<span class="number">12</span>], n[<span class="number">15</span>][<span class="number">3</span>], o[<span class="number">21</span>];</span><br></pre></td></tr></table></figure>
+
+<p>第一行声明了两个变量<code>src</code>和<code>c</code>，它们具有不同的类型。<code>src</code>变量的类型是<code>char *</code>，<code>c</code>的类型是<code>char</code>。</p>
+<p>第二行声明了两个变量<code>x</code>和<code>y</code>，它们具有不同的类型。变量<code>x</code>的类型是<code>int</code>，而<code>y</code>是一个包含5个<code>int</code>类型元素的数组。</p>
+<p>第三行声明了三个数组<code>m</code>、<code>n</code>和<code>o</code>，它们具有不同的维度和元素数量。</p>
+<p>如果每个声明都单独放在一行上，这些声明会更容易理解：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *src;       <span class="comment">// src的类型是char *</span></span><br><span class="line"><span class="type">char</span> c;          <span class="comment">// c的类型是char</span></span><br><span class="line"><span class="type">int</span> x;           <span class="comment">// x的类型是int</span></span><br><span class="line"><span class="type">int</span> y[<span class="number">5</span>];        <span class="comment">// y是一个包含5个int类型元素的数组</span></span><br><span class="line"><span class="type">int</span> m[<span class="number">12</span>];       <span class="comment">// m是一个包含12个int类型元素的数组</span></span><br><span class="line"><span class="type">int</span> n[<span class="number">15</span>][<span class="number">3</span>];    <span class="comment">// n是一个包含15个包含3个int类型元素的数组的数组</span></span><br><span class="line"><span class="type">int</span> o[<span class="number">21</span>];       <span class="comment">// o是一个包含21个int类型元素的数组</span></span><br></pre></td></tr></table></figure>
+
+<p>可读性强且易理解的代码更不容易出现缺陷。</p>
+<h3 id="交换值（第一次尝试）"><a href="#交换值（第一次尝试）" class="headerlink" title="交换值（第一次尝试）"></a>交换值（第一次尝试）</h3><p>每个对象都有一个存储期，这决定了对象的<em>生命周期</em>，也就是在程序执行期间对象存在、有存储、拥有一个恒定的地址，并保留其最后存储的值的时间段。在对象的生命周期之外，不应引用该对象。</p>
+<p>像<code>清单2-1</code>中的<code>a</code>和<code>b</code>这样的局部变量具有<em>自动存储期</em>，这意味着程序离开定义它们的块之前，它们会持续存在。我们尝试交换这两个变量中存储的值。</p>
+<p><code>清单2-2</code>是我们实现<code>swap</code>函数的第一次尝试：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">	<span class="type">int</span> t = a;</span><br><span class="line">	a = b;</span><br><span class="line">	b = t;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;swap: a = %d, b = %d\n&quot;</span>, a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>清单2-2：swap函数</code></p>
+<p><code>swap</code>函数声明了两个参数，<code>a</code> 和 <code>b</code>，用于将值传递给该函数。</p>
+<p>在C语言中，<em>形式参数</em>是在函数声明中定义的，它们在函数被调用时获得实际的值。<em>实际参数</em>则是在函数调用时提供的具体值，它们是通过函数调用的表达式传递给函数的。</p>
+<p>在<code>swap</code>函数内部，我们创建了一个临时变量 <code>t</code>，它的类型是 <code>int</code>，并将它初始化为 <code>a</code> 的值。这个临时变量 <code>t</code> 的作用是在交换 <code>a</code> 和 <code>b</code> 的值时，用来保存 <code>a</code> 的原始值，以确保这个值不会在交换过程中丢失。</p>
+<p>现在，您可以编译并测试整个程序，运行生成的可执行文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">%</span><span class="language-bash">./a.out</span></span><br><span class="line">swap: a = 17, b = 21;</span><br><span class="line">main: a = 21, b = 17;</span><br></pre></td></tr></table></figure>
+
+<p>这个结果可能会让人感到惊讶。变量a和b分别初始化为21和17。在swap函数中的第一个printf调用显示这两个值已经交换，但在main函数中的第二个printf调用显示原始值保持不变。让我们看看发生了什么。</p>
+<p>C语言是一种<em>值传递</em>语言，这意味着当您将参数传递给函数时，该参数的值被复制到函数内部的一个独立变量中以供使用。<code>swap</code>函数将您传递的对象的值分配给相应的参数。当函数内的参数的值发生变化时，调用者内的值不受影响，因为它们是不同的对象。因此，在<code>main</code>函数中的变量<code>a</code>和<code>b</code>在第二次调用<code>printf</code>时保持其原始值。该程序的目标是交换这两个对象的值。通过测试程序，我们发现它存在一个错误，或者说缺陷。</p>
+<h3 id="交换值（第二次尝试）"><a href="#交换值（第二次尝试）" class="headerlink" title="交换值（第二次尝试）"></a>交换值（第二次尝试）</h3><p>要修复这个错误，您可以使用指针来重写<code>swap</code>函数。我们使用间接运算符<code>*</code>来声明指针和对它们进行解引用，如<code>清单2-3</code>所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *pa, <span class="type">int</span> *pb)</span> &#123;</span><br><span class="line">	<span class="type">int</span> t = *pa;</span><br><span class="line">	*pa = *pb</span><br><span class="line">	*pb = t;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>清单2-3：使用指针修改之后的swap函数</code></p>
+<p>在函数声明或定义中使用 <code>*</code> 时，<code>*</code> 作为指针声明符的一部分，表示参数是特定类型的对象或函数的指针。在重写的 <code>swap</code> 函数中，我们指定了两个参数 <code>pa</code> 和 <code>pb</code>，并将它们都声明为 <code>int</code> 类型的指针。</p>
+<p>当您在函数内的表达式中使用一元运算符<code>*</code> 时，<code>*</code> 对指针解引用，获取指针所指向的对象。例如，考虑以下赋值操作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pa = pb;</span><br></pre></td></tr></table></figure>
+
+<p>这将使用指针<code>pb</code>的值来替换指针<code>pa</code>的值。现在考虑在<code>swap</code>函数中的实际赋值操作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*pa = *pb;</span><br></pre></td></tr></table></figure>
+
+<p>这将对指针<code>pb</code>进行解引用，读取所引用的值，然后对指针<code>pa</code>进行解引用，并用指针<code>pb</code>引用的值覆盖了指针<code>pa</code>引用的位置上的值。</p>
+<p>当您在<code>main</code>函数中调用<code>swap</code>函数时，您还必须在每个变量名前加上一个<code>&amp;</code>字符：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swap(&amp;a, &amp;b);</span><br></pre></td></tr></table></figure>
+
+<p><code>&amp;</code>是取地址运算符，它生成其操作数的指针。这个改变是必要的，因为<code>swap</code>函数现在接受<code>int</code>类型的对象的指针作为参数，而不仅仅是<code>int</code>类型的值。</p>
+<p>清单2-4展示了整个<code>swap</code>程序，重点是在执行此代码期间创建的对象以及它们的值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *pa, <span class="type">int</span> *pb)</span> &#123;</span><br><span class="line">    <span class="type">int</span> t = *pa; <span class="comment">// t: 21</span></span><br><span class="line">    *pa = *pb;   <span class="comment">// pa → a: 17, pb → b: 17</span></span><br><span class="line">    *pb = t;     <span class="comment">// pa → a: 17, pb → b: 21</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">21</span>;   <span class="comment">// a: 21</span></span><br><span class="line">    <span class="type">int</span> b = <span class="number">17</span>;   <span class="comment">// b: 17</span></span><br><span class="line">    swap(&amp;a, &amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a = %d, b = %d\n&quot;</span>, a, b); <span class="comment">// 输出：a: 17, b: 21</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>清单2-4：模拟引用传递过程</code></p>
+<p>进入主代码块时，变量<code>a</code>和<code>b</code>分别被初始化为21和17。随后，代码获取了这些对象的地址，并将它们作为参数传递给<code>swap</code>函数。</p>
+<p>在<code>swap</code>函数内部，参数<code>pa</code>和<code>pb</code>都被声明为<code>int</code>类型的指针，并包含了从调用函数（在这种情况下是<code>main</code>函数）传递给<code>swap</code>函数的参数的副本。这些地址副本仍然引用完全相同的对象，因此当它们引用的对象的值在<code>swap</code>函数内部交换时，也会访问和交换在<code>main</code>函数中声明的原始对象的内容。</p>
+<p>这种方法通过生成对象的地址、按值传递这些地址，然后解引用复制的地址来模拟<em>引用传递</em>，从而让原始对象的内容被访问和交换。</p>
+<h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>对象、函数、宏以及其他C语言标识符具有<em>作用域</em>，用于限定它们可以被访问的连续区域。C语言有四种作用域类型：文件作用域（file scope）、块作用域（block scope）、函数原型作用域（function prototype scope）和函数作用域（function scope）。</p>
+<p>对象或函数标识符的作用域由其声明位置决定。如果声明位于任何块（block）或参数列表之外，标识符具有<em>文件作用域</em>，这意味着作用域是整个文本文件，它出现在其中以及在此之后包含的任何文件。</p>
+<p>如果声明出现在块内或在参数列表中，它具有<em>块作用域</em>，这意味着它所声明的标识符只能在块内访问。清单<code>2-4</code>中的变量a和b的标识符具有块作用域，只能在它们在<code>main</code>函数中定义的代码块内引用。</p>
+<p>如果声明出现在函数原型的参数声明列表中（不是函数定义的一部分），则标识符具有<em>函数原型作用域</em>，该作用域在函数声明符的末尾终止。<em>函数作用域</em>是函数定义的开头花括号{和结束花括号}之间的区域。</p>
+<p>标签名称是唯一具有函数作用域的标识符类型。<em>标签</em>是由冒号分隔的标识符，并标识函数中可以进行控制转移的语句。第5章涵盖了标签和控制转移。</p>
+<p>作用域可以<em>嵌套</em>，包括<em>内部</em>和<em>外部</em>作用域。例如，您可以在另一个块作用域内部有一个块作用域，每个块作用域都在文件作用域内定义。内部作用域可以访问外部作用域，但反之则不成立。正如其名称所示，任何内部作用域必须完全包含在包围它的外部作用域内。</p>
+<p>如果在内部作用域和外部作用域都声明了相同的标识符，那么在内部作用域中声明的标识符将<em>隐藏</em>外部作用域中的标识符，优先使用内部作用域中的标识符。在这种情况下，引用该标识符将指代内部作用域中的对象；来自外部作用域的对象将被隐藏，不能通过其名称引用。防止这种问题的最简单方法是使用不同的名称。</p>
+<p>清单2-5演示了不同的作用域以及内部作用域中声明的标识符如何隐藏外部作用域中声明的标识符。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> j; <span class="comment">// j的文件作用域开始</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">f</span><span class="params">(<span class="type">int</span> i)</span> &#123; <span class="comment">// i的块作用域开始</span></span><br><span class="line">    <span class="type">int</span> j = <span class="number">1</span>; <span class="comment">// j的块作用域开始，隐藏了文件作用域的j</span></span><br><span class="line">    i++; <span class="comment">// i引用函数参数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123; <span class="comment">// 循环局部i的块作用域开始</span></span><br><span class="line">        <span class="type">int</span> j = <span class="number">2</span>; <span class="comment">// 内部j的块作用域开始，隐藏外部j</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, j); <span class="comment">// 内部j在作用域内，打印2</span></span><br><span class="line">    &#125; <span class="comment">// 内部i和j的块作用域结束</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, j); <span class="comment">// 外部j在作用域内，打印1</span></span><br><span class="line">&#125; <span class="comment">// i和j的块作用域结束</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">g</span><span class="params">(<span class="type">int</span> j)</span>; <span class="comment">// j具有函数原型作用域，隐藏了文件作用域的j</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>清单2-5：作用域</code></p>
+<p>这段代码没有问题，只要注释准确地描述了您的意图。最佳实践是为不同的标识符使用不同的名称，以避免混淆，从而导致错误。对于具有小作用域的标识符，使用像<code>i</code>和<code>j</code>这样的短名称是可以的。具有大作用域的标识符应该具有更长、更具描述性的名称，这些名称不太可能在嵌套作用域中被隐藏。一些编译器会警告有关隐藏的标识符。</p>
+<h3 id="存储期"><a href="#存储期" class="headerlink" title="存储期"></a>存储期</h3><p>对象具有存储期，它决定了它们的生命周期。总共有四种存储期可用：自动、静态、线程和分配的。您已经看到具有自动存储期的对象是在块内或作为函数参数声明的。这些对象的生命周期从它们所在的块开始执行时开始，当块的执行结束时结束。如果块被递归地进入，每次都会创建一个新对象，每个对象都有自己的存储。</p>
+<blockquote>
+<p>作用域和生命周期是完全不同的概念。作用域适用于标识符，而生命周期适用于对象。标识符的作用域是指标识符所代表的对象可以通过其名称访问的代码区域。对象的生命周期是指对象存在的时间段。</p>
+</blockquote>
+<p>在文件作用域内声明的对象具有静态存储期。这些对象的生命周期是整个程序的执行过程，它们的存储值在程序启动之前被初始化。您还可以在块作用域内使用存储类别说明符<code>static</code>来声明一个变量具有静态存储期，就像在<code>清单2-6</code>中的计数示例中所示。这些对象在函数退出后仍然存在。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">increment</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> counter = <span class="number">0</span>;</span><br><span class="line">	counter++;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, counter);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">		increment();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>清单2-6：计数</code></p>
+<p>该程序输出<code>1 2 3 4 5</code>。我们在程序启动时将静态变量<code>counter</code>初始化为<code>0</code>，然后每次调用<code>increment</code>函数时对其进行递增。<code>counter</code>的生命周期是整个程序的执行过程，它将在其整个生命周期内保持其最后存储的值。您也可以通过在文件作用域内声明<code>counter</code>来实现相同的行为。然而，良好的软件工程实践是在可能的情况下限制对象的作用域。</p>
+<p>静态对象必须使用常量值而不是变量进行初始化：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *<span class="title function_">func</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> j = i; <span class="comment">// ok</span></span><br><span class="line">	<span class="type">static</span> <span class="type">int</span> k = j; <span class="comment">// error</span></span><br><span class="line">	<span class="keyword">return</span> &amp;k;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常量值指的是字面常量（例如<code>1</code>、<code>&#39;a&#39;</code>或<code>0xFF</code>）、<code>enum</code>枚举成员以及操作符（如<code>alignof</code>或<code>sizeof</code>）的结果，而不是带有<code>const</code>限定符的对象。</p>
+<p>线程存储期用于并发编程，不在本书的讨论范围内。分配的存储期涉及动态分配的内存，将在第6章中讨论。</p>
+<h3 id="对齐"><a href="#对齐" class="headerlink" title="对齐"></a>对齐</h3><p>对象类型具有对齐要求，这些要求限制了可以分配该类型对象的地址。对齐表示分配给给定对象的地址之间的连续字节数。在访问对齐数据（例如，数据地址是数据大小的倍数）与非对齐数据时，CPU可能具有不同的行为。</p>
+<p>字是指处理器硬件或指令集所处理的固定大小的自然数据单元。有些计算机指令允许在非字边界上进行多字节访问，但这可能会导致性能下降。而在某些平台上，无法有效地访问非对齐的内存。对齐要求通常依赖于CPU字大小，通常为16位、32位或64位。这意味着数据的地址应该是字大小的整数倍。</p>
+<p>通常情况下，C程序员无需关心对齐要求，因为编译器会为其各种类型选择合适的对齐方式。使用<code>malloc</code>动态分配的内存必须足够对齐以适应所有标准类型，包括数组和结构体。但在极少数情况下，您可能需要覆盖编译器的默认选择，例如，将数据对齐到内存缓存行的边界上，这些缓存行必须从二的幂地址边界开始，或者满足其他特定于系统的要求。传统上，这些要求可以通过链接器命令或通过使用<code>malloc</code>过度分配内存，然后将用户地址向上舍入，或者涉及其他非标准工具的类似操作来满足。</p>
+<p>C11引入了一种简单的、前向兼容的机制来指定对齐方式。对齐方式表示为<code>size_t</code>类型的值。每个有效的对齐值都是非负的整数的二的幂。对象类型对该类型的每个对象施加默认的对齐要求：可以使用对齐说明符（<code>_Alignas</code>）来请求更严格的对齐方式（更大的二的幂）。您可以在声明的声明说明符中包含对齐说明符。清单2-7使用对齐说明符确保<code>good_buff</code>正确对齐（<code>bad_buff</code>可能对成员访问表达式的对齐方式不正确）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></span><br><span class="line">	<span class="type">int</span> i; <span class="type">double</span> d; <span class="type">char</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> bad_buff[<span class="keyword">sizeof</span>(<span class="keyword">struct</span> S)];</span><br><span class="line">	<span class="keyword">_Alignas</span>(<span class="keyword">struct</span> S) <span class="type">unsigned</span> <span class="type">char</span> good_buff[<span class="keyword">sizeof</span>(<span class="keyword">struct</span> S)];</span><br><span class="line"></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">S</span> *<span class="title">bad_s_ptr</span> =</span> (<span class="keyword">struct</span> S *)bad_buff; <span class="comment">//错误的指针对齐</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">S</span> *<span class="title">good_s_ptr</span> =</span> (<span class="keyword">struct</span> S *)good_buff; <span class="comment">//正确的指针对齐</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>清单2-7：使用 _Alignas 关键词</code></p>
+<p>对齐方式按从弱到强（也称为更严格）的顺序排序。更严格的对齐方式具有较大的对齐值。满足对齐要求的地址也同时满足任何有效的、较弱的对齐要求。</p>
+<h3 id="对象类型"><a href="#对象类型" class="headerlink" title="对象类型"></a>对象类型</h3><p>本节介绍了C语言中的对象类型。具体来说，我们将涵盖布尔型、字符型和数值型（包括整数类型和浮点数类型）。</p>
+<h4 id="布尔型"><a href="#布尔型" class="headerlink" title="布尔型"></a>布尔型</h4><p>声明为<code>_Bool</code>的对象只能存储值<code>0</code>和<code>1</code>。这种布尔类型是在C99中引入的，以下划线开头，以区别于已经声明了自己的名为<code>bool</code>或<code>boolean</code>的标识符的现有程序。</p>
+<p>以下划线和大写字母或另一个下划线开头的标识符始终是保留的。这个想法是，C标准委员会可以创建新的关键字，比如<code>_Bool</code>，假设你已经避免使用保留的标识符。如果没有避免使用，那么就是你的责任，因为C标准委员会认为这是你没有仔细阅读标准的问题。</p>
+<p>如果包含头文件<code>&lt;stdbool.h&gt;</code>，还可以将这种类型称为<code>bool</code>，并赋予它值<code>true</code>（扩展为整数常量<code>1</code>）和<code>false</code>（扩展为整数常量<code>0</code>）。在这里，我们使用类型名称的两种拼写方式声明了两个布尔变量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdbool.h&gt;</span></span></span><br><span class="line"><span class="type">_Bool</span> flag1 = <span class="number">0</span>;</span><br><span class="line"><span class="type">bool</span> flag2 = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这两种拼写都可以，但最好使用<code>bool</code>，因为这是语言的长期发展方向。</p>
+<h4 id="字符型"><a href="#字符型" class="headerlink" title="字符型"></a>字符型</h4><p>C语言定义了三种字符类型：<code>char</code>、<code>signed char</code>和<code>unsigned char</code>。每个编译器实现将<code>char</code>定义为与<code>signed char</code>或<code>unsigned char</code>具有相同的对齐方式、大小、范围、表示和行为。但需要注意的是，<code>char</code>是一种单独的类型，与另外两种都不兼容。</p>
+<p><code>char</code>类型通常用于表示C语言程序中的字符数据。特别是，<code>char</code>类型的对象必须能够表示执行环境中所需的最小字符集（称为基本执行字符集），包括大写和小写字母、10个十进制数字、空格字符以及各种标点符号和控制字符。<code>char</code>类型不适合整数数据；更安全的做法是使用<code>signed char</code>表示小的有符号整数值，使用<code>unsigned char</code>表示小的无符号值。</p>
+<p>基本执行字符集适用于许多常规数据处理应用程序的需求，但其缺乏非英文字母是国际用户接受的障碍。为了解决这个需求，C标准委员会规定了一种新的宽字符类型，以允许大字符集。您可以使用<code>wchar_t</code>类型将大字符集的字符表示为宽字符，它通常占用比基本字符更多的空间。通常，实现会选择使用16位或32位来表示一个宽字符。C标准库提供了支持窄字符和宽字符类型的函数。</p>
+<h4 id="数值型"><a href="#数值型" class="headerlink" title="数值型"></a>数值型</h4><p>C提供了几种数字类型，可以用来表示整数、枚举值和浮点数。第三章将更详细地介绍其中一些内容，但这里先进行简要介绍。</p>
+<h5 id="整数型"><a href="#整数型" class="headerlink" title="整数型"></a>整数型</h5><p><em>有符号整数型</em>可用于表示负数、正数和零。包括<code>signed char</code>、<code>short int</code>、<code>int</code>、<code>long int</code>和<code>long long int</code>。</p>
+<p>除了<code>int</code>本身外，这些类型的声明中可以省略关键字<code>int</code>，因此，您可以使用<code>long long</code>代替<code>long long int</code>来声明类型。</p>
+<p>对于每种有符号整数型，都有一个对应的<em>无符号整数型</em>，它使用相同的存储量：<code>unsigned char</code>、<code>unsigned short int</code>、<code>unsigned int</code>、<code>unsigned long int</code>和<code>unsigned long long int</code>。无符号型只能用于表示正数和零。</p>
+<p>有符号和无符号整数型用于表示不同大小的整数。每个平台（当前或历史）根据一些约束确定了这些类型的大小。每种类型都有一个最小可表示范围。这些类型按宽度排序，确保较宽的类型至少与较窄的类型一样大，以便<code>long long int</code>型的对象可以表示<code>long int</code>型的对象可以表示的所有值，<code>long int</code>型的对象可以表示<code>int</code>型的对象可以表示的所有值，依此类推。各种整数型的实际大小可以从<code>&lt;limits.h&gt;</code>头文件中指定的各种整数型的最小和最大可表示值推断出来。</p>
+<p><code>int</code>型通常具有执行环境体系结构建议的自然大小，因此在16位体系结构上大小为16位，在32位体系结构上大小为32位。您可以使用<code>&lt;stdint.h&gt;</code>或<code>&lt;inttypes.h&gt;</code>头文件中的类型定义来指定实际宽度的整数，比如<code>uint32_t</code>。这些头文件还提供了最宽的可用整数型的类型定义：<code>uintmax_t</code>和<code>intmax_t</code>。</p>
+<p>第三章详细介绍了整数型。</p>
+<h5 id="枚举型"><a href="#枚举型" class="headerlink" title="枚举型"></a>枚举型</h5><p><em>枚举</em>，或者说<code>enum</code>，允许您定义一种类型，它为具有可枚举的一组常量值的情况分配名称（枚举值）。以下是枚举的示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">day</span> &#123;</span> sun, mon, tue, wed, thu, fri, sat &#125;;</span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">cardinal_points</span> &#123;</span> north = <span class="number">0</span>, east = <span class="number">90</span>, south = <span class="number">180</span>, west = <span class="number">270</span> &#125;;</span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">months</span> &#123;</span> jan = <span class="number">1</span>, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果您不在第一个枚举值前使用<code>=</code>运算符指定一个值，那么它的枚举常量值将为<code>0</code>，而后续没有使用<code>=</code>的枚举值将在前一个枚举常量的值上加<code>1</code>。因此，在<code>day</code>枚举中，<code>sun</code>的值为<code>0</code>，<code>mon</code>的值为<code>1</code>，以此类推。</p>
+<p>您还可以为每个枚举值分配特定的值，就像<code>cardinal_points</code>枚举所示。对枚举值使用<code>=</code>可能会产生具有重复值的枚举常量，如果您错误地假定所有值都是唯一的，这可能会成为一个问题。<code>months</code>枚举将第一个枚举值设置为<code>1</code>，然后没有明确分配值的每个后续枚举值将递增<code>1</code>。</p>
+<p>枚举常量的实际值必须能够表示为<code>int</code>，但其类型由具体实现定义。例如，Visual C++使用<code>signed int</code>，而GCC使用<code>unsigned int</code>。</p>
+<h5 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h5><p>C语言支持三种浮点数类型：<code>float</code>、<code>double</code>和<code>long double</code>。浮点数运算类似于实数的运算，并且通常被用作实数运算的模型。C语言支持多种浮点数表示，包括大多数系统上的IEEE浮点运算标准（IEEE 754–2008）。浮点数表示的选择取决于具体的实现。第三章详细介绍了浮点数类型。</p>
+<h5 id="空型"><a href="#空型" class="headerlink" title="空型"></a>空型</h5><p><code>void</code>类型是一种相当奇特的类型。关键字<code>void</code>（单独使用）表示“不能容纳任何值”。例如，您可以将其用于指示函数不返回值，或者作为函数的唯一参数，以指示该函数不接受任何参数。另一方面，<em>派生类型</em> <code>void *</code>表示指针可以引用任何对象。我将在本章后面讨论派生类型。</p>
+<h3 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h3><p><em>函数类型</em>是派生类型。在这种情况下，类型是由返回类型以及参数的数量和类型派生而来的。函数的返回类型不能是数组类型。</p>
+<p>当声明一个函数时，您使用<em>函数声明符</em>来指定函数的名称和返回类型。如果声明符包括参数类型列表和定义，那么每个参数的声明都必须包含一个标识符，除非参数列表只有一个<code>void</code>类型的参数，它不需要标识符。</p>
+<p>以下是一些函数类型的声明示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">f</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">int</span> *<span class="title function_">fip</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">g</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">h</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>首先，我们声明一个没有参数并返回<code>int</code>类型的函数<code>f</code>。</p>
+<p>接下来，我们声明一个没有指定参数但返回<code>int</code>指针的函数<code>fip</code>。</p>
+<p>最后，我们声明两个函数<code>g</code>和<code>h</code>，它们都返回<code>void</code>并接受两个<code>int</code>类型的参数。</p>
+<p>在函数声明中，指定参数是可选的。但是，如果不这样做，有时可能会出现问题。如果你在C++中为<code>fip</code>编写函数声明，它将声明一个不接受任何参数并返回<code>int *</code>的函数。在C中，<code>fip</code>声明了一个接受任意数量参数且返回<code>int *</code>的函数。你不应该在C中使用空参数列表来声明函数。首先，这是语言的一个不推荐的特性，可能在将来被移除。其次，代码可能会移植到C++，因此应该明确列出参数类型，并在没有参数时使用<code>void</code>。</p>
+<p>带有参数类型列表的函数类型称为<em>函数原型</em>。函数原型告诉编译器函数接受的参数数量和类型。编译器使用这些信息来验证函数定义和对函数的任何调用中使用了正确数量和类型的参数。</p>
+<p>函数定义提供了函数的实际实现。看一下下面的函数定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">max</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span><br><span class="line">&#123; <span class="keyword">return</span> a &gt; b ? a : b; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>返回类型说明符是 <code>int</code> ；函数声明符是 <code>max(int a, int b)</code> ；函数体是 <code>&#123; return a &gt; b ? a : b; &#125;</code> 。函数类型规定不能包含任何类型限定符（参阅本章稍后部分的“类型限定符”）。函数体本身使用条件运算符（ <code>? :</code> ），在第4章中将进一步解释。该表达式说明，如果 <code>a</code> 大于 <code>b</code> ，则返回 <code>a</code> ；否则，返回 <code>b</code> 。</p>
+<h3 id="派生类型"><a href="#派生类型" class="headerlink" title="派生类型"></a>派生类型</h3><p>派生类型是从其他类型构建出的类型。这包括指针、数组、类型定义、结构体和联合体，我们将在这里讨论它们。</p>
+<h4 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h4><p>指针类型是从它所指向的函数或对象类型（称为引用类型）派生出来的。指针提供了对引用类型实体的引用。</p>
+<p>以下三个声明分别声明了一个指向<code>int</code>的指针，一个指向<code>char</code>的指针，以及一个指向<code>void</code>的指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *ip;</span><br><span class="line"><span class="type">char</span> *cp;</span><br><span class="line"><span class="type">void</span> *vp;</span><br></pre></td></tr></table></figure>
+
+<p>前面在本章中，我介绍了取址符<code>&amp;</code>和间接引用符<code>*</code>。您可以使用<code>&amp;</code>操作符来获取对象或函数的地址。例如，如果对象是<code>int</code>类型，那么该操作符的结果将具有指向<code>int</code>的指针类型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i = <span class="number">17</span>;</span><br><span class="line"><span class="type">int</span> *ip = &amp;i;</span><br></pre></td></tr></table></figure>
+
+<p>我们声明变量<code>ip</code>为指向<code>int</code>的指针，并将其赋值为<code>i</code>的地址。您还可以在<code>*</code>操作符的结果上使用<code>&amp;</code>操作符：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip = &amp;*ip;</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>*</code>对<code>ip</code>进行解引用将解析为实际对象<code>i</code>，之后使用<code>&amp;</code>操作符获取<code>*ip</code>的地址，因此这两个操作相互抵消。</p>
+<p><code>*</code>将类型的指针转换为该类型的值。它表示<em>间接引用</em>，并且仅对指针起作用。</p>
+<p>如果操作数指向一个函数，则使用<code>*</code>操作符的结果是函数标识符，如果它指向一个对象，则结果是指定对象的值。例如，如果操作数是指向<code>int</code>的指针，则间接操作符的结果具有<code>int</code>类型。</p>
+<p>如果指针没有指向有效的对象或函数，可能会发生不好的事情。</p>
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p><em>数组</em>是一系列具有相同元素类型的连续分配的对象。数组类型由它们的元素类型和数组中的元素数量特征化。在这里，我们声明了一个由11个<code>int</code>类型元素组成的数组，它被标识为<code>ia</code>，以及一个由17个指向<code>float</code>的指针类型元素组成的数组，它被标识为<code>afp</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> ia[<span class="number">11</span>];</span><br><span class="line"><span class="type">float</span> *afp[<span class="number">17</span>];</span><br></pre></td></tr></table></figure>
+
+<p>可以使用方括号<code>[]</code>来标识数组的元素。 例如，以下编写的示例代码片段创建了字符串<code>&quot;0123456789&quot;</code>，以演示如何为数组的元素赋值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[<span class="number">11</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">	str[i] = <span class="string">&#x27;0&#x27;</span> + i;</span><br><span class="line">&#125;</span><br><span class="line">str[<span class="number">10</span>] = <span class="string">&#x27;\0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>第一行声明了一个带有上限为11的<code>char</code>数组。这分配了足够的存储空间来创建一个包含10个字符和一个空字符的字符串。<code>for</code>循环迭代了10次，其中<code>i</code>的值从<code>0</code>到<code>9</code>。每次迭代都将表达式<code>&#39;0&#39; + i</code>的结果赋值给<code>str[i]</code>。在循环结束后，空字符被复制到数组的最后一个元素。</p>
+<p>在表达式<code>str[i] = &#39;0&#39; + i</code>中，<code>str</code>会自动转换为指向数组的第一个成员（<code>char</code>类型的对象）的指针，而<code>i</code>具有无符号整数类型。</p>
+<p>下标<code>[]</code>运算符和加法<code>+</code>运算符的定义是，<code>str[i]</code>等同于<code>*(str + i)</code>。当<code>str</code>是数组对象时（正如在这里），表达式<code>str[i]</code>表示数组的第<code>i</code>个元素（从<code>0</code>开始计数）。因为数组的索引从<code>0</code>开始，所以<code>char</code>数组<code>str[11]</code>的索引范围是从<code>0</code>到<code>10</code>，其中<code>10</code>是最后一个元素，正如这个示例的最后一行所引用的。</p>
+<p>如果<code>&amp;</code>运算符操作的值是<code>[]</code>运算符的结果，那么就相当于去除<code>&amp;</code>，将<code>[i]</code>改写为<code>a + i</code>，例如<code>&amp;str[10]</code>与<code>str + 10</code>其实是等价的。</p>
+<p>您还可以声明多维数组。在示例中，清单2-8在<code>main</code>函数中将<code>arr</code>声明为一个二维的5×3 <code>int</code>数组，也称为<em>矩阵</em>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">int</span> arr[<span class="number">5</span>])</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	<span class="type">unsigned</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="type">unsigned</span> j = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> arr[<span class="number">3</span>][<span class="number">5</span>];</span><br><span class="line">	func(arr[i]);</span><br><span class="line">	<span class="type">int</span> x = arr[i][j];</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>程序清单2-8：矩阵运算</code></p>
+<p>更精确地说，<code>arr</code>是一个包含三个元素的数组，每个元素都是一个包含五个<code>int</code>类型元素的数组。当您在示例中使用<code>func(arr[i])</code>，会发生以下情况：</p>
+<ol>
+<li>当使用<code>arr</code>（没有索引）时，它表示整个二维数组。在需要指针的上下文中（比如作为函数参数时），<code>arr</code>被自动转换（或者说”退化”）成指向其第一个元素的指针。这里的第一个元素是一个包含5个<code>int</code>类型元素的数组。因此，<code>arr</code>转换成的是指向第一个包含5个<code>int</code>的数组的指针，类型为<code>int (*)[5]</code>。</li>
+<li>当使用<code>arr[i]</code>时，<code>i</code>被”缩放”以匹配<code>arr</code>的类型。具体来说，因为<code>arr</code>的元素是一个包含5个<code>int</code>的数组，所以<code>i</code>会被乘以这样一个数组的大小（即<code>i</code>乘以<code>sizeof(int[5])</code>）。这样做是为了计算出从<code>arr</code>开始到第<code>i</code>个包含5个<code>int</code>的数组的字节偏移量。</li>
+<li>第1步和第2步的结果相加，实际上就是计算出<code>arr+i</code>的内存地址。由于<code>arr</code>已经被转换成了指向第一个数组的指针，加上通过<code>i</code>计算出的偏移量，这个操作定位到了第<code>i</code>个包含5个<code>int</code>的数组的起始地址。</li>
+<li>对第3步的结果应用间接引用操作。但是，在C语言中，对数组类型的指针应用间接引用操作时，结果仍然是一个数组类型。在这种情况下，<code>*(arr+i)</code>或<code>arr[i]</code>的结果是第<code>i</code>个包含5个<code>int</code>元素的数组。按照C语言的规则，这个数组再次被转换成指向其第一个元素的指针，以便作为<code>func</code>的参数传递。</li>
+</ol>
+<p>在表达式<code>arr[i][j]</code>中使用时，该数组被转换为指向<code>int</code>类型的第一个元素的指针，因此<code>arr[i][j]</code>产生一个<code>int</code>类型的对象。</p>
+<h5 id="类型定义"><a href="#类型定义" class="headerlink" title="类型定义"></a>类型定义</h5><p>使用<code>typedef</code>关键字来声明现有类型的别名，它并不会创建新的类型。例如，以下每个声明都创建了一个新的类型别名：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">int</span> unit_type;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">signed</span> <span class="type">char</span> schar_type, *schar_p, (*fp)(<span class="type">void</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在第一行中，我们声明<code>uint_type</code>为<code>unsigned int</code>类型的别名。</p>
+<p>在第二行中，我们声明<code>schar_type</code>为<code>signed char</code>的别名，<code>schar_p</code>为<code>signed char *</code>的别名，<code>fp</code>为<code>signed char(*) (void)</code>的别名。</p>
+<p>标准头文件中以<code>_t</code>结尾的标识符是类型定义（现有类型的别名）。一般来说，您不应该在自己的代码中遵循这种约定，因为C标准保留了与模式<code>int[0-9a-z_]*_t</code>和<code>uint[0-9a-z_]*_t</code>匹配的标识符，并且便携式操作系统接口（POSIX）保留了所有以<code>_t</code>结尾的标识符。如果您定义了使用这些名称的标识符，它们可能会与实现中使用的名称冲突，这可能会导致难以调试的问题。</p>
+<h4 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h4><p>结构类型（也称为结构体）包含按顺序分配的成员对象。每个对象都有自己的名称，可能有不同的类型，与数组不同，数组中的所有元素必须是相同类型。结构体类似于其他编程语言中的记录类型。在<code>清单2-9</code>中，声明了一个名为<code>sigline</code>的对象，其类型为<code>struct sigrecord</code>，并且声明了一个指向<code>sigline</code>对象的指针，该指针由<code>sigline_p</code>标识。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sigrecord</span> &#123;</span></span><br><span class="line">	<span class="type">int</span> signum;</span><br><span class="line">	<span class="type">char</span> signame[<span class="number">20</span>];</span><br><span class="line">	<span class="type">char</span> sigdesc[<span class="number">100</span>];</span><br><span class="line">&#125; sigline, *sigline_p;</span><br></pre></td></tr></table></figure>
+<p><code>清单2-9：结构体</code></p>
+<p>结构体 <code>sigrecord</code> 包含了三个成员对象：<code>signum</code> 是一个 <code>int</code> 类型的对象，<code>signame</code> 是一个包含 20 个 <code>char</code> 元素的数组，<code>sigdesc</code> 是一个包含 100 个 <code>char</code> 元素的数组。结构体用于组织多个相关的数据成员，通常用来表示一些复杂的数据结构，如日期、客户信息或人员记录等。</p>
+<p>要访问结构体的成员对象，你可以使用成员访问操作符 <code>.</code>，如果有一个指向结构体的指针，则可以使用结构体指针访问操作符 <code>-&gt;</code> 来引用其成员。以下是示例代码，演示了这两种操作符的使用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sigline.signum = <span class="number">5</span>;</span><br><span class="line"><span class="built_in">strcpy</span>(sigline.signame, <span class="string">&quot;SIGINT&quot;</span>);</span><br><span class="line"><span class="built_in">strcpy</span>(sigline.sigddesc, <span class="string">&quot;Interrupt from keyboard&quot;</span>);</span><br><span class="line"></span><br><span class="line">sigline_p = &amp;sigline;</span><br><span class="line"></span><br><span class="line">sigline_p-&gt;signum = <span class="number">5</span>;</span><br><span class="line"><span class="built_in">strcpy</span>(sigline_p-&gt;signame, <span class="string">&quot;SIGINT&quot;</span>);</span><br><span class="line"><span class="built_in">strcpy</span>(strline_p-&gt;sigdesc, <span class="string">&quot;Interrupt from keyboard&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p><code>清单2-10：引用结构体成员</code></p>
+<p>清单 2-10 中的前三行代码通过使用 <code>.</code> 运算符直接访问了 sigline 对象的成员。在<code>sigline_p = &amp;sigline</code>处，我们将指向 sigline 对象的指针分配给了 sigline_p 的地址。在程序的最后三行中，我们通过使用 <code>-&gt;</code> 运算符通过 sigline_p 指针间接访问了 sigline 对象的成员。</p>
+<h4 id="联合体"><a href="#联合体" class="headerlink" title="联合体"></a>联合体</h4><p><em>联合类型</em>与结构体类似，但有一个关键区别：联合体的成员共享同一块内存空间，但在不同时间只能包含一个成员。这使得联合体非常适合在不同情况下存储不同类型的数据，从而节省内存。</p>
+<p>下面是一个包含三个结构体的联合示例：这个联合可以用于表示一些节点，这些节点可能包含不同类型的数据。有些节点包含整数值，而其他节点包含浮点数值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">        <span class="type">int</span> type;</span><br><span class="line">    &#125; n;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">        <span class="type">int</span> type;</span><br><span class="line">        <span class="type">int</span> intnode;</span><br><span class="line">    &#125; ni;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">        <span class="type">int</span> type;</span><br><span class="line">        <span class="type">double</span> doublenode;</span><br><span class="line">    &#125; nf;</span><br><span class="line">&#125; u;</span><br><span class="line"></span><br><span class="line">u.nf.type = <span class="number">1</span>;           <span class="comment">// 设置联合的类型为1</span></span><br><span class="line">u.nf.doublenode = <span class="number">3.14</span>; <span class="comment">// 设置联合的浮点数值</span></span><br></pre></td></tr></table></figure>
+<p><code>清单2-11：联合体</code></p>
+<p>要访问联i体合的成员，您可以使用<code>.</code>操作符。如果有一个指向联合体的指针，可以使用<code>-&gt;</code>操作符来引用其成员。在示例中，通过<code>u.nf.type</code>可以访问联合体的类型成员，通过<code>u.nf.doublenode</code>可以访问浮点数值成员。使用联合体，可以在不浪费额外内存的情况下存储不同类型的数据。</p>
+<h4 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h4><p>标签（tag）是用于结构体（struct）、联合体（union）和枚举（enum）的特殊命名机制。例如，下面的结构体中的标识符 <code>s</code> 就是一个标签：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">s</span> &#123;</span></span><br><span class="line">    <span class="comment">// 结构体成员</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>单独的标签不是类型名称，不能用于声明变量。您必须按照以下方式声明此类型的变量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">s</span> <span class="title">v</span>;</span>   <span class="comment">// struct s 的实例</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">s</span> *<span class="title">p</span>;</span>  <span class="comment">// 指向 struct s 的指针</span></span><br></pre></td></tr></table></figure>
+
+<p>联合体和枚举的名称也是标签，而不是类型，这意味着它们不能单独用于声明变量。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">day</span> &#123;</span> sun, mon, tue, wed, thu, fri, sat &#125;;</span><br><span class="line">day today;          <span class="comment">// 错误，无法直接使用标签来声明变量</span></span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">day</span> <span class="title">tomorrow</span>;</span> <span class="comment">// 正确，使用枚举类型名来声明变量</span></span><br></pre></td></tr></table></figure>
+
+<p>结构体、联合体和枚举的标签在与普通标识符不同的命名空间中定义。这使得 C 程序可以在同一作用域内拥有与标签相同拼写的另一个标识符：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">status</span> &#123;</span> ok, fail &#125;;     <span class="comment">// 枚举类型</span></span><br><span class="line"><span class="keyword">enum</span> status <span class="title function_">status</span><span class="params">(<span class="type">void</span>)</span>;     <span class="comment">// 函数</span></span><br></pre></td></tr></table></figure>
+
+<p>甚至可以声明一个类型为 <code>struct s</code> 的对象：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">s</span> <span class="title">s</span>;</span> <span class="comment">// 有效但不推荐的做法</span></span><br></pre></td></tr></table></figure>
+
+<p>虽然这不是一个良好的实践，但在 C 中是有效的。您可以将结构体标签视为类型名称，并使用 <code>typedef</code> 来为标签定义别名。以下是一个示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">s</span> &#123;</span> <span class="type">int</span> x; &#125; t;</span><br></pre></td></tr></table></figure>
+
+<p>在此示例中，<code>t</code> 现在是 <code>struct s</code> 的别名，您可以使用 <code>t</code> 来声明变量，就像使用原始的结构体标签一样。</p>
+<p>现在，您可以声明类型为 <code>t</code> 的变量，而不是 <code>struct s</code>。在结构体、联合体和枚举中，标签名称是可选的，因此您可以完全不使用它，像这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span> <span class="type">int</span> x; &#125; t;</span><br></pre></td></tr></table></figure>
+
+<p>这个做法在大多数情况下都可以正常工作，但对于包含指向自身的指针的自引用结构体，可能会导致问题，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> count;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> *<span class="title">left</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> *<span class="title">right</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果省略了第一行的标签，编译器可能会抱怨，因为在第 3 和第 4 行引用的结构体尚未声明，或者因为整个结构体在任何地方都没有使用。因此，您别无选择，只能为结构体声明一个标签，但也可以同时声明一个 <code>typedef</code>，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> count;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> *<span class="title">left</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> *<span class="title">right</span>;</span></span><br><span class="line">&#125; tnode;</span><br></pre></td></tr></table></figure>
+
+<p>大多数 C 程序员使用不同的名称来命名标签和 <code>typedef</code>，但相同的名称也可以正常工作。您还可以在结构体之前定义此类型，以便在声明引用其他类型为 <code>tnode</code> 的对象的 left 和 right 成员时使用它：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> <span class="title">tnode</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> count;</span><br><span class="line">    tnode *left;</span><br><span class="line">    tnode *right;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>类型定义不仅仅在结构体中使用，还可以提高代码的可读性。例如，以下三个声明 <code>signal</code> 函数的方式都指定了相同的类型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">void</span> <span class="title function_">fv</span><span class="params">(<span class="type">int</span>)</span>, <span class="params">(*pfv)</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line"><span class="type">void</span> (*signal(<span class="type">int</span>, <span class="type">void</span> (*)(<span class="type">int</span>)))(<span class="type">int</span>);</span><br><span class="line">fv *<span class="title function_">signal</span><span class="params">(<span class="type">int</span>, fv *)</span>;</span><br><span class="line">pfv <span class="title function_">signal</span><span class="params">(<span class="type">int</span>, pfv)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这些 <code>typedef</code> 可以使代码更易于理解，因为它们为函数指针类型引入了有意义的别名。</p>
+<h3 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h3><p>到目前为止，我们讨论的所有类型都是未经限定的类型。可以通过使用以下一种或多种限定符来对类型进行<em>限定</em>：<code>const</code>、<code>volatile</code> 和 <code>restrict</code>。每个限定符都会在访问具有该限定类型的对象时改变行为。</p>
+<p>限定版本和未限定版本的类型可以在函数的参数、函数的返回值和联合的成员之间互换使用。这意味着可以将具有限定符的对象传递给接受未限定类型的函数，反之亦然。这种互换性可以在编程中提供灵活性和可维护性。</p>
+<blockquote>
+<p>自C11起，<code>_Atomic</code>类型限定符支持并发程序。</p>
+</blockquote>
+<h4 id="const"><a href="#const" class="headerlink" title="const"></a>const</h4><p><code>const</code>限定符用于声明不可修改的对象。具有<code>const</code>限定符的对象不能被修改，特别是不能被赋值，但可以具有常量初始值。这意味着具有<code>const</code>限定符的对象可以由编译器放置在只读内存中，并且任何尝试写入它们的操作都将导致运行时错误。</p>
+<p>例如，下面的代码声明了一个具有<code>const</code>限定符的整数对象i，然后试图修改它的值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> i = <span class="number">1</span>; <span class="comment">// 具有const限定符的int</span></span><br><span class="line">i = <span class="number">2</span>; <span class="comment">// 错误：i具有const限定符</span></span><br></pre></td></tr></table></figure>
+
+<p>在某些情况下，你可能会误使编译器为你更改<code>const</code>限定的对象。在下面的示例中，我们取得了一个<code>const</code>限定对象<code>i</code>的地址，并告诉编译器这实际上是一个<code>int</code>指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> i = <span class="number">1</span>; <span class="comment">// 具有const限定符的对象</span></span><br><span class="line"><span class="type">int</span> *ip = (<span class="type">int</span> *)&amp;i;</span><br><span class="line">*ip = <span class="number">2</span>; <span class="comment">// 未定义行为</span></span><br></pre></td></tr></table></figure>
+
+<p>C语言不允许你取消<code>const</code>限定符，如果原始对象被声明为<code>const</code>限定的对象。尽管上述代码可能看起来可以工作，但它是有缺陷的，并且可能在后续引发问题。例如，编译器可能将具有<code>const</code>限定符的对象放置在只读内存中，导致在运行时尝试存储值时出现内存错误。</p>
+<p>C语言允许你通过取消<code>const</code>限定符的方式修改被<code>const</code>限定指针指向的对象，前提是原始对象未被声明为<code>const</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i = <span class="number">12</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> j = <span class="number">12</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *ip = &amp;i;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *jp = &amp;j;</span><br><span class="line">*(<span class="type">int</span> *)ip = <span class="number">42</span>; <span class="comment">// 可以</span></span><br><span class="line">*(<span class="type">int</span> *)jp = <span class="number">42</span>; <span class="comment">// 未定义行为</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例中，通过将<code>const</code>限定符的指针转换为<code>int</code>指针，我们可以修改<code>ip</code>指向的对象，但不能修改<code>jp</code>指向的对象，因为<code>j</code>是<code>const</code>限定的。请注意，这种做法并不安全，可能导致未定义的行为和程序错误。</p>
+<h4 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h4><p><code>volatile</code>限定符用于表示特殊用途的对象。具有<code>static volatile</code>限定的对象用于模拟内存映射的输入&#x2F;输出（I&#x2F;O）端口，而具有<code>static constant volatile</code>限定的对象则模拟内存映射的输入端口，例如实时时钟。</p>
+<p>这些对象中存储的值可能在编译器不知情的情况下发生变化。例如，每次读取实时时钟的值时，即使该值尚未被C程序写入，它也可能发生变化。使用<code>volatile</code>限定类型让编译器知道该值可能会变化，并确保每次访问实时时钟时都会发生（否则，对实时时钟的访问可能会被优化掉，或者被以前读取和缓存的值替代）。例如，在以下代码中，编译器必须生成指令来读取<code>port</code>的值，然后将此值写回<code>port</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="type">int</span> port;</span><br><span class="line">port = port;</span><br></pre></td></tr></table></figure>
+
+<p>如果没有<code>volatile</code>限定符，编译器会将其视为无操作（不执行任何操作的编程语句），并有可能消除读取和写入操作。</p>
+<p>此外，<code>volatile</code>限定类型还用于与信号处理程序和<code>setjmp/longjmp</code>进行通信（有关信号处理程序和<code>setjmp/longjmp</code>的信息，请参阅C标准）。与Java和其他编程语言不同，在C中，<code>volatile</code>限定类型不应用于线程之间的同步。</p>
+<h4 id="restrict"><a href="#restrict" class="headerlink" title="restrict"></a>restrict</h4><p><code>restrict</code> 限定符用于优化代码，它告诉编译器，通过该指针访问的对象不会同时通过其他指针访问，从而提供了更大的优化潜力。</p>
+<p>以下是一个函数示例，该函数从由 <code>q</code> 引用的存储区复制 <code>n</code> 个字节到由 <code>p</code> 引用的存储区。函数参数 <code>p</code> 和 <code>q</code> 都是带有 <code>restrict</code> 限定符的指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">f</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n, <span class="type">int</span> * <span class="keyword">restrict</span> p, <span class="type">int</span> * <span class="keyword">restrict</span> q)</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (n-- &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        *p++ = *q++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为 <code>p</code> 和 <code>q</code> 都是带有 <code>restrict</code> 限定符的指针，编译器可以假设通过其中一个指针参数访问的对象不会同时通过另一个指针参数访问。编译器可以基于参数声明而不必分析函数体就能做出这个判断。虽然使用 <code>restrict</code> 限定符的指针可以生成更高效的代码，但必须确保这些指针不引用重叠的内存，以避免出现未定义行为。</p>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><p>尝试编写以下代码：</p>
+<ol>
+<li>添加一个检索函数到<code>清单2-6</code>中的计数示例中，以检索当前计数器的值。</li>
+<li>声明一个包含三个函数指针的数组，并根据传入的索引值调用适当的函数。</li>
+</ol>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>在本章中，您了解了关于对象和函数的知识，以及它们之间的区别。您学习了如何声明变量和函数，如何获取对象的地址以及如何取消引用对象指针。您还了解了大多数可用于C程序员的对象类型以及派生类型。</p>
+<p>在以后的章节中，我们将再次回到这些类型，更详细地探讨如何最好地使用它们来实现您的设计。在下一章中，我将提供关于两种算术类型的详细信息：整数和浮点数。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E3%80%81%E7%B1%BB%E5%9E%8B%E5%92%8C%E6%8C%87%E9%92%88"><span class="toc-number">1.</span> <span class="toc-text">对象、函数、类型和指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%8F%98%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">声明变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%A4%9A%E4%B8%AA%E5%8F%98%E9%87%8F"><span class="toc-number">2.1.</span> <span class="toc-text">声明多个变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%80%BC%EF%BC%88%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%B0%9D%E8%AF%95%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">交换值（第一次尝试）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%80%BC%EF%BC%88%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%B0%9D%E8%AF%95%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">交换值（第二次尝试）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">5.</span> <span class="toc-text">作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E6%9C%9F"><span class="toc-number">6.</span> <span class="toc-text">存储期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E9%BD%90"><span class="toc-number">7.</span> <span class="toc-text">对齐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E7%B1%BB%E5%9E%8B"><span class="toc-number">8.</span> <span class="toc-text">对象类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E5%9E%8B"><span class="toc-number">8.1.</span> <span class="toc-text">布尔型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%9E%8B"><span class="toc-number">8.2.</span> <span class="toc-text">字符型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E5%9E%8B"><span class="toc-number">8.3.</span> <span class="toc-text">数值型</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E5%9E%8B"><span class="toc-number">8.3.1.</span> <span class="toc-text">整数型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%9E%8B"><span class="toc-number">8.3.2.</span> <span class="toc-text">枚举型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E5%9E%8B"><span class="toc-number">8.3.3.</span> <span class="toc-text">浮点型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A9%BA%E5%9E%8B"><span class="toc-number">8.3.4.</span> <span class="toc-text">空型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-number">9.</span> <span class="toc-text">函数类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E5%9E%8B"><span class="toc-number">10.</span> <span class="toc-text">派生类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">10.1.</span> <span class="toc-text">指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-number">10.2.</span> <span class="toc-text">数组</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E5%AE%9A%E4%B9%89"><span class="toc-number">10.2.1.</span> <span class="toc-text">类型定义</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93"><span class="toc-number">10.3.</span> <span class="toc-text">结构体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E5%90%88%E4%BD%93"><span class="toc-number">10.4.</span> <span class="toc-text">联合体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%87%E7%AD%BE"><span class="toc-number">10.5.</span> <span class="toc-text">标签</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-number">11.</span> <span class="toc-text">限定符</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#const"><span class="toc-number">11.1.</span> <span class="toc-text">const</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#volatile"><span class="toc-number">11.2.</span> <span class="toc-text">volatile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#restrict"><span class="toc-number">11.3.</span> <span class="toc-text">restrict</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0"><span class="toc-number">12.</span> <span class="toc-text">练习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">13.</span> <span class="toc-text">小结</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&text=EffectiveC_02_对象、函数和类型"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&is_video=false&description=EffectiveC_02_对象、函数和类型"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EffectiveC_02_对象、函数和类型&body=Check out this article: https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&title=EffectiveC_02_对象、函数和类型"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&name=EffectiveC_02_对象、函数和类型&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/&t=EffectiveC_02_对象、函数和类型"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    NihilDigit
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
