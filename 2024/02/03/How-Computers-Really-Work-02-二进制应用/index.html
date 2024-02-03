@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="在上一章中，我们将计算机定义为一种可以编程执行一组逻辑指令的电子设备。然后，我们从高层次了解了计算机中的一切，从它使用的数据到执行的指令，都以二进制形式存储，即0和1。在本章中，我将详细介绍如何使用0和1来表示几乎任何类型的数据。我们还将介绍二进制如何适用于逻辑操作。 用数字表示数据到目前为止，我们已经集中讨论了如何以二进制形式存储数字。更具体地说，我们讨论了如何存储正整数，有时称为整数，以及零。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How_Computers_Really_Work_02_二进制应用">
+<meta property="og:url" content="https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="Digital Odyssey">
+<meta property="og:description" content="在上一章中，我们将计算机定义为一种可以编程执行一组逻辑指令的电子设备。然后，我们从高层次了解了计算机中的一切，从它使用的数据到执行的指令，都以二进制形式存储，即0和1。在本章中，我将详细介绍如何使用0和1来表示几乎任何类型的数据。我们还将介绍二进制如何适用于逻辑操作。 用数字表示数据到目前为止，我们已经集中讨论了如何以二进制形式存储数字。更具体地说，我们讨论了如何存储正整数，有时称为整数，以及零。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/w6F8XervAb7Msda.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/WmSAFLY932zyO7h.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/AsaNmw9BM3lFvxR.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/dCOWt2KRH7vIsTr.png">
+<meta property="article:published_time" content="2024-02-03T13:56:46.000Z">
+<meta property="article:modified_time" content="2024-02-03T13:57:08.611Z">
+<meta property="article:author" content="NihilDigit">
+<meta property="article:tag" content="CS">
+<meta property="article:tag" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/02/03/w6F8XervAb7Msda.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>How_Computers_Really_Work_02_二进制应用</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&text=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&is_video=false&description=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=How_Computers_Really_Work_02_二进制应用&body=Check out this article: https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&name=How_Computers_Really_Work_02_二进制应用&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&t=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%95%B0%E5%AD%97%E8%A1%A8%E7%A4%BA%E6%95%B0%E6%8D%AE"><span class="toc-number">1.</span> <span class="toc-text">用数字表示数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E5%8C%96%E6%96%87%E6%9C%AC"><span class="toc-number">1.1.</span> <span class="toc-text">数字化文本</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ASCII"><span class="toc-number">1.1.1.</span> <span class="toc-text">ASCII</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E5%8C%96%E9%A2%9C%E8%89%B2%E5%92%8C%E5%9B%BE%E7%89%87"><span class="toc-number">1.2.</span> <span class="toc-text">数字化颜色和图片</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A2%9C%E8%89%B2%E5%92%8C%E5%9B%BE%E5%83%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">颜色和图像表示方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">解释二进制数据</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%80%BB%E8%BE%91"><span class="toc-number">1.3.</span> <span class="toc-text">二进制逻辑</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">2.</span> <span class="toc-text">小结</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        How_Computers_Really_Work_02_二进制应用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">NihilDigit</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-02-03T13:56:46.000Z" class="dt-published" itemprop="datePublished">2024-02-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/CS/" rel="tag">CS</a>, <a class="p-category" href="/tags/book/" rel="tag">book</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>在上一章中，我们将计算机定义为一种可以编程执行一组逻辑指令的电子设备。然后，我们从高层次了解了计算机中的一切，从它使用的数据到执行的指令，都以二进制形式存储，即0和1。在本章中，我将详细介绍如何使用0和1来表示几乎任何类型的数据。我们还将介绍二进制如何适用于逻辑操作。</p>
+<h3 id="用数字表示数据"><a href="#用数字表示数据" class="headerlink" title="用数字表示数据"></a>用数字表示数据</h3><p>到目前为止，我们已经集中讨论了如何以二进制形式存储数字。更具体地说，我们讨论了如何存储正整数，有时称为整数，以及零。但是，计算机将所有数据都存储为位：负数、分数、文本、颜色、图像、音频和视频等等。让我们考虑如何使用二进制来表示各种类型的数据。</p>
+<h4 id="数字化文本"><a href="#数字化文本" class="headerlink" title="数字化文本"></a>数字化文本</h4><p>让我们从文本开始，作为如何使用位、0和1来表示除数字以外的东西的第一个示例。在计算环境中，文本指的是字母数字和相关符号的集合，也称为<em>字符</em>。文本通常用于表示单词、句子、段落等。文本不包括格式（加粗、斜体）。在此讨论中，让我们将字符集限制为英语字母和相关字符。在计算机编程中，术语<em>字符串</em>也常用于指代一系列文本字符。</p>
+<p>牢记文本的这个定义，我们需要精确表示什么？我们需要A到Z，包括大写和小写，这意味着A和a是不同的符号。我们还希望有逗号和句点等标点符号。我们需要一种表示空格的方式。我们还需要数字0到9。数字的要求可能会让人感到困惑；在这里，我谈论的是包括用于表示数字0到9的<em>字符</em>，这与存储<em>数字</em>0到9是不同的事情。</p>
+<p>如果将我们刚刚描述的所有唯一符号的数量相加，大约有100个字符。因此，如果我们需要每个字符表示一个唯一的位组合，那么每个字符需要多少位？6位数字可以给我们64个唯一的组合，这还不够。但是7位数字可以提供128个组合，足以表示我们需要的100左右字符。但是，由于计算机通常使用字节，因此最好将其四舍五入，使用一个完整的8位字节来表示每个字符。通过一个字节，我们可以表示256个唯一字符。</p>
+<p>那么，我们如何使用8位来表示每个字符？正如你可能期望的那样，已经有一种标准的二进制文本表示方式，我们稍后会介绍。但在此之前，重要的是要理解，只要运行在计算机上的软件知道我们的方案，我们就可以制定任何表示每个字符的方案。也就是说，某些方案比其他方案更适合表示某些类型的数据。软件设计师更喜欢使常见操作易于执行的方案。</p>
+<p>想象一下，您负责创建自己的系统，将每个字符表示为一组位。您可能决定将<code>0b00000000</code>分配给表示字符<code>A</code>，将<code>0b00000001</code>分配给表示字符<code>B</code>，依此类推。将数据转化为数字格式的过程称为<em>编码</em>；当您解释数字数据时，它被称为<em>解码</em>。</p>
+<blockquote>
+<p>练习 2-1: 创建自己的文本表示系统<br>定义一种表示大写字母A到D的8位数字的方式，然后使用您的系统将单词DAD编码成24位。对于这个问题，没有唯一正确的答案；请参阅附录A以获取一个示例答案。<br>附加题：将您编码的24位数字以十六进制显示出来。</p>
+</blockquote>
+<h5 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h5><p>幸运的是，我们已经有了几种标准的方式来以数字形式表示文本，所以我们不需要自己发明！美国信息交换标准代码（ASCII）是一种格式，使用7位来表示128个字符，尽管通常每个字符都使用一个完整的字节，即8位。使用8位而不是7位只是意味着我们有一个额外的前导位，保持为0。ASCII处理了英语所需的字符，另一种称为Unicode的标准处理了几乎所有语言中使用的字符，包括英语。现在，让我们专注于ASCII，以保持简单。表2-1显示了ASCII字符子集的二进制和十六进制值。前32个字符没有显示出来；它们是控制代码，如回车和换页，最初是用于控制设备而不是存储文本的。</p>
+<blockquote>
+<p>练习 2-2: 编码和解码ASCII</p>
+<p>使用表2-1，对以下单词进行ASCII二进制和十六进制编码，每个字符使用一个字节。请记住大写字母和小写字母有不同的值。<br>Hello<br>5 cats</p>
+<p>使用表2-1，解码以下单词。每个字符都表示为带有空格以增加清晰度的8位ASCII值。<br>01000011 01101111 01100110 01100110 01100101 01100101<br>01010011 01101000 01101111 01110000</p>
+<p>使用表2-1，解码以下单词。每个字符都表示为带有空格以增加清晰度的8位十六进制值。<br>43 6C 61 72 69 6E 65 74</p>
+<p>答案在附录A中。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Binary</th>
+<th>Hex</th>
+<th>Char</th>
+<th>Binary</th>
+<th>Hex</th>
+<th>Char</th>
+<th>Binary</th>
+<th>Hex</th>
+<th>Char</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>00100000</td>
+<td>0x20</td>
+<td>[Space]</td>
+<td>00100001</td>
+<td>0x21</td>
+<td>!</td>
+<td>00100010</td>
+<td>0x22</td>
+<td>“</td>
+</tr>
+<tr>
+<td>00100011</td>
+<td>0x23</td>
+<td>#</td>
+<td>00100100</td>
+<td>0x24</td>
+<td>$</td>
+<td>00100101</td>
+<td>0x25</td>
+<td>%</td>
+</tr>
+<tr>
+<td>00100110</td>
+<td>0x26</td>
+<td>&amp;</td>
+<td>00100111</td>
+<td>0x27</td>
+<td>‘</td>
+<td>00101000</td>
+<td>0x28</td>
+<td>(</td>
+</tr>
+<tr>
+<td>00101001</td>
+<td>0x29</td>
+<td>)</td>
+<td>00101010</td>
+<td>0x2A</td>
+<td>*</td>
+<td>00101011</td>
+<td>0x2B</td>
+<td>+</td>
+</tr>
+<tr>
+<td>00101100</td>
+<td>0x2C</td>
+<td>,</td>
+<td>00101101</td>
+<td>0x2D</td>
+<td>-</td>
+<td>00101110</td>
+<td>0x2E</td>
+<td>.</td>
+</tr>
+<tr>
+<td>00101111</td>
+<td>0x2F</td>
+<td>&#x2F;</td>
+<td>00110000</td>
+<td>0x30</td>
+<td>0</td>
+<td>00110001</td>
+<td>0x31</td>
+<td>1</td>
+</tr>
+<tr>
+<td>00110010</td>
+<td>0x32</td>
+<td>2</td>
+<td>00110011</td>
+<td>0x33</td>
+<td>3</td>
+<td>00110100</td>
+<td>0x34</td>
+<td>4</td>
+</tr>
+<tr>
+<td>00110101</td>
+<td>0x35</td>
+<td>5</td>
+<td>00110110</td>
+<td>0x36</td>
+<td>6</td>
+<td>00110111</td>
+<td>0x37</td>
+<td>7</td>
+</tr>
+<tr>
+<td>00111000</td>
+<td>0x38</td>
+<td>8</td>
+<td>00111001</td>
+<td>0x39</td>
+<td>9</td>
+<td>00111010</td>
+<td>0x3A</td>
+<td>:</td>
+</tr>
+<tr>
+<td>00111011</td>
+<td>0x3B</td>
+<td>;</td>
+<td>00111100</td>
+<td>0x3C</td>
+<td>&lt;</td>
+<td>00111101</td>
+<td>0x3D</td>
+<td>&#x3D;</td>
+</tr>
+<tr>
+<td>00111110</td>
+<td>0x3E</td>
+<td>&gt;</td>
+<td>00111111</td>
+<td>0x3F</td>
+<td>?</td>
+<td>01000000</td>
+<td>0x40</td>
+<td>@</td>
+</tr>
+<tr>
+<td>01000001</td>
+<td>0x41</td>
+<td>A</td>
+<td>01000010</td>
+<td>0x42</td>
+<td>B</td>
+<td>01000011</td>
+<td>0x43</td>
+<td>C</td>
+</tr>
+<tr>
+<td>01000100</td>
+<td>0x44</td>
+<td>D</td>
+<td>01000101</td>
+<td>0x45</td>
+<td>E</td>
+<td>01000110</td>
+<td>0x46</td>
+<td>F</td>
+</tr>
+<tr>
+<td>01000111</td>
+<td>0x47</td>
+<td>G</td>
+<td>01001000</td>
+<td>0x48</td>
+<td>H</td>
+<td>01001001</td>
+<td>0x49</td>
+<td>I</td>
+</tr>
+<tr>
+<td>01001010</td>
+<td>0x4A</td>
+<td>J</td>
+<td>01001011</td>
+<td>0x4B</td>
+<td>K</td>
+<td>01001100</td>
+<td>0x4C</td>
+<td>L</td>
+</tr>
+<tr>
+<td>01001101</td>
+<td>0x4D</td>
+<td>M</td>
+<td>01001110</td>
+<td>0x4E</td>
+<td>N</td>
+<td>01001111</td>
+<td>0x4F</td>
+<td>O</td>
+</tr>
+<tr>
+<td>01010000</td>
+<td>0x50</td>
+<td>P</td>
+<td>01010001</td>
+<td>0x51</td>
+<td>Q</td>
+<td>01010010</td>
+<td>0x52</td>
+<td>R</td>
+</tr>
+<tr>
+<td>01010011</td>
+<td>0x53</td>
+<td>S</td>
+<td>01010100</td>
+<td>0x54</td>
+<td>T</td>
+<td>01010101</td>
+<td>0x55</td>
+<td>U</td>
+</tr>
+<tr>
+<td>01010110</td>
+<td>0x56</td>
+<td>V</td>
+<td>01010111</td>
+<td>0x57</td>
+<td>W</td>
+<td>01011000</td>
+<td>0x58</td>
+<td>X</td>
+</tr>
+<tr>
+<td>01011001</td>
+<td>0x59</td>
+<td>Y</td>
+<td>01011010</td>
+<td>0x5A</td>
+<td>Z</td>
+<td>01011011</td>
+<td>0x5B</td>
+<td>[</td>
+</tr>
+<tr>
+<td>01011100</td>
+<td>0x5C</td>
+<td>\</td>
+<td>01011101</td>
+<td>0x5D</td>
+<td>]</td>
+<td>01011110</td>
+<td>0x5E</td>
+<td>^</td>
+</tr>
+<tr>
+<td>01011111</td>
+<td>0x5F</td>
+<td>_</td>
+<td>01100000</td>
+<td>0x60</td>
+<td>&#96;</td>
+<td>01100001</td>
+<td>0x61</td>
+<td>a</td>
+</tr>
+<tr>
+<td>01100010</td>
+<td>0x62</td>
+<td>b</td>
+<td>01100011</td>
+<td>0x63</td>
+<td>c</td>
+<td>01100100</td>
+<td>0x64</td>
+<td>d</td>
+</tr>
+<tr>
+<td>01100101</td>
+<td>0x65</td>
+<td>e</td>
+<td>01100110</td>
+<td>0x66</td>
+<td>f</td>
+<td>01100111</td>
+<td>0x67</td>
+<td>g</td>
+</tr>
+<tr>
+<td>01101000</td>
+<td>0x68</td>
+<td>h</td>
+<td>01101001</td>
+<td>0x69</td>
+<td>i</td>
+<td>01101010</td>
+<td>0x6A</td>
+<td>j</td>
+</tr>
+<tr>
+<td>01101011</td>
+<td>0x6B</td>
+<td>k</td>
+<td>01101100</td>
+<td>0x6C</td>
+<td>l</td>
+<td>01101101</td>
+<td>0x6D</td>
+<td>m</td>
+</tr>
+<tr>
+<td>01101110</td>
+<td>0x6E</td>
+<td>n</td>
+<td>01101111</td>
+<td>0x6F</td>
+<td>o</td>
+<td>01110000</td>
+<td>0x70</td>
+<td>p</td>
+</tr>
+<tr>
+<td>01110001</td>
+<td>0x71</td>
+<td>q</td>
+<td>01110010</td>
+<td>0x72</td>
+<td>r</td>
+<td>01110011</td>
+<td>0x73</td>
+<td>s</td>
+</tr>
+<tr>
+<td>01110100</td>
+<td>0x74</td>
+<td>t</td>
+<td>01110101</td>
+<td>0x75</td>
+<td>u</td>
+<td>01110110</td>
+<td>0x76</td>
+<td>v</td>
+</tr>
+<tr>
+<td>01110111</td>
+<td>0x77</td>
+<td>w</td>
+<td>01111000</td>
+<td>0x78</td>
+<td>x</td>
+<td>01111001</td>
+<td>0x79</td>
+<td>y</td>
+</tr>
+<tr>
+<td>01111010</td>
+<td>0x7A</td>
+<td>z</td>
+<td>01111011</td>
+<td>0x7B</td>
+<td>{</td>
+<td>01111100</td>
+<td>0x7C</td>
+<td></td>
+</tr>
+<tr>
+<td>01111101</td>
+<td>0x7D</td>
+<td>}</td>
+<td>01111110</td>
+<td>0x7E</td>
+<td>~</td>
+<td>01111111</td>
+<td>0x7F</td>
+<td>[Delete]</td>
+</tr>
+<tr>
+<td>将文本以数字格式表示相对来说是相对简单的。像ASCII这样的系统将每个字符或符号映射到唯一的一系列比特位。计算设备随后解释这一比特位序列并向用户显示相应的符号。</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="数字化颜色和图片"><a href="#数字化颜色和图片" class="headerlink" title="数字化颜色和图片"></a>数字化颜色和图片</h4><p>现在我们已经看到如何用二进制表示数字和文本，让我们探讨另一种数据类型：颜色。任何具有彩色图形显示器的计算设备都需要一种描述颜色的系统。正如您所料，与文本一样，我们已经有了标准的存储颜色数据的方式。我们将会介绍它们，但首先让我们设计一个自己的数字描述颜色的系统。</p>
+<p>让我们将颜色范围限制在黑色、白色和各种灰色。这个有限的颜色集被称为<em>灰度</em>。就像我们在处理文本时所做的那样，让我们首先决定要表示多少种独特的灰度。让我们保持简单，选择黑色、白色、深灰和浅灰。这总共有四种灰度颜色，那么我们需要多少位来表示四种颜色呢？只需要2位。2位数字可以表示四个唯一的值，因为2的2次方等于4。</p>
+<blockquote>
+<p>练习 2-3：创建自己的灰度表示系统<br>定义一种数字表示黑色、白色、深灰和浅灰的方法。没有唯一正确的答案；可以参考附录 A 中的示例答案。</p>
+</blockquote>
+<p>设计了一种用二进制表示灰度色阶后，可以借此方法构建一个用于描述简单灰度图像的系统。图像本质上是在二维平面上排列颜色的方式。这些颜色通常以单一颜色方块（称为<em>像素</em>）的形式排列在网格中。下面是一个简单示例，如图 2-1 所示。</p>
+<p><img src="https://s2.loli.net/2024/02/03/w6F8XervAb7Msda.png" alt="h0201.png|200"></p>
+<p>图2-1中的图像宽度为4像素，高度为4像素，总共有16个像素。如果你眯起眼睛并发挥你的想象力，可能会看到一个白色的花朵和一个深灰色的天空。这幅图像只由三种颜色组成：白色、浅灰色和深灰色。</p>
+<blockquote>
+<p>图2-1由一些非常大的像素组成，以说明一个观点。现代电视、计算机显示器和智能手机屏幕也可以被看作是一个像素网格，但每个像素非常小。例如，高清显示器通常是1920像素（宽）乘以1080像素（高），总共约有200万像素！另一个例子是，数字照片通常在单个图像中包含超过1000万像素。</p>
+</blockquote>
+<blockquote>
+<p>练习2-4：创建自己的简单图像表示方法</p>
+<p>第1部分：在之前表示灰度颜色的基础上，设计一种表示由这些颜色组成的图像的方法。如果您想简化事情，可以假设图像始终为4像素乘4像素，就像图2-1中的图像一样。</p>
+<p>第2部分：使用第1部分的方法，将图2-1中的花朵图像写成二进制表示。</p>
+<p>第3部分：向朋友解释您表示图像的方法。然后将您的二进制数据交给朋友，看看他们是否能在不看原始图像的情况下画出上面的图像！</p>
+<p>这并没有单一正确的答案；请参阅附录A以获取示例答案。</p>
+</blockquote>
+<p>在练习2-4中，第2部分中，您扮演了一个负责将图像编码成二进制数据的计算机程序。在第3部分中，您的朋友扮演了一个负责将二进制数据解码成图像的计算机程序。希望她能够解密您的二进制数据并画出一朵花！如果您的朋友成功完成了任务，那太好了，这样您就一起演示了软件如何编码和解码数据！如果事情不太顺利，她最终画出的东西更像是一个泡菜而不是一朵花，也没关系；您演示了有时软件存在缺陷，导致意想不到的结果。</p>
+<h5 id="颜色和图像表示方法"><a href="#颜色和图像表示方法" class="headerlink" title="颜色和图像表示方法"></a>颜色和图像表示方法</h5><p>正如前面提到的，已经为以数字方式表示颜色和图像定义了标准方法。对于灰度图像，一个常见的方法是每个像素使用8位，允许表示256种灰度。每个像素的值通常表示光的强度，所以0表示没有光强度（黑色），255表示全强度（白色），中间的值是各种灰色阴影，从深到浅不等。图2-2使用8位编码方案展示了各种灰度阴影。</p>
+<p><img src="https://s2.loli.net/2024/02/03/WmSAFLY932zyO7h.png" alt="h0202.png|200"></p>
+<p>表示彩色除了灰度阴影之外，也以类似的方式工作。尽管灰度可以用一个8位数字表示，但一种称为RGB的方法使用三个8位数字来表示红色、绿色和蓝色的强度，它们组合在一起形成单一的颜色。为每个三个组分颜色分配8位意味着需要24位来表示整体颜色。</p>
+<blockquote>
+<p>RGB是基于加法色彩模型的，颜色是由红、绿和蓝光混合而成的。这与绘画中使用的减法色彩模型相反，后者混合的颜色是红、黄和蓝。</p>
+</blockquote>
+<p>举个例子，红色在RGB中的表示方式是将所有的8个红色位都设为1，其他两种颜色的16位都设为0。或者，如果你想表示黄色，黄色是红色和绿色的组合，没有蓝色，你可以将红色和绿色位都设置为1，而将蓝色位都设置为0。这在图2-3中有示意图。</p>
+<p><img src="https://s2.loli.net/2024/02/03/AsaNmw9BM3lFvxR.png" alt="h0203.png|300"></p>
+<p>在图2-3中的两个示例中，所有“打开”的颜色都是1，但RGB系统允许红色、蓝色和绿色组成颜色的部分强度。每个组成颜色可以从00000000（0十进制&#x2F;0十六进制）变化到11111111（255十进制&#x2F;FF十六进制）。较低的值表示该颜色的较暗色调，而较高的值表示该颜色的较亮色调。有了这种混合颜色的灵活性，我们可以表示几乎任何想象得到的颜色。不仅有表示颜色的标准方式，还有多种常用的方法来表示整个图像。正如您在图2-1中所看到的，我们可以使用像素网格构建图像，每个像素设置为特定的颜色。多年来，已经设计了多种图像格式来实现这一点。表示图像的一种简单方法被称为位图。位图图像存储每个单独像素的RGB颜色数据。其他图像格式，如JPEG和PNG，使用压缩技术来减少存储图像所需的字节数，与位图相比。</p>
+<h5 id="解释二进制数据"><a href="#解释二进制数据" class="headerlink" title="解释二进制数据"></a>解释二进制数据</h5><p>让我们再看一个二进制值：011000010110001001100011。你认为它代表什么？如果我们假设它是一个ASCII文本字符串，那么它代表”abc”。另一方面，也许它代表一个24位的RGB颜色，使它成为一个灰色阴影。或者它可能是一个正整数，如果是这样，它在十进制中是6,382,179。这些不同的解释如图2-4所示。</p>
+<p><img src="https://s2.loli.net/2024/02/03/dCOWt2KRH7vIsTr.png" alt="h0204.png|200"></p>
+<p>那么它到底是什么呢？它可以是其中任何一个，或者完全不同的东西。这完全取决于解释数据的上下文。文本编辑程序将假设数据是文本，而图像查看器可能会假设它是图像中像素的颜色，计算器可能会假设它是一个数字。每个程序都被编写为期望以特定格式接收数据，因此单个二进制值在不同的上下文中具有不同的含义。</p>
+<p>我们已经演示了二进制数据如何用于表示数字、文本、颜色和图像。从中可以做出一些关于如何存储其他类型数据的有根据的猜测，比如视频或音频。在数字表示中，没有什么数据类型是不能表示的。数字表示并不总是原始数据的完美复制，但在许多情况下，这并不是一个问题。能够将任何东西表示为一系列的0和1是非常有用的，因为一旦我们建立了一个处理二进制数据的设备，我们可以通过软件来使其适应任何类型的数据！</p>
+<h4 id="二进制逻辑"><a href="#二进制逻辑" class="headerlink" title="二进制逻辑"></a>二进制逻辑</h4><p>我们已经确定了使用二进制表示数据的实用性，但计算机不仅仅是存储数据，它们还允许我们处理数据。借助计算机的帮助，我们可以读取、编辑、创建、转换、共享和以其他方式操作数据。计算机使我们能够以多种方式处理数据，使用可编程执行一系列简单指令的硬件来执行这些指令，例如“将两个数字相加”或“检查两个值是否相等”。实现这些指令的计算机处理器基本上基于二进制逻辑，这是一种描述逻辑陈述的系统，其中变量只能是真（true）或假（false）两个值之一。现在让我们来看看二进制逻辑，同时我们将再次看到计算机中的一切都归结为1和0。</p>
+<p>让我们考虑一下二进制是如何自然地适合逻辑的。通常，当有人谈到逻辑时，他们指的是推理，或者通过思考已知的事实以得出有效结论。当面对一组事实时，逻辑允许我们确定与之相关的另一个陈述是否也是事实。逻辑完全关乎真相，即什么是真的，什么是假的。同样，一个位（bit）只能有两个值，1或0。因此，一个单独的位可以用来表示逻辑状态为真（1）或假（0）。让我们看一个例子的逻辑陈述：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">假设 一个形状有四条直边</span><br><span class="line">而且假设 这个形状有四个直角</span><br><span class="line">得出结论 这个形状是一个矩形</span><br></pre></td></tr></table></figure>
+
+<p>这个例子有两个条件（四条边，四个直角），这两个条件都必须为真，结论才能为真。为了处理这种情况，我们使用逻辑运算符<code>AND</code>来连接这两个陈述。如果其中任何一个条件为假，那么结论也为假。我在表2-2中表达了相同的逻辑：</p>
+<table>
+<thead>
+<tr>
+<th>四条边</th>
+<th>四个直角</th>
+<th>是否为矩形</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td>使用表2-2，我们可以解释每一行如下：</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ol>
+<li>如果这个形状既没有四条边，也没有四个直角，那它不是一个矩形。</li>
+<li>如果这个形状没有四条边，但有四个直角，那它不是一个矩形。</li>
+<li>如果这个形状有四条边，但没有四个直角，那它不是一个矩形。</li>
+<li>如果这个形状既有四条边，又有四个直角，那它是一个矩形！</li>
+</ol>
+<p>这种类型的表格称为真值表：一种显示所有可能的条件（输入）组合及其逻辑结论（输出）的表格。表2-2是专门用于我们关于矩形的陈述的，但实际上，同样的表格适用于与<code>AND</code>连接的任何逻辑陈述。</p>
+<p>以下内容省略，主要介绍了逻辑运算符<code>AND</code> <code>OR</code> <code>XOR</code> <code>NOT</code> <code>NOR</code></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>在本章中，我们介绍了二进制如何用于表示数据和逻辑状态。您了解到0和1可以用于表示几乎任何类型的数据。我们以文本、颜色和图像作为二进制格式数据的示例。我们介绍了各种逻辑运算符，如AND和OR，并学习了如何使用真值表来表示逻辑陈述。理解这一点很重要，因为当今计算机中的复杂处理器基于复杂的逻辑系统。在第4章中讨论数字电路时，我们将再次回到二进制主题，但首先，为了为该主题做好准备，我们将在第3章中进行一个小的绕道，介绍电路基础知识。我们将探讨电学原理，了解电路的工作原理，并熟悉许多电路中常见的基本组件。您甚至将有机会构建自己的电路！</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%95%B0%E5%AD%97%E8%A1%A8%E7%A4%BA%E6%95%B0%E6%8D%AE"><span class="toc-number">1.</span> <span class="toc-text">用数字表示数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E5%8C%96%E6%96%87%E6%9C%AC"><span class="toc-number">1.1.</span> <span class="toc-text">数字化文本</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ASCII"><span class="toc-number">1.1.1.</span> <span class="toc-text">ASCII</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E5%8C%96%E9%A2%9C%E8%89%B2%E5%92%8C%E5%9B%BE%E7%89%87"><span class="toc-number">1.2.</span> <span class="toc-text">数字化颜色和图片</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A2%9C%E8%89%B2%E5%92%8C%E5%9B%BE%E5%83%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">颜色和图像表示方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">解释二进制数据</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%80%BB%E8%BE%91"><span class="toc-number">1.3.</span> <span class="toc-text">二进制逻辑</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">2.</span> <span class="toc-text">小结</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&text=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&is_video=false&description=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=How_Computers_Really_Work_02_二进制应用&body=Check out this article: https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&title=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&name=How_Computers_Really_Work_02_二进制应用&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/&t=How_Computers_Really_Work_02_二进制应用"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    NihilDigit
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
