@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="如今，计算机无处不在：在我们的家中、学校、办公室中，您可能会在口袋里、手腕上甚至冰箱里找到一台计算机。如今更容易找到和使用计算机，但很少有人真正了解计算机的工作原理。这并不奇怪，因为学习计算的复杂性可能会让人感到不知所措。本书的目标是以一种任何对计算感兴趣且有一些技术倾向的人都能理解的方式，阐述计算的基本原理。在我们深入了解计算机如何工作的细节之前，让我们花些时间熟悉计算的一些主要概念。 在本章中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How_Computers_Really_Work_01_计算概念">
+<meta property="og:url" content="https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="Digital Odyssey">
+<meta property="og:description" content="如今，计算机无处不在：在我们的家中、学校、办公室中，您可能会在口袋里、手腕上甚至冰箱里找到一台计算机。如今更容易找到和使用计算机，但很少有人真正了解计算机的工作原理。这并不奇怪，因为学习计算的复杂性可能会让人感到不知所措。本书的目标是以一种任何对计算感兴趣且有一些技术倾向的人都能理解的方式，阐述计算的基本原理。在我们深入了解计算机如何工作的细节之前，让我们花些时间熟悉计算的一些主要概念。 在本章中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/YVkNS4Mntz1Cs9w.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/Sg1yPA2DEiWH6Rr.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/fE5eUOrbHSz3XBN.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/IsoWSh42r6E1JUv.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/iIroTLHdY9ROJzy.png">
+<meta property="article:published_time" content="2024-02-03T11:19:04.000Z">
+<meta property="article:modified_time" content="2024-02-03T11:24:49.788Z">
+<meta property="article:author" content="NihilDigit">
+<meta property="article:tag" content="CS">
+<meta property="article:tag" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/02/03/YVkNS4Mntz1Cs9w.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>How_Computers_Really_Work_01_计算概念</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/02/02/EffectiveC-02-%E5%AF%B9%E8%B1%A1%E3%80%81%E5%87%BD%E6%95%B0%E5%92%8C%E7%B1%BB%E5%9E%8B/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&text=How_Computers_Really_Work_01_计算概念"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&is_video=false&description=How_Computers_Really_Work_01_计算概念"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=How_Computers_Really_Work_01_计算概念&body=Check out this article: https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&name=How_Computers_Really_Work_01_计算概念&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&t=How_Computers_Really_Work_01_计算概念"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%AE%A1%E7%AE%97%E6%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">什么是计算机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E4%B8%8E%E6%95%B0%E5%AD%97"><span class="toc-number">2.</span> <span class="toc-text">模拟与数字</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">模拟方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E5%8C%96%E7%9A%84%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">数字化的进程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">数字系统</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%81%E8%BF%9B%E5%88%B6%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">十进制数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">二进制数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E5%92%8C%E5%AD%97%E8%8A%82"><span class="toc-number">4.</span> <span class="toc-text">位和字节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%BC%80"><span class="toc-number">5.</span> <span class="toc-text">前缀</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6"><span class="toc-number">6.</span> <span class="toc-text">十六进制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        How_Computers_Really_Work_01_计算概念
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">NihilDigit</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-02-03T11:19:04.000Z" class="dt-published" itemprop="datePublished">2024-02-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/CS/" rel="tag">CS</a>, <a class="p-category" href="/tags/book/" rel="tag">book</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>如今，计算机无处不在：在我们的家中、学校、办公室中，您可能会在口袋里、手腕上甚至冰箱里找到一台计算机。如今更容易找到和使用计算机，但很少有人真正了解计算机的工作原理。这并不奇怪，因为学习计算的复杂性可能会让人感到不知所措。本书的目标是以一种任何对计算感兴趣且有一些技术倾向的人都能理解的方式，阐述计算的基本原理。在我们深入了解计算机如何工作的细节之前，让我们花些时间熟悉计算的一些主要概念。</p>
+<p>在本章中，我们将首先讨论计算机的定义。然后，我们将介绍模拟数据和数字数据之间的区别，然后探讨数字数据的数字系统以及用于描述数字数据的术语。</p>
+<h3 id="什么是计算机"><a href="#什么是计算机" class="headerlink" title="什么是计算机"></a>什么是计算机</h3><p>让我们从一个基本问题开始：什么是计算机？当人们听到“计算机”这个词时，大多数人会想到笔记本电脑或台式电脑，有时称为个人计算机或PC。这是本书涵盖的一类设备，但让我们再广泛地思考一下。考虑一下智能手机。智能手机当然也是计算机；它们执行与个人计算机相同类型的操作。事实上，对于今天的许多人来说，智能手机是他们主要的计算设备。大多数计算机用户今天也依赖于互联网，它是由服务器驱动的，服务器是另一种类型的计算机。每当您访问一个连接到互联网的网站或使用与全球网络连接的一个或多个服务器连接的应用程序时，您都在与服务器互动。视频游戏机、健身追踪器、智能手表、智能电视…所有这些都是计算机！</p>
+<p><em>计算机</em>是任何可以编程执行一组逻辑指令的电子设备。有了这个定义，就清楚了许多现代设备实际上都是计算机！</p>
+<blockquote>
+<p>练习 1-1：找出您家中的计算机<br>请花一些时间看看您家中有多少台计算机可以识别出来。当我和我的家人一起做这个练习时，我们很快发现了大约30台设备！</p>
+</blockquote>
+<h3 id="模拟与数字"><a href="#模拟与数字" class="headerlink" title="模拟与数字"></a>模拟与数字</h3><p>您可能听说过计算机被描述为数字设备。这与模拟设备形成对比，例如机械时钟。但这两个术语到底是什么意思呢？理解模拟和数字之间的区别是理解计算的基础，因此让我们更仔细地看看这两个概念。</p>
+<h4 id="模拟方法"><a href="#模拟方法" class="headerlink" title="模拟方法"></a>模拟方法</h4><p>看看你周围。挑选一个物体。问自己：它是什么颜色的？它有多大？它重多少？通过回答这些问题，你正在描述该物体的属性或<em>数据</em>。现在，挑选另一个物体并回答相同的问题。如果你为更多的物体重复这个过程，你会发现对于每个问题，潜在的答案是众多的。你可能会拿起一个红色的物体、一个黄色的物体或一个蓝色的物体。或者这个物体可能是主要颜色的混合体。这种变化不仅仅适用于颜色。对于给定的属性，在我们世界中的物体之间找到的变化是潜在无限的。</p>
+<p>口头描述一个物体是一回事，但假设你想更精确地测量其中一个属性。例如，如果你想测量一个物体的重量，你可以将它放在一个天平上。天平会根据放在上面的重量移动一个指针沿着一个带有数字的线，当它达到与重量相对应的位置时停止。从天平上读取数字，你就得到了物体的重量。</p>
+<p>这种测量方法很常见，但让我们再仔细思考一下我们是如何测量这些数据的。指针在天平上的位置实际上并不是重量；它是重量的一种表示。指针指向的数字线提供了一种方便我们在指针的位置（表示重量）和重量的数值之间进行转换的方式。换句话说，尽管重量是物体的属性，但在这里我们可以通过其他方式来理解这个属性：指针在线上的位置。指针的位置会按比例变化以响应放在天平上的重量。因此，天平的工作方式类似于我们通过指针在线上的位置来理解物体的重量的比喻。这就是为什么我们称这种测量方法为<em>模拟</em>方法的原因。</p>
+<p>另一个模拟测量工具的例子是水银温度计。水银的体积随温度升高而增加。温度计制造商利用了这个特性，将水银放入一个玻璃管中，管上有标记，对应着不同温度下水银的预期体积。因此，玻璃管中水银的位置充当温度的表示。请注意，在这两个例子（天平和温度计）中，当我们进行测量时，我们可以使用仪器上的标记将位置转换为特定的数值。但从仪器上读取的值只是一个近似值。指针或水银的真实位置可以在仪器的范围内的任何地方，我们向上或向下取最接近的标记值。因此，尽管这些工具似乎只能产生有限的一组测量结果，但这是由于将位置转换为数字所带来的限制，而不是模拟本身的限制。</p>
+<p>在人类历史的大部分时间里，人们一直使用模拟方法来测量事物。但人们不仅仅用模拟方法进行测量，他们还想出了巧妙的方法来以模拟方式存储数据。留声机唱片使用了一个调制凹槽作为录制音频的模拟表示。凹槽的形状沿着其路径发生变化，以对应于随时间变化的音频波形的形状变化。凹槽不是音频本身，但它是原始声音波形的模拟。基于胶片的相机通过将胶片短暂地暴露在相机镜头的光线下，导致胶片发生化学变化，从而实现类似的效果。胶片的化学性质并不是图像本身，而是捕捉到的图像的表示，图像的模拟。</p>
+<h4 id="数字化的进程"><a href="#数字化的进程" class="headerlink" title="数字化的进程"></a>数字化的进程</h4><p>这一切与计算有什么关系呢？事实证明，计算机很难处理所有这些模拟数据的表示。所使用的模拟系统类型如此不同和多变，以至于创建一个能够理解所有这些系统的通用计算设备几乎是不可能的。例如，创建一个能够测量水银体积的机器与创建一个能够读取乙烯基唱片槽纹的机器是两个非常不同的任务。此外，计算机需要高度可靠和准确的数据表示，例如数字数据集和软件程序。模拟数据的表示可能难以精确测量，随时间变化，复制时失去保真度。计算机需要一种将所有类型的数据表示为可以准确处理、存储和复制的格式的方法。</p>
+<p>如果我们不想将数据表示为具有潜在无限变化的模拟值，那么我们可以做什么呢？我们可以使用数字方法。<em>数字</em>系统将数据表示为一系列符号，其中每个符号都是有限一组值中的一个。现在，这个描述可能听起来有点正式，也有点令人困惑，所以不要深入探讨数字系统的理论，我将解释这在实践中是什么意思。在几乎所有今天的计算机中，数据以两个符号的组合表示：0和1。就是这样。尽管数字系统可以使用超过两个符号，但增加更多的符号会增加系统的复杂性和成本。仅使用两个符号的集合可以简化硬件并提高可靠性。在大多数现代计算设备中，所有数据都表示为一系列0和1。从现在开始，在本书中，当我谈论数字计算机时，您可以假设我在谈论只处理0和1而不是其他一些符号的系统。简单明了！</p>
+<p>值得重申的一点是：您计算机上的一切都存储为0和1。您在智能手机上拍摄的最后一张照片？您的设备将照片存储为一系列0和1。您从互联网上流媒体播放的歌曲？0和1。您在计算机上编写的文件？0和1。您安装的应用程序？它由一堆0和1组成。您访问的网站？0和1。</p>
+<p>说出来可能会有限制，只能使用0和1来表示自然界中无限变化的值。音乐录音或详细的照片如何被简化为0和1？许多人认为使用如此有限的“词汇”来表达复杂的思想是不直观的。关键在于数字系统使用一系列0和1。例如，数字照片通常由数百万个0和1组成。</p>
+<p>那么这些0和1究竟是什么呢？您可能会看到其他用于描述这些0和1的术语：false和true、off和on、low和high等等。这是因为计算机并不是字面上存储数字0或1。它存储了一个序列，其中序列中的每个条目只能有两种可能的状态。每个条目都像一个开关，要么打开，要么关闭。在实践中，这些0和1的序列以各种方式存储。在CD或DVD上，0和1以凸起（0）或平坦的空间（1）的形式存储在盘上。在闪存驱动器上，0和1以电荷的形式存储。硬盘驱动器使用磁化来存储0和1。正如您将在第4章中看到的，数字电路使用电压级别表示0和1。</p>
+<p>在我们继续之前，最后再提一下<em>模拟</em>术语——它通常被用来简单地表示“不是数字”。例如，工程师可能会说“模拟信号”，意思是一个连续变化且不与数字值对齐的信号。换句话说，它是一个非数字信号，但不一定表示其他东西的类比。因此，当您看到术语模拟时，请考虑它可能不总是意味着您所认为的意思。</p>
+<h3 id="数字系统"><a href="#数字系统" class="headerlink" title="数字系统"></a>数字系统</h3><p>到目前为止，我们已经确定计算机是处理0和1的数字机器。对于许多人来说，这个概念似乎很奇怪；他们习惯于在表示数字时有0到9可用。如果我们限制自己只使用两个符号，而不是十个，那么我们应该如何表示大数呢？为了回答这个问题，让我们退后一步，回顾一下小学数学课程中的一个主题：数字系统。</p>
+<h4 id="十进制数"><a href="#十进制数" class="headerlink" title="十进制数"></a>十进制数</h4><p>通常，我们使用一种称为<em>十进制位置记数法</em>来书写数字。让我们来详细了解一下。<em>位置记数法</em>（或称为位值记数法）意味着书写数字中的每个位置代表了一个不同的数量级；<em>十进制</em>，意味着数量级是10的因数，每个位置可以有十个不同的符号，从0到9。看一看图1-1中位置记数法的示例。</p>
+<p><img src="https://s2.loli.net/2024/02/03/YVkNS4Mntz1Cs9w.png" alt="h0101.png|200"></p>
+<p>在图1-1中，数字275以十进制记数法写作275。5位于个位，意味着它的值是5×1&#x3D;5。7位于十位，意味着它的值是7×10&#x3D;70。2位于百位，意味着它的值是2×100&#x3D;200。总值是所有位数的总和：5+70+200&#x3D;275。简单，对吧？你可能从一年级开始就明白这一点。但让我们再仔细看一看。为什么最右边的位置是个位？接下来的位置为什么是十位，以此类推？这是因为我们使用的是十进制，或者说是底数10，因此每个位置都是十的幂——换句话说，是10乘以它自己多次的结果。如图1-2所示，最右边的位置是10的0次幂，即1，因为任何数的0次幂都是1。接下来的位置是10的1次幂，即10，下一个位置是10的2次幂（10×10），即100。</p>
+<p><img src="https://s2.loli.net/2024/02/03/Sg1yPA2DEiWH6Rr.png" alt="h0102.png|200"></p>
+<p>如果我们需要在十进制中表示一个大于999的数字，我们会在左边添加一个位置，即千位，它的权重将等于10的3次幂（10×10×10），即1,000。这个模式会继续下去，以便我们可以通过根据需要添加更多的位置来表示任何大的整数。我们已经解释了各个位置为什么具有特定的权重，但让我们继续深入挖掘。为什么每个位置使用0到9这些符号？当使用十进制时，我们只能有十个符号，因为根据定义，每个位置只能表示十个不同的值。0到9是当前使用的符号，但实际上可以使用任何一组十个独特的符号，每个符号对应于某个数值。</p>
+<p>大多数人类更喜欢使用十进制，也就是底数10，作为数字系统。有人说这是因为我们有十个手指和十个脚趾，但不管原因是什么，在现代世界，大多数人都在十进制中阅读、写作和思考数字。当然，这只是我们共同选择来表示数字的约定。正如我们之前提到的，这个约定不适用于计算机，计算机只使用两个符号。让我们看看如何在只使用两个符号的情况下应用位值系统的原理。</p>
+<h4 id="二进制数"><a href="#二进制数" class="headerlink" title="二进制数"></a>二进制数</h4><p>只有两个符号的数字系统是二进制，或称为底数2。二进制仍然是一个位值系统，因此其基本原理与十进制相同，但有一些变化。首先，每个位置代表2的幂，而不是10的幂。其次，每个位置只能有两个符号之一，而不是十个。这两个符号是0和1。图1-3展示了我们如何使用二进制表示一个数字的示例。</p>
+<p><img src="https://s2.loli.net/2024/02/03/fE5eUOrbHSz3XBN.png" alt="h0103.png|200"></p>
+<p>在图1-3中，我们有一个二进制数字：101。这可能对您来说看起来像一百零一，但在处理二进制时，这实际上是代表五！如果您想口头表达它，“二进制的一零一”是一个好的方式来传达所写的内容。</p>
+<p>就像在十进制中一样，每个位置的权重等于底数的不同幂次方。由于我们处于基数2中，最右边的位置是2的0次幂，即1。下一个位置是2的1次幂，即2，下一个位置是2的2次幂（2×2），即4。此外，就像在十进制中一样，要得到总值，我们将每个位置的符号乘以位值权重并求和结果。因此，从右开始，我们有（1×1）+（0×2）+（1×4）&#x3D; 5。</p>
+<p>现在您可以尝试自己将二进制转换为十进制。</p>
+<blockquote>
+<p>练习1-2：二进制转十进制<br>将这些用二进制表示的数字转换为十进制。<br> 10（二进制）&#x3D; <code>______</code>（十进制）<br> 111（二进制）&#x3D; <code>______</code>（十进制）<br> 1010（二进制）&#x3D; <code>______</code>（十进制）</p>
+</blockquote>
+<p>您可以在附录A中检查您的答案。您答对了吗？最后一个可能有点棘手，因为它引入了另一个左侧的位置，即十位。现在，试试反过来，从十进制到二进制。</p>
+<blockquote>
+<p>练习1-3：十进制转二进制<br>将这些用十进制表示的数字转换为它们的二进制等效数字。<br>3（十进制）&#x3D; <code>______</code>（二进制）<br>8（十进制）&#x3D; <code>______</code>（二进制）<br>14（十进制）&#x3D; <code>______</code>（二进制）</p>
+</blockquote>
+<p>希望您也正确回答了这些问题！从一开始，您可以看到同时处理十进制和二进制可能会令人困惑，因为像10这样的数字在十进制中表示十，在二进制中表示二。从本书的这一点开始，如果存在混淆的可能性，二进制数字将以0b前缀写入。我选择了0b前缀，因为有几种编程语言采用了这种方法。前导0（零）字符表示数值，b代表二进制。例如，0b10表示二进制中的二，而没有前缀的10表示十进制中的十。</p>
+<h3 id="位和字节"><a href="#位和字节" class="headerlink" title="位和字节"></a>位和字节</h3><p>十进制数字中的单个位置或符号称为<em>数字</em>。像1,247这样的十进制数字是一个四位数。类似地，二进制数字中的单个位置或符号称为<em>比特</em>（二进制数字）。每个比特可以是0或1。像0b110这样的二进制数字是一个3比特数。</p>
+<p>单个比特不能传达太多信息；它要么关闭，要么打开，要么是0，要么是1。我们需要一系列比特来表示更复杂的东西。为了更容易管理这些比特序列，计算机将比特分组成八个一组，称为字节。以下是一些比特和字节的示例（不包括0b前缀，因为它们都是二进制）：</p>
+<p>1 这是一个比特。<br>0 这也是一个比特。<br>11001110 这是一个字节，或8比特。<br>00111000 这也是一个字节！<br>10100101 又一个字节。<br>0011100010100101 这是两个字节，或16比特。</p>
+<blockquote>
+<p>有趣的事实：一个4比特的数字，半个字节，有时被称为一个nibble（有时拼写为nybble或nyble）。</p>
+<p>那么我们可以存储多少数据在一个字节中？另一种思考这个问题的方法是，我们可以用我们的8比特生成多少个唯一的0和1的组合？在回答这个问题之前，让我用只有4比特的方式来说明，因为这样更容易可视化。在表1-1中，我列出了4比特数字中所有可能的0和1的组合。我还包括了该数字的相应的十进制表示。</p>
+<table>
+<thead>
+<tr>
+<th>二进制</th>
+<th>十进制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0000</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0001</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0010</td>
+<td>2</td>
+</tr>
+<tr>
+<td>0011</td>
+<td>3</td>
+</tr>
+<tr>
+<td>0100</td>
+<td>4</td>
+</tr>
+<tr>
+<td>0101</td>
+<td>5</td>
+</tr>
+<tr>
+<td>0110</td>
+<td>6</td>
+</tr>
+<tr>
+<td>0111</td>
+<td>7</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>8</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>9</td>
+</tr>
+<tr>
+<td>1010</td>
+<td>10</td>
+</tr>
+<tr>
+<td>1011</td>
+<td>11</td>
+</tr>
+<tr>
+<td>1100</td>
+<td>12</td>
+</tr>
+<tr>
+<td>1101</td>
+<td>13</td>
+</tr>
+<tr>
+<td>1110</td>
+<td>14</td>
+</tr>
+<tr>
+<td>1111</td>
+<td>15</td>
+</tr>
+</tbody></table>
+<p>正如您在表1-1中所看到的，我们可以用4比特数字表示16个不同的0和1的组合，它们的十进制值从0到15不等。查看比特组合的列表有助于说明这一点，但我们可以在不枚举每种可能组合的情况下通过几种方式来确定这一点。</p>
+<p>我们可以通过将所有比特设置为1来确定4位比特可以表示的最大可能数字，这给我们0b1111。这在十进制中是15；如果我们加1来表示0，那么我们就得到了总共16。另一种快捷方式是将2的幂次方提高到比特数，这里是4，这给我们2^4 &#x3D; 16，表示0和1的总组合数。</p>
+<p>查看4位比特是一个不错的开始，但之前我们在讨论字节，它包含8位比特。使用前面的方法，我们可以列出0和1的所有组合，但让我们跳过这一步，直接使用快捷方式。将2提高到8次方，您将得到256，因此字节中唯一的比特组合数是256。</p>
+<p>现在我们知道4位数字允许16个0和1的组合，一个字节允许256个组合。这与计算有什么关系呢？假设一个电脑游戏有12个关卡；游戏可以轻松地在只有4位比特的情况下存储当前的关卡号码。另一方面，如果游戏有99个关卡，4位比特就不够了……只能表示16个关卡！而一个字节将完美地处理99个关卡的需求。计算机工程师有时需要考虑需要多少比特或字节来存储数据。</p>
+</blockquote>
+<h3 id="前缀"><a href="#前缀" class="headerlink" title="前缀"></a>前缀</h3><p>表示复杂数据类型需要大量比特。像数字99这样简单的东西不需要超过一个字节；另一方面，数字格式的视频可能需要数十亿比特。为了更容易地传达数据的大小，我们使用像千兆（giga-）和兆（mega-）这样的前缀。国际单位制（SI），也称为公制，定义了一组标准前缀。这些前缀用于描述任何可以量化的东西，不仅仅是比特。在处理电路的即将到来的章节中，我们还将看到它们。表1-2列出了一些常见的SI前缀及其含义。</p>
+<table>
+<thead>
+<tr>
+<th>前缀名称</th>
+<th>前缀符号</th>
+<th>值</th>
+<th>十进制</th>
+<th>英语单词</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tera</td>
+<td>T</td>
+<td>1,000,000,000,000</td>
+<td>10^12</td>
+<td>trillion</td>
+</tr>
+<tr>
+<td>giga</td>
+<td>G</td>
+<td>1,000,000,000</td>
+<td>10^9</td>
+<td>billion</td>
+</tr>
+<tr>
+<td>mega</td>
+<td>M</td>
+<td>1,000,000</td>
+<td>10^6</td>
+<td>million</td>
+</tr>
+<tr>
+<td>kilo</td>
+<td>k</td>
+<td>1,000</td>
+<td>10^3</td>
+<td>thousand</td>
+</tr>
+<tr>
+<td>centi</td>
+<td>c</td>
+<td>0.01</td>
+<td>10^-2</td>
+<td>hundredth</td>
+</tr>
+<tr>
+<td>milli</td>
+<td>m</td>
+<td>0.001</td>
+<td>10^-3</td>
+<td>thousandth</td>
+</tr>
+<tr>
+<td>micro</td>
+<td>μ</td>
+<td>0.000001</td>
+<td>10^-6</td>
+<td>millionth</td>
+</tr>
+<tr>
+<td>nano</td>
+<td>n</td>
+<td>0.000000001</td>
+<td>10^-9</td>
+<td>billionth</td>
+</tr>
+<tr>
+<td>pico</td>
+<td>p</td>
+<td>0.000000000001</td>
+<td>10^-12</td>
+<td>trillionth</td>
+</tr>
+</tbody></table>
+<p>使用这些前缀，如果我们想表示“3亿字节”，我们可以使用简写的3GB。或者如果我们想表示4千比特，我们可以说4kb。请注意，字节使用大写B，比特使用小写b。您会发现这种约定通常用于表示比特和字节的数量。不幸的是，这通常也是技术上不正确的。原因如下：在处理字节时，大多数软件实际上是在二进制而不是十进制中工作的。如果您的计算机告诉您一个文件的大小是1MB，实际上是1,048,576字节！这大约是一百万，但不完全是。看起来是一个奇怪的数字，不是吗？这是因为我们是用十进制来看它的。在二进制中，同样的数字表示为0b100000000000000000000。这是2的幂，具体来说是2^20。表1-3显示了在处理字节时如何解释SI前缀。</p>
+<table>
+<thead>
+<tr>
+<th>前缀名称</th>
+<th>前缀符号</th>
+<th>值</th>
+<th>二进制基数</th>
+<th>当应用于字节时的含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tera</td>
+<td>T</td>
+<td>1,099,511,627,776</td>
+<td>2^40</td>
+<td>1 tebibyte (TiB)</td>
+</tr>
+<tr>
+<td>giga</td>
+<td>G</td>
+<td>1,073,741,824</td>
+<td>2^30</td>
+<td>1 gibibyte (GiB)</td>
+</tr>
+<tr>
+<td>mega</td>
+<td>M</td>
+<td>1,048,576</td>
+<td>2^20</td>
+<td>1 mebibyte (MiB)</td>
+</tr>
+<tr>
+<td>kilo</td>
+<td>k</td>
+<td>1,024</td>
+<td>2^10</td>
+<td>1 kibibyte (KiB)</td>
+</tr>
+<tr>
+<td>关于比特和字节的另一个混淆点与网络传输速率有关。互联网服务提供商通常以每秒比特数（以10为基数）进行广告宣传。因此，如果您的互联网连接速度为50兆比特每秒，这意味着您每秒只能传输约6兆字节。换句话说，每秒50,000,000比特除以每字节8比特，得到每秒6,250,000字节。再除以2^20，我们得到约6兆字节每秒。</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>为了解决前缀多重含义引起的混淆，于2002年引入了一组新的前缀（在IEEE 1541标准中），用于二进制情境中。在涉及到2的幂时，应使用kibi-代替kilo-，使用mebi-代替mega-，以此类推。这些新前缀对应于二进制值，并旨在在以前错误使用旧前缀的情况下使用。例如，由于“千字节”（kilobyte）可能被解释为1,000或1,024字节，这个标准建议使用“kibibyte”来表示1,024字节，而“kilo-”保留其原始含义，以便千字节等于1,000字节。</p>
+<p>这似乎是一个不错的主意，但在我写这篇文章时，这些符号并没有被广泛采用。表1-4列出了新的前缀及其含义。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>前缀名称</th>
+<th>前缀符号</th>
+<th>值</th>
+<th>二进制基数</th>
+<th>用于二进制数据的IEEE 1541-2002前缀含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tebi（tebi-）</td>
+<td>Ti</td>
+<td>1,099,511,627,776</td>
+<td>2^40</td>
+<td>1 tebibyte (TiB)</td>
+</tr>
+<tr>
+<td>gibi（gibi-）</td>
+<td>Gi</td>
+<td>1,073,741,824</td>
+<td>2^30</td>
+<td>1 gibibyte (GiB)</td>
+</tr>
+<tr>
+<td>mebi（mebi-）</td>
+<td>Mi</td>
+<td>1,048,576</td>
+<td>2^20</td>
+<td>1 mebibyte (MiB)</td>
+</tr>
+<tr>
+<td>kibi（kibi-）</td>
+<td>Ki</td>
+<td>1,024</td>
+<td>2^10</td>
+<td>1 kibibyte (KiB)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>这个区别很重要，因为实际上，大多数显示文件大小的软件使用旧的SI前缀，但使用2进制计算大小。换句话说，如果您的设备显示文件大小为1KB，那意味着1,024字节。另一方面，存储设备制造商倾向于使用10进制来宣传其设备的容量。这意味着一个宣传为1TB的硬盘可能容量为1兆字节，但如果将该设备连接到计算机，计算机将显示大小约为931GB（1兆除以2^30）。鉴于新前缀的标准采用不足，本书将继续使用旧的SI前缀。</p>
+</blockquote>
+<h3 id="十六进制"><a href="#十六进制" class="headerlink" title="十六进制"></a>十六进制</h3><p>在我们离开以二进制为基础的思维主题之前，我将介绍另一种数字系统：十六进制。简要回顾一下，我们的“正常”数字系统是十进制，或称为10进制。计算机使用二进制，或称为2进制。十六进制是基数16！根据您已经在本章中学到的知识，您可能知道这意味着什么。十六进制，简称hex，是一个位置价值系统，其中每个位置表示16的幂，并且每个位置可以是16个符号中的一个。</p>
+<p>与所有位置价值系统一样，最右边的位置仍然是个位。左边的下一个位置是十六位，然后是256位（16 × 16），然后是4,096位（16 × 16 × 16），依此类推。挺简单的。但是，对于每个位置都可以是16个符号之一的要求呢？我们通常有十个符号来表示数字，即0到9。我们需要添加六个更多的符号来表示其他值。我们可以选择一些随机的符号，比如<code>&amp;</code> <code>@</code> <code>#</code>，但这些符号没有明显的顺序。相反，标准是使用A、B、C、D、E和F（大写或小写都可以！）。在这个方案中，A代表十，B代表十一，依此类推，一直到F，表示十五。这是有道理的；我们需要表示从零到基数减一的符号。因此，我们的额外符号是A到F。在需要时，通常惯用前缀0x表示十六进制。表1-5列出了十六个十六进制符号，以及它们的十进制和二进制等效值。</p>
+<table>
+<thead>
+<tr>
+<th>十六进制符号</th>
+<th>十进制</th>
+<th>二进制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0000</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0001</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>0010</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>0011</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>0100</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+<td>0101</td>
+</tr>
+<tr>
+<td>6</td>
+<td>6</td>
+<td>0110</td>
+</tr>
+<tr>
+<td>7</td>
+<td>7</td>
+<td>0111</td>
+</tr>
+<tr>
+<td>8</td>
+<td>8</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>9</td>
+<td>9</td>
+<td>1001</td>
+</tr>
+<tr>
+<td>A</td>
+<td>10</td>
+<td>1010</td>
+</tr>
+<tr>
+<td>B</td>
+<td>11</td>
+<td>1011</td>
+</tr>
+<tr>
+<td>C</td>
+<td>12</td>
+<td>1100</td>
+</tr>
+<tr>
+<td>D</td>
+<td>13</td>
+<td>1101</td>
+</tr>
+<tr>
+<td>E</td>
+<td>14</td>
+<td>1110</td>
+</tr>
+<tr>
+<td>F</td>
+<td>15</td>
+<td>1111</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>当您需要计数超过15（十进制）或0xF时会发生什么？就像在十进制中一样，我们添加另一个位置。在0xF之后是0x10，它等于16（十进制）。然后是0x11、0x12、0x13等等。现在看一看图1-4，我们可以看到一个更大的十六进制数，0x1A5。</p>
+<p><img src="https://s2.loli.net/2024/02/03/IsoWSh42r6E1JUv.png" alt="h0104.png|200"></p>
+<p>在图1-4中，我们有十六进制数0x1A5，显示了每个数字的十进制值及其对应的16的幂。要计算其十进制等效值，我们将每个数字的值与其对应的16的幂相乘并相加：</p>
+<p>十进制 &#x3D; (1 * 256) + (10 * 16) + (5 * 1) &#x3D; 256 + 160 + 5 &#x3D; 421</p>
+<p>因此，十六进制数0x1A5在十进制中等于421。十六进制通常用于计算，因为它提供了二进制数据的紧凑表示，使人们更容易阅读和处理。</p>
+<p>在图1-4中，我们有十六进制数0x1A5，显示了每个数字的十进制值及其对应的16的幂。要计算其十进制等效值，我们将每个数字的值与其对应的16的幂相乘并相加：</p>
+<p>十进制 &#x3D; (1 * 256) + (10 * 16) + (5 * 1) &#x3D; 256 + 160 + 5 &#x3D; 421</p>
+<p>因此，十六进制数0x1A5在十进制中等于421。十六进制通常用于计算，因为它提供了二进制数据的紧凑表示，使人们更容易阅读和处理。</p>
+<p>至于为什么十六进制有用，尽管大多数计算机和人们不使用它，但对于需要处理二进制的人来说非常有用。使用十六进制有助于克服在二进制中工作时的两个常见困难。首先，大多数人在阅读长串的0和1时表现得非常糟糕。一段时间后，位数会混在一起。对于人类来说，处理16位或更多位是乏味且容易出错的。第二个问题是，尽管人们擅长使用十进制，但在十进制和二进制之间进行转换并不容易。对于大多数人来说，查看一个十进制数并迅速确定如果将该数表示为二进制，哪些位将为1或0是困难的。但是使用十六进制，转换为二进制要简单得多。表1-6提供了一些16位二进制数的示例以及它们对应的十六进制和十进制表示。请注意，我在二进制值中添加了空格以提高清晰度。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Example 1</th>
+<th>Example 2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BIN</td>
+<td>1111 0000 0000 1111</td>
+<td>1000 1000 1000 0001</td>
+</tr>
+<tr>
+<td>HEX</td>
+<td>F00F</td>
+<td>8881</td>
+</tr>
+<tr>
+<td>DEC</td>
+<td>61,455</td>
+<td>34,945</td>
+</tr>
+</tbody></table>
+<p>在表1-6中考虑示例1。在二进制中，有一个明确的序列：前四位是1，接下来的八位是0，最后四位是1。在十进制中，这个序列被掩盖了。从61,455看不出哪些位可能被设置为0或1。然而，十六进制反映了二进制中的序列。第一个十六进制符号是F（对应二进制中的1111），接下来的两个十六进制符号是0，最后的十六进制符号是F。</p>
+<p>继续看示例2，前三组四位都是1000，最后一组四位是0001。这在二进制中很容易看出，但在十进制中很难看出。十六进制提供了一个更清晰的图像，其中十六进制符号8对应于二进制中的1000，而十六进制符号1对应于1！</p>
+<p>希望您能看到一个模式正在形成：二进制中的每四位对应于十六进制中的一个符号。如果您记得，四位是半个字节（或半字节）。因此，一个字节可以用两个十六进制符号轻松表示。一个16位数可以用四个十六进制符号表示，一个32位数可以用八个十六进制符号表示，依此类推。让我们以图1-5中的32位数字为例。</p>
+<p><img src="https://s2.loli.net/2024/02/03/iIroTLHdY9ROJzy.png" alt="h0105.png|200"></p>
+<p>在图1-5中，我们可以一半字节一次地处理这个相当长的数字，这是使用相同数字的十进制表示不可能的事情（2,320,695,040）。</p>
+<p>因为在二进制和十六进制之间转换相对容易，所以许多工程师经常会将这两者结合使用，仅在必要时转换为十进制数字。在本书的后面，我会在合适的地方使用十六进制。</p>
+<p>试试在不经过中间步骤转换为十进制的情况下，将二进制转换为十六进制。</p>
+<blockquote>
+<p>练习1-4: 二进制转十六进制<br>将这些以二进制表示的数字转换为它们的十六进制等效形式。如果可以的话，不要转换为十进制！目标是直接从二进制转换为十六进制。<br>10（二进制）&#x3D; <code>______</code>（十六进制）<br>11110000（二进制）&#x3D; <code>______</code>（十六进制）<br>您可以在附录A中检查答案。</p>
+</blockquote>
+<p>一旦你掌握了从二进制到十六进制的方法，可以尝试从十六进制到二进制的转换。</p>
+<blockquote>
+<p>练习1-5: 十六进制转二进制<br>将这些以十六进制表示的数字转换为它们的二进制等效数字。如果可以的话，不要先转换为十进制！目标是直接从十六进制到二进制的转换。<br>1A (十六进制) &#x3D; <code>_____</code> (二进制)<br>C3A0 (十六进制) &#x3D; <code>______</code> (二进制)<br>你可以在附录 A 中检查你的答案。</p>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在本章中，我们涵盖了计算机科学的一些基本概念。您了解到计算机是任何可以被编程执行一组逻辑指令的电子设备。然后，我们讨论了现代计算机是数字设备而不是模拟设备的区别。模拟系统使用广泛变化的值来表示数据，而数字系统将数据表示为一系列符号。之后，我们探讨了现代数字计算机如何仅依赖两个符号0和1，并学习了由两个符号组成的数字系统，即二进制。我们涵盖了位（bits）、字节（bytes）以及用于更轻松描述数据大小的标准SI前缀（吉、兆、千等等）。最后，您了解了十六进制对于需要处理二进制数据的人来说是如何有用的。</p>
+<p>在下一章中，我们将更仔细地研究二进制在数字系统中的应用。我们将了解二进制如何用于表示各种类型的数据，以及二进制逻辑的工作原理。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%AE%A1%E7%AE%97%E6%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">什么是计算机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E4%B8%8E%E6%95%B0%E5%AD%97"><span class="toc-number">2.</span> <span class="toc-text">模拟与数字</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">模拟方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E5%8C%96%E7%9A%84%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">数字化的进程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">数字系统</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%81%E8%BF%9B%E5%88%B6%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">十进制数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">二进制数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E5%92%8C%E5%AD%97%E8%8A%82"><span class="toc-number">4.</span> <span class="toc-text">位和字节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%BC%80"><span class="toc-number">5.</span> <span class="toc-text">前缀</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6"><span class="toc-number">6.</span> <span class="toc-text">十六进制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&text=How_Computers_Really_Work_01_计算概念"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&is_video=false&description=How_Computers_Really_Work_01_计算概念"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=How_Computers_Really_Work_01_计算概念&body=Check out this article: https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&title=How_Computers_Really_Work_01_计算概念"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&name=How_Computers_Really_Work_01_计算概念&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/03/How-Computers-Really-Work-01-%E8%AE%A1%E7%AE%97%E6%A6%82%E5%BF%B5/&t=How_Computers_Really_Work_01_计算概念"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    NihilDigit
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
