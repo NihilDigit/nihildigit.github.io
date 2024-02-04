@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="这是课程视频的简化版文字稿,你可以在这里找到完整的课程视频 T型板的不足之前T型开发板性能尚可,价格实惠,通用型强,适合基础课程的学习,但是它有以下制约:  整体处理能力有限,难以处理复杂任务或多任务情景 缺乏对USB-OTG的支持,难以进行鼠标,键盘等外设的扩展 芯片IO接口较少,难以同时连接多种外设 对复杂电路案例来说,搭建成本和可靠性均不能满足要求   USB-OTG允许 USB 设备充当主">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32_软解mp3音频文件">
+<meta property="og:url" content="https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Digital Odyssey">
+<meta property="og:description" content="这是课程视频的简化版文字稿,你可以在这里找到完整的课程视频 T型板的不足之前T型开发板性能尚可,价格实惠,通用型强,适合基础课程的学习,但是它有以下制约:  整体处理能力有限,难以处理复杂任务或多任务情景 缺乏对USB-OTG的支持,难以进行鼠标,键盘等外设的扩展 芯片IO接口较少,难以同时连接多种外设 对复杂电路案例来说,搭建成本和可靠性均不能满足要求   USB-OTG允许 USB 设备充当主">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/01/31/84S6JUgLiTh7KW5.png">
+<meta property="og:image" content="https://s2.loli.net/2024/01/31/Ii4HyGoOvMfxuDe.png">
+<meta property="article:published_time" content="2024-02-04T10:02:52.000Z">
+<meta property="article:modified_time" content="2024-02-04T10:03:12.249Z">
+<meta property="article:author" content="NihilDigit">
+<meta property="article:tag" content="EE">
+<meta property="article:tag" content="notes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/01/31/84S6JUgLiTh7KW5.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>ESP32_软解mp3音频文件</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/02/03/How-Computers-Really-Work-02-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%94%E7%94%A8/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&text=ESP32_软解mp3音频文件"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&is_video=false&description=ESP32_软解mp3音频文件"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ESP32_软解mp3音频文件&body=Check out this article: https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&name=ESP32_软解mp3音频文件&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&t=ESP32_软解mp3音频文件"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#T%E5%9E%8B%E6%9D%BF%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="toc-number">1.</span> <span class="toc-text">T型板的不足</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E6%9C%AC%E8%AF%BE%E7%A8%8B%E6%89%80%E9%9C%80%E7%9A%84%E8%AE%BE%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">认识本课程所需的设备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E5%A5%97%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text">配套软件系统的重要性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-number">4.</span> <span class="toc-text">背景知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hzmp3-%E6%A8%A1%E5%9D%97%E5%8C%85%E5%90%AB%E7%9A%84%E5%B7%A5%E5%85%B7%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">hzmp3 模块包含的工具方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-number">6.</span> <span class="toc-text">案例</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        ESP32_软解mp3音频文件
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">NihilDigit</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-02-04T10:02:52.000Z" class="dt-published" itemprop="datePublished">2024-02-04</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/EE/" rel="tag">EE</a>, <a class="p-category" href="/tags/notes/" rel="tag">notes</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>这是课程视频的简化版文字稿,你可以在<a target="_blank" rel="noopener" href="https://suo.yt/mxacQT9">这里</a>找到完整的课程视频</p>
+<h3 id="T型板的不足"><a href="#T型板的不足" class="headerlink" title="T型板的不足"></a>T型板的不足</h3><p>之前T型开发板性能尚可,价格实惠,通用型强,适合基础课程的学习,但是它有以下制约:</p>
+<ul>
+<li>整体处理能力有限,难以处理复杂任务或多任务情景</li>
+<li>缺乏对<code>USB-OTG</code>的支持,难以进行鼠标,键盘等外设的扩展</li>
+<li>芯片<code>IO</code>接口较少,难以同时连接多种外设</li>
+<li>对复杂电路案例来说,搭建成本和可靠性均不能满足要求</li>
+</ul>
+<blockquote>
+<p><code>USB-OTG</code>允许 USB 设备充当主机或周边设备。这意味着<code>USB-OTG</code>设备可以连接到其他 USB 设备，而无需计算机或其他主机设备。</p>
+</blockquote>
+<h3 id="认识本课程所需的设备"><a href="#认识本课程所需的设备" class="headerlink" title="认识本课程所需的设备"></a>认识本课程所需的设备</h3><ol>
+<li>基于ESP32-S3的多媒体开发平台</li>
+</ol>
+<ul>
+<li>图片展示<br><img src="https://s2.loli.net/2024/01/31/84S6JUgLiTh7KW5.png" alt="01_00.png|325"></li>
+<li>采用<code>ESP32-S3-WROOM</code>模块,内含8MB闪存与8MB内存</li>
+<li>配备8键无冲数字键盘,方便支持<em>组合键</em>的开发</li>
+<li>配有TF卡槽,方便存储空间拓展</li>
+<li>采用160x128 <code>ST7735</code>彩屏进行显示,具有<em>屏幕触控</em>功能</li>
+<li>采用两个USB-C接口,分别用与连接上位机和实现<em>USB-OTG</em></li>
+<li>采用I2S实现音频输出,配备3.5mm音频输出接口(新版本的开发平台内置了扬声器)</li>
+<li>板载<code>MPU-6050</code>传感器,支持<em>体感开发</em></li>
+</ul>
+<blockquote>
+<p><code>ESP32</code>是乐鑫科技开发的一系列低成本,低功耗的单片机微控制器,集成了Wi-Fi和双模蓝牙.它采用<code>Tensilica Xtensa LX6</code>双核和单核微处理器,内置无线开关,RF换衡器,功率放大器,低噪声接收放大器,滤波器和电源管理模块</p>
+</blockquote>
+<blockquote>
+<p><code>ST7735</code>是一款具有<code>SPI</code>接口的彩色TFT液晶显示驱动芯片,具有 128 x 160 像素的显示分辨率,可显示 16 位RGB颜色</p>
+</blockquote>
+<blockquote>
+<p><code>MPU6050</code>是一种集成了 3 轴加速度计和 3 轴陀螺仪的微型运动处理单元<code>(IMU)</code> .它是一种小型,低功耗的传感器,能方便的采集加速度和角速度数据,用于测量物体的运动</p>
+</blockquote>
+<blockquote>
+<p><code>I2S</code>是用于数字音频传输的串行总线标准,由三条线组成:数据线,时钟线和选择线.其是一种面向主从架构的总线:主设备负责产生时钟信号并将数据传输到从设备,从设备负责接收数据并将其转换为模拟音频信号</p>
+</blockquote>
+<ol start="2">
+<li>基于ESP32-S3的智能摄像头</li>
+</ol>
+<ul>
+<li>图片展示<br><img src="https://s2.loli.net/2024/01/31/Ii4HyGoOvMfxuDe.png" alt="01_01.png|175"></li>
+<li>采用<code>ESP32-S3</code>模块,并配备<code>ST7735</code>彩屏</li>
+<li>内置<code>OV2640</code><em>摄像头</em>,便于开发CV,图传类应用</li>
+<li>内置TF卡槽和<code>MPU6050</code><em>六轴传感器</em></li>
+<li>基于拓展手柄可支持<code>I2S</code>音频输出,5D按键,<code>INMP441</code>数字<em>麦克风</em></li>
+<li>配有<code>7Pin</code>拓展接口便于连接其他外设,用USB-C接口连接上位机</li>
+</ul>
+<blockquote>
+<p><code>OV2640</code>是一款 1632 x 1232 像素,1&#x2F;4 英寸,低功耗 CMOS 图像传感器,可用于各种应用.包括机器视觉,物联网,无人机和智能家居,具有 50 帧&#x2F;秒的视频帧率和 0.008 lux 的低光性能</p>
+</blockquote>
+<blockquote>
+<p><code>INMP441</code>是 TDK InvenSense 制造的一种高性能,低功耗,数字输出,全向 MEMS 麦克风.它采用 4.72 x 3.76 x 1 毫米的薄型表面贴装封装,具有可回流焊接兼容性,无灵敏度下降</p>
+</blockquote>
+<h3 id="配套软件系统的重要性"><a href="#配套软件系统的重要性" class="headerlink" title="配套软件系统的重要性"></a>配套软件系统的重要性</h3><p>工作室定制了高度客制化的MicroPython固件,继承官方MicroPython特性的同时,还添加了以下支持:</p>
+<ul>
+<li>MP3解码</li>
+<li>FFT计算辅助</li>
+<li>摄像头支持(<code>OV2640</code>)</li>
+<li>TFLite Runtime</li>
+<li>声音池</li>
+<li>软管线3D</li>
+<li>2D图像仿射变换</li>
+<li>帧缓冲缩放辅助</li>
+<li>I2S音频录放</li>
+<li>数字图像处理</li>
+<li>颜色识别</li>
+<li>USB键鼠和摄像头<br>以上功能模块可以极大方便人工智能,2D&#x2F;3D动画和音频等复杂功能的开发</li>
+</ul>
+<blockquote>
+<p>FFT 是快速傅里叶变换的缩写,它是一种计算离散傅里叶变换 (DFT) 的有效算法.FFT有许多应用:包括信号处理,图像处理和信号合成</p>
+</blockquote>
+<blockquote>
+<p>TensorFlow Lite 是 TensorFlow 的轻量级版本,用于在移动设备,嵌入式设备和物联网设备上运行机器学习模型</p>
+</blockquote>
+<blockquote>
+<p>运行时(Runtime)是计算机程序运行生命周期内的一个重要阶段,它负责提供程序运行所需的各种服务,并确保程序能够正确执行</p>
+</blockquote>
+<blockquote>
+<p>管线通常用于处理数据:例如一个图像处理管线可以将图像从原始格式转换为压缩格式,然后进行滤波和增强</p>
+</blockquote>
+<h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><p>相较于WAV音频,MP3音频在同等条件下占用空间更小.但由于这种类型的文件存储的是编码压缩之后的音频数据,所以播放前需要进行解码.<code>ESP32-S3</code>的性能相较于T型板有了显著提升,可以进行音频解码操作</p>
+<h3 id="hzmp3-模块包含的工具方法"><a href="#hzmp3-模块包含的工具方法" class="headerlink" title="hzmp3 模块包含的工具方法"></a>hzmp3 模块包含的工具方法</h3><p>我们将用几个例子引入它们:</p>
+<ol>
+<li>获取MP3文件信息<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hzmp3</span><br><span class="line"></span><br><span class="line">data = <span class="built_in">open</span>(<span class="string">&quot;test.mp3&quot;</span>, <span class="string">&quot;rb&quot;</span>).read(<span class="number">2048</span>) <span class="comment">#by default #as an array</span></span><br><span class="line"></span><br><span class="line">file_size = os.path.getsize(<span class="string">&quot;test.mp3&quot;</span>)</span><br><span class="line"></span><br><span class="line">info = hzmp3.getMp3Info(data, <span class="built_in">len</span>(data), file_size)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;总时间长度：&quot;</span>, info[<span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;第一帧数据字节数：&quot;</span>, info[<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;普通帧数据的字节数：&quot;</span>, info[<span class="number">2</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;采样率：&quot;</span>, info[<span class="number">3</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;声道型：&quot;</span>, info[<span class="number">4</span>]) <span class="comment">#1 for stereo, 2 for mono</span></span><br></pre></td></tr></table></figure></li>
+<li>初始化<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hzmp3</span><br><span class="line"></span><br><span class="line">bck, ws, sd = <span class="string">&quot;I2S的三个GPIO引脚编号&quot;</span></span><br><span class="line">samplerRate = <span class="string">&quot;待播放MP3的采样率&quot;</span></span><br><span class="line">channels = <span class="string">&quot;声道数&quot;</span></span><br><span class="line"></span><br><span class="line">hzmp3.initMp3(bck, ws, sd, samplerRate, channels) </span><br><span class="line"></span><br><span class="line"><span class="comment">#初始化解码器,I2S和工作在另一个核心的播放任务</span></span><br><span class="line"><span class="comment">#本模块占用#0 I2S</span></span><br></pre></td></tr></table></figure></li>
+<li>将一定帧数的数据送入队列等待解码<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hzmp3</span><br><span class="line"></span><br><span class="line">inputData = <span class="built_in">open</span>(<span class="string">&quot;test.mp3&quot;</span>, <span class="string">&quot;rb&quot;</span>).read() <span class="comment">#readbinary</span></span><br><span class="line">volumeFactor = <span class="string">&quot;音量等级[0,5]&quot;</span> <span class="comment">#0为原音量,其余为原音量/2^volumeFactor</span></span><br><span class="line">frameCount = <span class="string">&quot;送入的数据帧数&quot;</span></span><br><span class="line">bytesPerFrame = <span class="string">&quot;每帧数据字节数&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> hzmp3.playMp3(inputData, volumeFactor, frameCount, bytesPerFrame):</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Success!&quot;</span>) <span class="comment">#返回bool</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Fail!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果系统处于暂停状态,调用此方法会切换成播放状态</span></span><br><span class="line"><span class="comment">#开发者需要确定第一帧和普通帧数据的长度</span></span><br></pre></td></tr></table></figure></li>
+<li>快进快退<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hzmp3</span><br><span class="line"></span><br><span class="line">timeS = <span class="string">&quot;快进/快退秒数,复数为快退&quot;</span></span><br><span class="line">frameSizeCommon = <span class="string">&quot;音频文件普通帧字节数&quot;</span></span><br><span class="line">frameSizeFirst = <span class="string">&quot;第一帧字节数&quot;</span></span><br><span class="line"></span><br><span class="line">hzmp3.progressSeek(timeS, frameSizeCommon, frameSizeFirst)</span><br></pre></td></tr></table></figure></li>
+<li>一些简单方法<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hzmp3</span><br><span class="line"></span><br><span class="line">hzmp3.getTime() <span class="comment">#获取已播放时间</span></span><br><span class="line">hzmp3.pauseOrContinue() <span class="comment">#切换播放/暂停</span></span><br><span class="line">hzmp3.isFinish() <span class="comment">#判断队列是否播放完毕</span></span><br><span class="line">hzmp3.mp3DeInit() <span class="comment">#释放MP3解码器和I2S资源,并销毁另一个核心的播放任务</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hzmp3</span><br><span class="line"><span class="keyword">from</span> machine <span class="keyword">import</span> SoftSPI</span><br><span class="line"><span class="keyword">from</span> machine <span class="keyword">import</span> Pin</span><br><span class="line"><span class="keyword">from</span> BN165DKBDriver <span class="keyword">import</span> keyCode</span><br><span class="line"><span class="keyword">import</span> machine</span><br><span class="line"><span class="keyword">import</span> utime,time</span><br><span class="line"><span class="comment">#I2S</span></span><br><span class="line">I2Sbck=<span class="number">14</span></span><br><span class="line">I2Sws=<span class="number">38</span></span><br><span class="line">I2Ssd=<span class="number">12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将秒数转化为 分钟:秒数 格式字符串的方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">MS</span>(<span class="params">I</span>):</span><br><span class="line">    <span class="comment">#秒数除以60取整得到分钟数</span></span><br><span class="line">    M=<span class="built_in">int</span>(I/<span class="number">60</span>)</span><br><span class="line">    <span class="comment">#秒数对60取模得到余数秒数</span></span><br><span class="line">    S=I%<span class="number">60</span></span><br><span class="line">    <span class="comment">#结果字符串中的分钟子串</span></span><br><span class="line">    strM=<span class="built_in">str</span>(M)</span><br><span class="line">    <span class="comment">#结果字符串中的秒数子串</span></span><br><span class="line">    strS=<span class="built_in">str</span>(S)</span><br><span class="line">    <span class="comment">#若分钟数小于10则在分钟子串前面补0</span></span><br><span class="line">    <span class="keyword">if</span>(M&lt;<span class="number">10</span>):</span><br><span class="line">        strM=<span class="string">&quot;0&quot;</span>+<span class="built_in">str</span>(M)</span><br><span class="line">    <span class="comment">#若秒数小于10则在秒数子串前面补0    </span></span><br><span class="line">    <span class="keyword">if</span>(S&lt;<span class="number">10</span>):</span><br><span class="line">        strS=<span class="string">&quot;0&quot;</span>+<span class="built_in">str</span>(S)    </span><br><span class="line">    <span class="keyword">return</span> strM+<span class="string">&quot;:&quot;</span>+strS</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#主程序开始</span></span><br><span class="line"><span class="comment">#设置当前CPU的工作频率为240MHz(默认160MHz)</span></span><br><span class="line">machine.freq(<span class="number">240000000</span>)</span><br><span class="line"><span class="comment">#无冲数字键盘对应的IO口</span></span><br><span class="line">CP=Pin(<span class="number">41</span>,Pin.OUT)</span><br><span class="line">CE=Pin(<span class="number">39</span>,Pin.OUT)</span><br><span class="line">PL=Pin(<span class="number">40</span>,Pin.OUT)</span><br><span class="line">Q7=Pin(<span class="number">21</span>,Pin.IN)</span><br><span class="line">adcIn=(CP,CE,PL,Q7)</span><br><span class="line"></span><br><span class="line"><span class="comment">#要播放的MP3文件名称</span></span><br><span class="line">mp3Name=<span class="string">&quot;xxdd.mp3&quot;</span></span><br><span class="line"><span class="comment">#音量等级(可选0-5整数)</span></span><br><span class="line">volume=<span class="number">0</span></span><br><span class="line"><span class="comment">#单次送入队列解码的数据帧数</span></span><br><span class="line">frameNum=-<span class="number">1</span></span><br><span class="line"><span class="comment">#最大读取字节数，这里为8KB，大小要合适</span></span><br><span class="line">maxReadBytes=<span class="number">1024</span>*<span class="number">8</span></span><br><span class="line"><span class="comment">#打印信息</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;playing &quot;</span>,mp3Name)</span><br><span class="line"><span class="comment">#闪存中的MP3文件</span></span><br><span class="line">mp3File = <span class="built_in">open</span>(mp3Name,<span class="string">&#x27;rb&#x27;</span>)</span><br><span class="line"><span class="comment">#若文件不存在则打印提示信息</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">not</span> mp3File):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;filename:<span class="subst">&#123;mp3Name&#125;</span> not found!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#分4次读取总数为2048字节(2KB)的数据，服务于获取待播放MP3的信息</span></span><br><span class="line">tempMp3Data=mp3File.read(<span class="number">512</span>)</span><br><span class="line">tempMp3Data=tempMp3Data+mp3File.read(<span class="number">512</span>)</span><br><span class="line">tempMp3Data=tempMp3Data+mp3File.read(<span class="number">512</span>)</span><br><span class="line">tempMp3Data=tempMp3Data+mp3File.read(<span class="number">512</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将文件指针跳转到文件末尾</span></span><br><span class="line">mp3File.seek(<span class="number">0</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment">#获取文件总字节数</span></span><br><span class="line">FileSize=mp3File.tell()</span><br><span class="line"><span class="comment">#获取待播放MP3的信息</span></span><br><span class="line"></span><br><span class="line">mp3Info=hzmp3.getMp3Info(tempMp3Data,<span class="number">2048</span>,FileSize)</span><br><span class="line"><span class="comment">#得到总时长</span></span><br><span class="line">totalTime=mp3Info[<span class="number">0</span>]</span><br><span class="line"><span class="comment">#得到第一帧的数据字节数</span></span><br><span class="line">frameSizeFirst=mp3Info[<span class="number">1</span>]</span><br><span class="line"><span class="comment">#得到普通帧的数据字节数</span></span><br><span class="line">frameSizeCommon=mp3Info[<span class="number">2</span>]</span><br><span class="line"><span class="comment">#计算出单次送入队列解码的数据帧数(以普通帧计)</span></span><br><span class="line">frameNum=maxReadBytes//frameSizeCommon <span class="comment">#int div</span></span><br><span class="line"><span class="comment">#得到采样率</span></span><br><span class="line">samplerRate=mp3Info[<span class="number">3</span>]</span><br><span class="line"><span class="comment">#得到通道数</span></span><br><span class="line">channels=mp3Info[<span class="number">4</span>]</span><br><span class="line"><span class="comment">#初始化MP3及I2S</span></span><br><span class="line"></span><br><span class="line">hzmp3.initMp3(I2Sbck,I2Sws,I2Ssd,samplerRate,channels)</span><br><span class="line"><span class="comment">#将文件指针跳转到文件开始</span></span><br><span class="line">mp3File.seek(<span class="number">0</span>)</span><br><span class="line"><span class="comment">#是否为第一帧数据标志</span></span><br><span class="line">isFirst=<span class="literal">True</span></span><br><span class="line"><span class="comment">#待解码的一批数据(可以包含一帧或多帧数据)，初始时为空</span></span><br><span class="line">inputData=<span class="built_in">bytearray</span>([])</span><br><span class="line"><span class="comment">#是否读取下一帧数据标志</span></span><br><span class="line">readNext=<span class="literal">True</span></span><br><span class="line"><span class="comment">#已播放时间打印时间戳</span></span><br><span class="line">printTimeStamp=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#播放循环</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment">#获取按键编号</span></span><br><span class="line">    kc=keyCode(adcIn)</span><br><span class="line">    <span class="comment">#本次需要读取的字节数=一帧数据长度*送入的帧数</span></span><br><span class="line">    needBytes=frameSizeCommon*frameNum</span><br><span class="line">    <span class="comment">#一轮需要的数据如果超过512字节则需要分批读取  </span></span><br><span class="line">    <span class="comment">#获取当前的已播放时间(以秒计)</span></span><br><span class="line">    currTime=hzmp3.getTime()</span><br><span class="line">    <span class="comment">#若距离上一次打印已播放时间信息已经超过了2秒(即2000ms)  </span></span><br><span class="line">    <span class="keyword">if</span>(utime.ticks_ms()-printTimeStamp&gt;<span class="number">2000</span>):</span><br><span class="line">        <span class="comment">#更新时间戳</span></span><br><span class="line">        printTimeStamp=utime.ticks_ms()</span><br><span class="line">        <span class="comment">#打印当前的已播放时间</span></span><br><span class="line">        <span class="built_in">print</span>(MS(currTime))</span><br><span class="line">    <span class="comment">#若按下键盘左侧右键</span></span><br><span class="line">    <span class="keyword">if</span>(kc==<span class="number">3</span>):        </span><br><span class="line">        <span class="comment">#执行快进，并获取快进后的文件字节索引</span></span><br><span class="line">        seek=hzmp3.progressSeek(<span class="number">5</span>,frameSizeCommon,frameSizeFirst)</span><br><span class="line">        <span class="comment">#将文件指针跳转到对应字节处</span></span><br><span class="line">        mp3File.seek(seek)</span><br><span class="line">        <span class="comment">#设置需要读取下一帧数据</span></span><br><span class="line">        readNext=<span class="literal">True</span></span><br><span class="line">        <span class="comment">#打印当前的已播放时间</span></span><br><span class="line">        <span class="built_in">print</span>(MS(currTime))</span><br><span class="line">        <span class="comment">#休眠一段时间，防止按键连按过快</span></span><br><span class="line">        time.sleep(<span class="number">0.2</span>)</span><br><span class="line">    <span class="comment">#若按下键盘左侧左键</span></span><br><span class="line">    <span class="keyword">elif</span>(kc==<span class="number">1</span>):</span><br><span class="line">        <span class="comment">#执行快退，并获取快退后的文件字节索引</span></span><br><span class="line">        seek=hzmp3.progressSeek(-<span class="number">5</span>,frameSizeCommon,frameSizeFirst)</span><br><span class="line">        <span class="comment">#如果快退到文件开始，则设置需要读取第一帧数据</span></span><br><span class="line">        <span class="keyword">if</span>(seek==<span class="number">0</span>):</span><br><span class="line">            isFirst=<span class="literal">True</span></span><br><span class="line">        <span class="comment">#将文件指针跳转到对应字节处</span></span><br><span class="line">        mp3File.seek(seek)</span><br><span class="line">        <span class="comment">#设置需要读取下一帧数据</span></span><br><span class="line">        readNext=<span class="literal">True</span></span><br><span class="line">        <span class="comment">#打印当前的已播放时间</span></span><br><span class="line">        <span class="built_in">print</span>(MS(currTime))</span><br><span class="line">        <span class="comment">#休眠一段时间，防止按键连按过快</span></span><br><span class="line">        time.sleep(<span class="number">0.2</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#当前需要解码的一批帧数据的帧字节数</span></span><br><span class="line">    currFrameByteCount=frameSizeCommon</span><br><span class="line">    <span class="comment">#如果需要解码的是第一帧</span></span><br><span class="line">    <span class="keyword">if</span>(isFirst):</span><br><span class="line">        <span class="comment">#设置为不需要读取第一帧数据</span></span><br><span class="line">        isFirst=<span class="literal">False</span></span><br><span class="line">        <span class="comment">#设置本次需要读取的字节数为frameSizeFirst</span></span><br><span class="line">        <span class="comment">#否则保持needBytes为frameNum个普通帧所需的字节数</span></span><br><span class="line">        needBytes=frameSizeFirst</span><br><span class="line">        <span class="comment">#当前需要解码的一批帧数据的帧字节数</span></span><br><span class="line">        currFrameByteCount=frameSizeFirst</span><br><span class="line">    <span class="comment">#如果数据送入成功        </span></span><br><span class="line">    <span class="keyword">if</span>(readNext):</span><br><span class="line">        <span class="comment">#清空当前数据,以备读取下一帧数据</span></span><br><span class="line">        inputData=<span class="built_in">bytearray</span>([])</span><br><span class="line">        <span class="comment">#分步读取needBytes字节的数据，每步最多读取512字节</span></span><br><span class="line">        <span class="keyword">while</span>(needBytes&gt;<span class="number">0</span>):</span><br><span class="line">            <span class="keyword">if</span> needBytes&gt;<span class="number">512</span>:</span><br><span class="line">                inputData=inputData+mp3File.read(<span class="number">512</span>)</span><br><span class="line">                needBytes=needBytes-<span class="number">512</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                inputData=inputData+mp3File.read(needBytes)</span><br><span class="line">                needBytes=<span class="number">0</span></span><br><span class="line">    <span class="comment">#将当前待解码的一批数据送入解码模块解码并播放</span></span><br><span class="line">    <span class="comment"># 一批帧数据  音量控制参数  帧数  每帧字节数</span></span><br><span class="line">    readNext=hzmp3.playMp3(inputData,volume,<span class="built_in">len</span>(inputData)//currFrameByteCount,currFrameByteCount)</span><br><span class="line">    <span class="comment">#若播放队列中没有数据且文件已经读取完毕</span></span><br><span class="line">    <span class="keyword">if</span>(hzmp3.isFinish() <span class="keyword">and</span> <span class="built_in">len</span>(inputData)==<span class="number">0</span>):</span><br><span class="line">        <span class="comment">#打印结束信息</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;play finished.....&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#释放MP3播放相关资源     </span></span><br><span class="line">hzmp3.mp3DeInit()</span><br><span class="line"><span class="comment">#关闭当前歌曲文件</span></span><br><span class="line">mp3File.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#T%E5%9E%8B%E6%9D%BF%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="toc-number">1.</span> <span class="toc-text">T型板的不足</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E6%9C%AC%E8%AF%BE%E7%A8%8B%E6%89%80%E9%9C%80%E7%9A%84%E8%AE%BE%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">认识本课程所需的设备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E5%A5%97%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text">配套软件系统的重要性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-number">4.</span> <span class="toc-text">背景知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hzmp3-%E6%A8%A1%E5%9D%97%E5%8C%85%E5%90%AB%E7%9A%84%E5%B7%A5%E5%85%B7%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">hzmp3 模块包含的工具方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-number">6.</span> <span class="toc-text">案例</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&text=ESP32_软解mp3音频文件"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&is_video=false&description=ESP32_软解mp3音频文件"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ESP32_软解mp3音频文件&body=Check out this article: https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&title=ESP32_软解mp3音频文件"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&name=ESP32_软解mp3音频文件&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.nihildigit.one/2024/02/04/ESP32-%E8%BD%AF%E8%A7%A3mp3%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6/&t=ESP32_软解mp3音频文件"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024
+    NihilDigit
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/NihilDigit">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
