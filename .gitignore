@@ -1,0 +1,27 @@
+# build output
+dist/
+
+# dependencies
+node_modules/
+
+# astro generated
+.astro/
+
+# environment variables
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+*.swp
+*.swo
+
+# pagefind (generated at build time)
+public/pagefind/
+
+# misc
+*.log

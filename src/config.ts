@@ -1,0 +1,23 @@
+export const SITE = {
+  website: "https://nihildigit.dev/",
+  author: "NihilDigit",
+  profile: "https://github.com/NihilDigit",
+  desc: "EdgeAI, CV, Linux Ricing, MultiMedia, Vibe Coding, GenAI",
+  title: "Digital Odyssey",
+  ogImage: "astropaper-og.jpg",
+  lightAndDarkMode: true,
+  postPerIndex: 4,
+  postPerPage: 8,
+  scheduledPostMargin: 15 * 60 * 1000,
+  showArchives: true,
+  showBackButton: true,
+  editPost: {
+    enabled: false,
+    text: "",
+    url: "",
+  },
+  dynamicOgImage: true,
+  dir: "ltr",
+  lang: "zh",
+  timezone: "Asia/Shanghai",
+} as const;
