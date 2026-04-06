@@ -13,7 +13,7 @@ import { SOCIALS } from "@/constants";
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
 
-const REPOS = ["NihilDigit/waybar-ai-usage", "NihilDigit/renpak"];
+const REPOS = ["NihilDigit/waybar-ai-usage", "NihilDigit/renpak", "NihilDigit/anvil", "NihilDigit/gloss"];
 const projects = await Promise.all(
   REPOS.map(async repo => {
     try {
@@ -68,34 +68,6 @@ const projects = await Promise.all(
       }
     </section>
 
-    <!-- Study Notes -->
-    <section id="notes" class="pt-10 pb-6 border-b border-border">
-      <h2 class="text-2xl font-semibold tracking-wide mb-4">Study Notes</h2>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <a
-          href="https://nihildigit.dev/sedgewick/docs/"
-          target="_blank"
-          rel="noopener"
-          class="group block rounded-xl border border-border p-5 transition-all hover:border-accent/50 hover:shadow-md"
-        >
-          <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold group-hover:text-accent">Sedgewick Algorithms</h3>
-            <span class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">Live</span>
-          </div>
-          <p class="mt-2 text-sm text-foreground/60">算法学习笔记</p>
-        </a>
-        <div
-          class="block rounded-xl border border-border/50 p-5 opacity-60"
-        >
-          <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold">CSAPP</h3>
-            <span class="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">WIP</span>
-          </div>
-          <p class="mt-2 text-sm text-foreground/60">深入理解计算机系统</p>
-        </div>
-      </div>
-    </section>
-
     <!-- Projects -->
     <section id="projects" class="pt-10 pb-6 border-b border-border">
       <h2 class="text-2xl font-semibold tracking-wide mb-4">Projects</h2>
@@ -115,6 +87,22 @@ const projects = await Promise.all(
             </div>
           </a>
         ))}
+      </div>
+    </section>
+
+    <!-- Papers -->
+    <section id="papers" class="pt-10 pb-6 border-b border-border">
+      <h2 class="text-2xl font-semibold tracking-wide mb-4">Papers</h2>
+      <div class="grid grid-cols-1 gap-4">
+        <a
+          href="https://arxiv.org/abs/2603.26835"
+          target="_blank"
+          rel="noopener"
+          class="group block rounded-xl border border-border p-5 transition-all hover:border-accent/50 hover:shadow-md"
+        >
+          <h3 class="text-lg font-semibold group-hover:text-accent">ANVIL: Accelerator-Native Video Interpolation via Codec Motion Vector Priors</h3>
+          <p class="mt-2 text-sm text-foreground/60">arXiv 2603.26835</p>
+        </a>
       </div>
     </section>
 
