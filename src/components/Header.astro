@@ -2,24 +2,27 @@
 import IconX from "@/assets/icons/IconX.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconSearch from "@/assets/icons/IconSearch.svg";
-import IconArchive from "@/assets/icons/IconArchive.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import LinkButton from "./LinkButton.astro";
 import { SITE } from "@/config";
 
 const { pathname } = Astro.url;
-
-// Remove trailing slash from current pathname if exists
 const currentPath =
   pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
 
 const isActive = (path: string) => {
-  const currentPathArray = currentPath.split("/").filter(p => p.trim());
-  const pathArray = path.split("/").filter(p => p.trim());
-
-  return currentPath === path || currentPathArray[0] === pathArray[0];
+  if (path === "/") return currentPath === "/";
+  return currentPath === path || currentPath.startsWith(path + "/");
 };
+
+const navItems: { href: string; label: string }[] = [
+  { href: "/", label: "Home" },
+  { href: "/anvil", label: "ANVIL" },
+  { href: "/papers", label: "Papers" },
+  { href: "/projects", label: "Projects" },
+  { href: "/about", label: "About" },
+];
 ---
 
 <a
@@ -30,32 +33,22 @@ const isActive = (path: string) => {
   Skip to content
 </a>
 
-<header
-  class="app-layout flex flex-col items-center justify-between sm:flex-row"
->
+<header class="app-layout">
   <div
-    id="top-nav-wrap"
-    class:list={[
-      "py-4 sm:py-6",
-      "border-b border-border",
-      "relative w-full bg-background",
-      "flex items-baseline justify-between sm:items-center",
-    ]}
+    class="relative flex w-full items-baseline justify-between border-b border-border py-4 sm:items-center sm:py-5"
   >
     <a
       href="/"
-      class="absolute py-1 sm:static sm:my-auto"
+      class="font-mono text-sm font-medium tracking-tight hover:text-accent"
       aria-label={SITE.title}
     >
-      <img src="/logo.png" alt={SITE.title} class="h-8 w-8 sm:h-9 sm:w-9" />
+      ~/{SITE.author.toLowerCase()}
     </a>
-    <nav
-      id="nav-menu"
-      class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"
-    >
+
+    <nav id="nav-menu" class="flex items-center">
       <button
         id="menu-btn"
-        class="focus-outline self-end p-2 sm:hidden"
+        class="p-2 sm:hidden"
         aria-label="Open Menu"
         aria-expanded="false"
         aria-controls="menu-items"
@@ -65,73 +58,51 @@ const isActive = (path: string) => {
       </button>
       <ul
         id="menu-items"
-        class:list={[
-          "mt-4 grid w-44 grid-cols-2 place-content-center gap-2",
-          "[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-accent sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
-          "hidden",
-          "sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0",
-        ]}
+        class="hidden flex-col items-end gap-y-2 sm:flex sm:flex-row sm:items-center sm:gap-x-6"
       >
-        <li class="col-span-2">
-          <a href="/posts" class:list={{ "active-nav": isActive("/posts") }}>
-            Posts
-          </a>
-        </li>
-        <li class="col-span-2">
-          <a href="https://github.com/NihilDigit" target="_blank" rel="noopener">
-            About
-          </a>
-        </li>
         {
-          SITE.showArchives && (
-            <li class="col-span-2">
-              <LinkButton
-                href="/archives"
+          navItems.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
                 class:list={[
-                  "focus-outline flex justify-center p-3 sm:p-1",
-                  {
-                    "active-nav [&>svg]:stroke-accent": isActive("/archives"),
-                  },
+                  "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+                  { "active-nav": isActive(href) },
                 ]}
-                title="Archives"
-                aria-label="archives"
               >
-                <IconArchive class="hidden sm:inline-block" />
-                <span class="sm:sr-only">Archives</span>
-              </LinkButton>
+                {label}
+              </a>
             </li>
-          )
+          ))
         }
-        <li class="col-span-1 flex items-center justify-center">
+        <li class="flex items-center gap-x-1 sm:ms-2 sm:border-l sm:border-border sm:ps-4">
           <LinkButton
             href="/search"
             class:list={[
-              "focus-outline flex p-3 sm:p-1",
+              "p-2",
               { "[&>svg]:stroke-accent": isActive("/search") },
             ]}
             title="Search"
             aria-label="search"
           >
-            <IconSearch />
+            <IconSearch class="h-4 w-4" />
             <span class="sr-only">Search</span>
           </LinkButton>
-        </li>
-        {
-          SITE.lightAndDarkMode && (
-            <li class="col-span-1 flex items-center justify-center">
+          {
+            SITE.lightAndDarkMode && (
               <button
                 id="theme-btn"
-                class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
-                title="Toggles light & dark"
+                class="relative size-8 p-2 hover:[&>svg]:stroke-accent"
+                title="Toggle light & dark"
                 aria-label="auto"
                 aria-live="polite"
               >
-                <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                <IconMoon class="absolute top-[50%] left-[50%] h-4 w-4 -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                <IconSunHigh class="absolute top-[50%] left-[50%] h-4 w-4 -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
               </button>
-            </li>
-          )
-        }
+            )
+          }
+        </li>
       </ul>
     </nav>
   </div>
@@ -148,18 +119,13 @@ const isActive = (path: string) => {
 
     menuBtn.addEventListener("click", () => {
       const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
-
       menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
       menuBtn.setAttribute("aria-label", openMenu ? "Open Menu" : "Close Menu");
-
       menuItems.classList.toggle("hidden");
       menuIcon.classList.toggle("hidden");
       closeIcon.classList.toggle("hidden");
     });
   }
-
   toggleNav();
-
-  // Runs on view transitions navigation
   document.addEventListener("astro:after-swap", toggleNav);
 </script>

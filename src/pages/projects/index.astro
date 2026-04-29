@@ -1,0 +1,99 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/config";
+
+const all = await getCollection("projects");
+const sorted = all.sort((a, b) => a.data.order - b.data.order);
+
+const spotlight = sorted.filter(p => p.data.spotlight);
+const others = sorted.filter(p => !p.data.spotlight);
+---
+
+<Layout title={`Projects · ${SITE.title}`}>
+  <Header />
+  <main id="main-content" class="app-layout pt-10 pb-20">
+    <header class="mb-10">
+      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        Open Source
+      </p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+        Projects
+      </h1>
+      <p class="mt-3 max-w-prose-app text-muted-foreground">
+        Things I build and maintain. Some are spun off from research; others
+        scratch personal itches.
+      </p>
+    </header>
+
+    {spotlight.length > 0 && (
+      <section class="mb-12">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Spotlight
+        </h2>
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {spotlight.map(p => (
+            <li>
+              <a
+                href={`https://github.com/${p.data.repo}`}
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-md border border-border p-5 transition-colors hover:border-accent/60"
+              >
+                <div class="flex items-baseline justify-between gap-3">
+                  <span class="font-mono text-base font-medium group-hover:text-accent">
+                    {p.data.name}
+                  </span>
+                  <span class="font-mono text-xs text-muted-foreground">
+                    {p.data.language}
+                  </span>
+                </div>
+                <p class="mt-3 text-sm text-foreground/80">
+                  {p.data.description}
+                </p>
+                {p.data.license && (
+                  <p class="mt-3 font-mono text-xs text-muted-foreground">
+                    {p.data.license}
+                  </p>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {others.length > 0 && (
+      <section>
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Other
+        </h2>
+        <ul class="divide-y divide-border border-y border-border">
+          {others.map(p => (
+            <li>
+              <a
+                href={`https://github.com/${p.data.repo}`}
+                target="_blank"
+                rel="noopener"
+                class="group flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:gap-6"
+              >
+                <span class="font-mono text-sm font-medium group-hover:text-accent sm:w-48 sm:shrink-0">
+                  {p.data.name}
+                </span>
+                <span class="flex-1 text-sm text-foreground/80">
+                  {p.data.description}
+                </span>
+                <span class="font-mono text-xs text-muted-foreground sm:w-24 sm:text-right">
+                  {p.data.language}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </main>
+  <Footer />
+</Layout>

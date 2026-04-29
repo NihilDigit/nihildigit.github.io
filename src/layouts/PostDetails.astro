@@ -16,8 +16,8 @@ import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { SITE } from "@/config";
 
 type Props = {
-  post: CollectionEntry<"blog">;
-  posts: CollectionEntry<"blog">[];
+  post: CollectionEntry<"notes">;
+  posts: CollectionEntry<"notes">[];
 };
 
 const { post, posts } = Astro.props;
@@ -90,6 +90,16 @@ const nextPost =
     class:list={["app-layout pb-12", { "mt-8": !SITE.showBackButton }]}
     data-pagefind-body
   >
+    <aside
+      class="not-prose mb-6 rounded-md border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground"
+      role="note"
+    >
+      <p>
+        <span class="font-mono text-xs uppercase tracking-wider text-foreground">Archived.</span>
+        Old reading or study notes — kept for archive only, not actively maintained.
+      </p>
+    </aside>
+
     <h1
       transition:name={slugifyStr(title.replaceAll(".", "-"))}
       class="inline-block text-2xl font-bold text-accent sm:text-3xl"

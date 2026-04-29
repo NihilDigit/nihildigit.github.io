@@ -1,0 +1,132 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/config";
+
+const papers = await getCollection("papers");
+const sortedPapers = papers.sort(
+  (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf()
+);
+
+const grouped = sortedPapers.reduce<Record<number, typeof sortedPapers>>(
+  (acc, p) => {
+    const y = p.data.year;
+    (acc[y] ||= []).push(p);
+    return acc;
+  },
+  {}
+);
+const years = Object.keys(grouped)
+  .map(Number)
+  .sort((a, b) => b - a);
+
+const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
+  authors
+    .map(a => (a.isMe ? `<strong class="text-foreground">${a.name}</strong>` : a.name))
+    .join(", ");
+---
+
+<Layout title={`Papers · ${SITE.title}`}>
+  <Header />
+  <main id="main-content" class="app-layout pt-10 pb-20">
+    <header class="mb-10">
+      <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        Publications
+      </p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Papers</h1>
+      <p class="mt-3 max-w-prose-app text-muted-foreground">
+        First-author papers are <strong class="text-foreground">bold</strong>.
+        Listings include venue and current review status.
+      </p>
+    </header>
+
+    {
+      years.map(year => (
+        <section class="mb-12">
+          <h2 class="mb-5 font-mono text-sm tabular-nums text-muted-foreground">
+            {year}
+          </h2>
+          <ul class="space-y-8 border-t border-border pt-6">
+            {grouped[year].map(p => (
+              <li>
+                <div class="flex items-baseline gap-3">
+                  {p.data.status === "under-review" && (
+                    <span class="font-mono text-xs uppercase tracking-wide text-amber-600 dark:text-amber-400">
+                      Under review
+                    </span>
+                  )}
+                  {p.data.status === "preprint" && (
+                    <span class="font-mono text-xs uppercase tracking-wide text-muted-foreground">
+                      Preprint
+                    </span>
+                  )}
+                  {p.data.status === "accepted" && (
+                    <span class="font-mono text-xs uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+                      Accepted
+                    </span>
+                  )}
+                  {p.data.status === "published" && (
+                    <span class="font-mono text-xs uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+                      Published
+                    </span>
+                  )}
+                  <span class="font-mono text-xs text-muted-foreground">
+                    {p.data.venue}
+                  </span>
+                </div>
+
+                <h3 class="mt-2 text-lg font-medium leading-snug">
+                  {p.data.hasProjectPage && p.data.projectPageSlug ? (
+                    <a
+                      href={`/${p.data.projectPageSlug}`}
+                      class="hover:text-accent"
+                    >
+                      {p.data.title}
+                    </a>
+                  ) : (
+                    p.data.title
+                  )}
+                </h3>
+
+                <p
+                  class="mt-1 text-sm text-muted-foreground"
+                  set:html={fmtAuthors(p.data.authors)}
+                />
+
+                {p.data.tldr && (
+                  <p class="mt-2 max-w-prose-app text-sm text-foreground/80">
+                    {p.data.tldr}
+                  </p>
+                )}
+
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {p.data.hasProjectPage && p.data.projectPageSlug && (
+                    <a
+                      href={`/${p.data.projectPageSlug}`}
+                      class="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-mono hover:border-accent hover:text-accent"
+                    >
+                      Project page →
+                    </a>
+                  )}
+                  {p.data.links.map(l => (
+                    <a
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener"
+                      class="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-mono hover:border-accent hover:text-accent"
+                    >
+                      {l.label} ↗
+                    </a>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </main>
+  <Footer />
+</Layout>

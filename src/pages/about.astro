@@ -1,0 +1,183 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/config";
+---
+
+<Layout title={`About · ${SITE.title}`}>
+  <Header />
+  <main id="main-content" class="app-layout pt-10 pb-20">
+    <article class="max-w-prose-app">
+      <header class="mb-12">
+        <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          About
+        </p>
+        <h1 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+          NihilDigit
+        </h1>
+        <p class="mt-2 font-mono text-sm text-muted-foreground">Shibo Liu</p>
+      </header>
+
+      <section class="space-y-6 text-foreground/90 leading-relaxed">
+        <p>
+          I'm a third-year undergraduate at
+          <a
+            href="https://www.ncst.edu.cn/"
+            target="_blank"
+            rel="noopener"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >North China University of Science and Technology</a>, studying
+          intelligence science. I use frontier AI to push into the
+          problems that genuinely excite me.
+        </p>
+
+        <p>
+          <a
+            href="/anvil"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >ANVIL</a> grew out of two threads I'd been pulling on: I'm
+          picky about frame rate, and I'd been tinkering with mobile NPUs.
+          Standard flow-based VFI breaks down under INT8 quantization, so
+          I went looking for alternatives and landed on reusing the H.264
+          decoder's motion vectors instead of learning optical flow. The
+          paper is under review at IEEE TCSVT; the project page collects
+          the training code, the Android demo, and the arXiv preprint.
+        </p>
+
+        <p>
+          <a
+            href="https://github.com/NihilDigit/RAFNet"
+            target="_blank"
+            rel="noopener"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >RAFNet</a> was my first academic project. We built a classifier
+          for student behavior in crowded classrooms on top of GroupRec, an
+          existing hypergraph encoder, with a gated fusion head; I ran the
+          experiments. It's under review at The Visual Computer.
+        </p>
+
+        <p>
+          I want my code to do something for people, not just sit in a
+          repo. A fair amount of free time goes to open source &mdash;
+          most visibly
+          <a
+            href="https://github.com/NihilDigit/waybar-ai-usage"
+            target="_blank"
+            rel="noopener"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >waybar-ai-usage</a>, a Waybar widget that shows quota and reset
+          time for Claude Code, Codex CLI, Copilot, and OpenCode Zen. It's
+          packaged on AUR.
+        </p>
+
+        <p>
+          A short list of things I'm into: LLMs, Linux, ACGN, Rammstein.
+          Beyond just using them, I find different language models
+          genuinely fascinating &mdash; each one has its own character,
+          and I spend a lot of hours just talking to them. ACGN bleeds
+          into what I build: an upstream
+          <a
+            href="https://github.com/open-ani/animeko/pull/2978"
+            target="_blank"
+            rel="noopener"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >PR in review for cloud offline-download</a> in Animeko (an
+          open-source anime streaming app), and
+          <a
+            href="https://github.com/NihilDigit/renpak"
+            target="_blank"
+            rel="noopener"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >renpak</a>, an AVIF compression toolchain for Ren'Py visual
+          novels.
+        </p>
+      </section>
+
+      <hr class="my-12 border-border" />
+
+      <section>
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Education
+        </h2>
+        <dl class="grid grid-cols-[6rem_1fr] gap-x-6 gap-y-2 font-mono text-sm">
+          <dt class="text-muted-foreground tabular-nums">2023 &ndash;</dt>
+          <dd>
+            B.S. in Intelligence Science<br />
+            <span class="text-muted-foreground">
+              College of Science · NCST · Tangshan, Hebei, China
+            </span>
+          </dd>
+        </dl>
+      </section>
+
+      <hr class="my-12 border-border" />
+
+      <section>
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Contact
+        </h2>
+        <dl class="grid grid-cols-[6rem_1fr] gap-x-6 gap-y-2 font-mono text-sm">
+          <dt class="text-muted-foreground">Email</dt>
+          <dd class="space-y-1">
+            <div>
+              <a
+                href="mailto:spencerliu@stu.ncst.edu.cn"
+                class="hover:text-accent"
+              >spencerliu<span class="text-muted-foreground">[at]</span>stu.ncst.edu.cn</a>
+              <span class="text-muted-foreground"> · school</span>
+            </div>
+            <div>
+              <a
+                href="mailto:starse.nd233@gmail.com"
+                class="hover:text-accent"
+              >starse.nd233<span class="text-muted-foreground">[at]</span>gmail.com</a>
+              <span class="text-muted-foreground"> · personal</span>
+            </div>
+          </dd>
+
+          <dt class="text-muted-foreground">GitHub</dt>
+          <dd>
+            <a
+              href="https://github.com/NihilDigit"
+              target="_blank"
+              rel="noopener"
+              class="hover:text-accent">@NihilDigit</a
+            >
+          </dd>
+
+          <dt class="text-muted-foreground">ORCID</dt>
+          <dd>
+            <a
+              href="https://orcid.org/0009-0004-9426-3713"
+              target="_blank"
+              rel="noopener"
+              class="hover:text-accent">0009-0004-9426-3713</a
+            >
+          </dd>
+
+          <dt class="text-muted-foreground">Telegram</dt>
+          <dd>
+            <a
+              href="https://t.me/NihilDigit"
+              target="_blank"
+              rel="noopener"
+              class="hover:text-accent">@NihilDigit</a
+            >
+          </dd>
+
+          <dt class="text-muted-foreground">Zhihu</dt>
+          <dd>
+            <a
+              href="https://www.zhihu.com/people/stars-50-20"
+              target="_blank"
+              rel="noopener"
+              class="hover:text-accent">stars-50-20</a
+            >
+          </dd>
+        </dl>
+      </section>
+    </article>
+  </main>
+  <Footer />
+</Layout>

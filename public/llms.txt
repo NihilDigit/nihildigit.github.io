@@ -1,0 +1,38 @@
+# NihilDigit
+
+> Personal portfolio of Shibo Liu (NihilDigit), a third-year undergraduate at North China University of Science and Technology working on edge AI, video systems, and open-source tooling.
+
+Shibo Liu studies intelligence science at NCST and uses frontier AI to push into problems that genuinely interest him. His main research line is ANVIL, a video frame interpolation method that reuses H.264 decoder motion vectors instead of learned optical flow so that 30→60 fps interpolation runs in real time on mobile NPUs under 8-bit integer quantization. He is also third author on RAFNet, a relation-aware fusion network for dense classroom student behavior recognition.
+
+Outside research he ships open-source tooling — most visibly waybar-ai-usage, a Waybar widget for Claude Code / Codex CLI / Copilot / OpenCode Zen quotas (packaged on AUR), and a cloud offline-download integration for the Animeko anime streaming app via PikPak, with a Kotlin Multiplatform PikPak SDK extracted from that work.
+
+## Featured work
+
+- [ANVIL project page](https://nihildigit.dev/anvil/): Accelerator-Native Video Interpolation via Codec Motion Vector Priors. First-author paper under review at IEEE TCSVT, with training code, an Android demo player, and an arXiv preprint.
+- [waybar-ai-usage](https://github.com/NihilDigit/waybar-ai-usage): Waybar widget showing remaining quota and reset time for Claude Code, Codex CLI, GitHub Copilot, and OpenCode Zen. Uses browser cookies, no API keys. Packaged on AUR; mentioned in Awesome Codex CLI.
+- [Animeko × PikPak (PR #2978)](https://github.com/open-ani/animeko/pull/2978): Cloud offline-download backend for the Animeko anime streaming app. Downloads magnet links on overseas PikPak servers and serves them as HTTPS streams, with BitTorrent fallback. Pending upstream review.
+
+## Papers
+
+- [ANVIL: Accelerator-Native Video Interpolation via Codec Motion Vector Priors](https://nihildigit.dev/anvil/): First-author, under review at IEEE TCSVT. Reuses H.264/AVC motion vectors to prealign frames; achieves 12.8 ms 1080p NPU inference at INT8 and 28.4 ms median end-to-end latency on Snapdragon 8 Gen 3.
+- [RAFNet: A Relation-Aware Adaptive Fusion Network for Dense Classroom Student Behavior Recognition](https://github.com/NihilDigit/RAFNet): Third-author, under review at The Visual Computer. Gated fusion of GroupRec hypergraph relation embeddings with ConvNeXt-Base appearance features. 63.08 Macro F1 on NCST Classroom; 96.76 cross-dataset on SCB3-U.
+
+## Projects
+
+- [renpak](https://github.com/NihilDigit/renpak): AVIF compression toolchain for Ren'Py visual novels. Shrinks RPA archives by re-encoding images to AVIF; games load them transparently at runtime with no engine patches. Rust, MPL-2.0.
+- [waybar-ai-usage](https://github.com/NihilDigit/waybar-ai-usage): AI coding assistant quota monitor for Waybar. Python, MIT, on AUR.
+- [pikpak-kotlin](https://github.com/NihilDigit/pikpak-kotlin): Kotlin Multiplatform SDK for PikPak cloud storage. Session persistence, captcha auth, rate limiting, resumable uploads. Extracted from the Animeko integration. MIT.
+- [animeko-pikpak](https://github.com/NihilDigit/animeko-pikpak): Animeko fork hosting the PikPak cloud offline-download integration; see upstream PR #2978. Kotlin, AGPL-3.0.
+- [anvil](https://github.com/NihilDigit/anvil): Training, evaluation, and ONNX export pipeline for the ANVIL paper, with INT8 quantization analysis and Qualcomm HTP / MediaTek NPU backends. Python, MIT.
+- [mpv-android-anvil](https://github.com/NihilDigit/mpv-android-anvil): Companion Android player for ANVIL. mpv-android fork with Vulkan + Qualcomm QNN/HTP + libplacebo for real-time 30→60 fps frame doubling on Snapdragon SoCs.
+
+## About
+
+- [About page](https://nihildigit.dev/about/): Bio, education, and contact info (email, GitHub, ORCID 0009-0004-9426-3713, Telegram, Zhihu).
+- [All projects](https://nihildigit.dev/projects/): Full open-source project list.
+- [All papers](https://nihildigit.dev/papers/): Full publications list.
+
+## Optional
+
+- [Notes archive](https://nihildigit.dev/notes/): Old reading and study notes from early 2024 (C, ESP32, CS61A, computer fundamentals). Kept for archive; low signal.
+- [RSS feed](https://nihildigit.dev/rss.xml)

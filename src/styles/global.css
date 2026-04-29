@@ -3,70 +3,122 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-/* Everforest Light */
+/* Light */
 :root,
 html[data-theme="light"] {
-  --background: #fdf6e3;
-  --foreground: #5c6a72;
-  --accent: #8da101;
-  --muted: #e5dfc5;
-  --border: #d4cdb4;
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --border: #e4e4e7;
+  --accent: #047857;
+  --accent-foreground: #ffffff;
+  --code-bg: #fafafa;
 }
 
-/* Everforest Dark */
+/* Dark */
 html[data-theme="dark"] {
-  --background: #2d353b;
-  --foreground: #d3c6aa;
-  --accent: #a7c080;
-  --muted: #3d484d;
-  --border: #4f585e;
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --border: #27272a;
+  --accent: #34d399;
+  --accent-foreground: #052e1e;
+  --code-bg: #111113;
 }
 
 @theme inline {
-  --font-app: var(--font-google-sans-code);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-app: var(--font-sans);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --color-code-bg: var(--code-bg);
 }
 
 @layer base {
   * {
     @apply border-border outline-accent/75;
-    scrollbar-width: auto;
+    scrollbar-width: thin;
     scrollbar-color: var(--color-muted) transparent;
   }
   html {
     @apply overflow-y-scroll scroll-smooth;
+    font-feature-settings: "cv11", "ss01";
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/75 selection:text-background;
+    @apply flex min-h-svh flex-col bg-background font-sans text-foreground antialiased selection:bg-accent/20 selection:text-accent;
+    font-feature-settings: "cv11", "ss01";
   }
   a,
   button {
-    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+    @apply outline-offset-2 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight;
+    letter-spacing: -0.02em;
+  }
+
+  code, pre, kbd, samp {
+    @apply font-mono;
+    font-feature-settings: "calt" 0;
+  }
 }
 
+/* Layout utilities */
 @utility max-w-app {
-  @apply max-w-3xl;
+  max-width: 64rem;
 }
-
+@utility max-w-prose-app {
+  max-width: 38rem;
+}
 @utility app-layout {
-  @apply mx-auto w-full max-w-app px-4;
+  @apply mx-auto w-full max-w-app px-5 sm:px-8;
 }
 
+/* Active nav: clean underline (no wavy) */
 .active-nav {
-  @apply underline decoration-wavy decoration-2 underline-offset-8;
+  @apply text-foreground;
+  box-shadow: inset 0 -2px 0 var(--accent);
 }
 
-/* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
-/* Anything that has been anchored to should have extra scroll margin */
+/* Mono / metric blocks */
+.metric-value {
+  @apply font-mono font-medium tabular-nums tracking-tight;
+}
+
+/* Status badges */
+.badge {
+  @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-mono uppercase tracking-wide;
+}
+.badge-dot {
+  @apply h-1.5 w-1.5 rounded-full;
+}
+.badge-live { @apply border-emerald-500/40 text-emerald-700 dark:text-emerald-400; }
+.badge-live .badge-dot { @apply bg-emerald-500; }
+.badge-progress { @apply border-amber-500/40 text-amber-700 dark:text-amber-400; }
+.badge-progress .badge-dot { @apply bg-amber-500; }
+.badge-archived { @apply border-zinc-400/40 text-muted-foreground; }
+.badge-archived .badge-dot { @apply bg-zinc-400; }
+
+/* Box-drawing rule (subtle ricing flair) */
+.rule-mono::before {
+  content: "──────────";
+  @apply font-mono text-muted-foreground/40 select-none;
+}
+
 :target {
-  scroll-margin-block: 1rem;
+  scroll-margin-block: 4rem;
 }

@@ -14,11 +14,11 @@ import { SITE } from "./src/config";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
-  integrations: [
-    sitemap({
-      filter: page => SITE.showArchives || !page.endsWith("/archives"),
-    }),
-  ],
+  integrations: [sitemap()],
+  redirects: {
+    "/posts": "/notes",
+    "/posts/[...slug]": "/notes/[...slug]",
+  },
   markdown: {
     remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
     shikiConfig: {
@@ -61,12 +61,20 @@ export default defineConfig({
     preserveScriptOrder: true,
     fonts: [
       {
-        name: "Google Sans Code",
-        cssVariable: "--font-google-sans-code",
+        name: "Inter",
+        cssVariable: "--font-inter",
+        provider: fontProviders.google(),
+        fallbacks: ["sans-serif"],
+        weights: [400, 500, 600, 700],
+        styles: ["normal"],
+      },
+      {
+        name: "JetBrains Mono",
+        cssVariable: "--font-jetbrains-mono",
         provider: fontProviders.google(),
         fallbacks: ["monospace"],
-        weights: [300, 400, 500, 600, 700],
-        styles: ["normal", "italic"],
+        weights: [400, 500, 600],
+        styles: ["normal"],
       },
     ],
   },

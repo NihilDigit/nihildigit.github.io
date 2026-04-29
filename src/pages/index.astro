@@ -1,141 +1,289 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Socials from "@/components/Socials.astro";
-import LinkButton from "@/components/LinkButton.astro";
-import getSortedPosts from "@/utils/getSortedPosts";
-import IconRss from "@/assets/icons/IconRss.svg";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { SOCIALS } from "@/constants";
+import AnvilTeaser from "@/components/AnvilTeaser.astro";
+import { SITE } from "@/config";
 
-const posts = await getCollection("blog");
-const sortedPosts = getSortedPosts(posts);
+const anvil = await getEntry("papers", "anvil");
 
-const REPOS = ["NihilDigit/waybar-ai-usage", "NihilDigit/renpak", "NihilDigit/anvil", "NihilDigit/gloss"];
-const projects = await Promise.all(
-  REPOS.map(async repo => {
-    try {
-      const res = await fetch(`https://api.github.com/repos/${repo}`);
-      if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-      const data = await res.json();
-      return {
-        name: data.name,
-        description: data.description || "",
-        url: data.html_url,
-        language: data.language || "",
-        stars: data.stargazers_count,
-      };
-    } catch {
-      // Fallback if API fails
-      const name = repo.split("/")[1];
-      return { name, description: "", url: `https://github.com/${repo}`, language: "", stars: 0 };
-    }
-  })
+const allFeatured = await getCollection("featured");
+const sortedFeatured = allFeatured.sort((a, b) => a.data.order - b.data.order);
+
+const allProjects = await getCollection("projects");
+const spotlightProjects = allProjects
+  .filter(p => p.data.spotlight)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const allPapers = await getCollection("papers");
+const sortedPapers = allPapers.sort(
+  (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf()
 );
+
+const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
+  authors
+    .map(a => (a.isMe ? `<strong class="text-foreground">${a.name}</strong>` : a.name))
+    .join(", ");
+
+const padIdx = (n: number) => String(n).padStart(2, "0");
 ---
 
 <Layout>
   <Header />
-  <main id="main-content" data-layout="index" class="app-layout">
-    <section id="hero" class="pt-8 pb-6 border-b border-border">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Digital Odyssey
+  <main id="main-content" class="app-layout">
+    <!-- Hero -->
+    <section id="hero" class="pt-12 pb-16 sm:pt-20 sm:pb-24">
+      <h1 class="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+        I build systems.<br class="hidden sm:inline" />
+        Useful, interesting, or efficient —<br class="hidden sm:inline" />
+        <span class="text-accent">ideally all three</span>.
       </h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="inline-block"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <IconRss
-          width={20}
-          height={20}
-          class="scale-125 stroke-accent stroke-3 rtl:-rotate-90"
-        />
-      </a>
-      <p class="text-foreground/80">
-        EdgeAI / CV / Linux Ricing / MultiMedia / Vibe Coding / GenAI
-      </p>
-      {
-        SOCIALS.length > 0 && (
-          <div class="mt-3 flex max-sm:flex-col sm:items-center">
-            <Socials />
-          </div>
-        )
-      }
-    </section>
-
-    <!-- Projects -->
-    <section id="projects" class="pt-10 pb-6 border-b border-border">
-      <h2 class="text-2xl font-semibold tracking-wide mb-4">Projects</h2>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {projects.map(p => (
-          <a
-            href={p.url}
-            target="_blank"
-            rel="noopener"
-            class="group block rounded-xl border border-border p-5 transition-all hover:border-accent/50 hover:shadow-md"
-          >
-            <h3 class="text-lg font-semibold group-hover:text-accent">{p.name}</h3>
-            <p class="mt-2 text-sm text-foreground/60">{p.description}</p>
-            <div class="mt-3 flex gap-3 text-xs text-foreground/50">
-              {p.language && <span>{p.language}</span>}
-              <span>&#9733; {p.stars}</span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <!-- Papers -->
-    <section id="papers" class="pt-10 pb-6 border-b border-border">
-      <h2 class="text-2xl font-semibold tracking-wide mb-4">Papers</h2>
-      <div class="grid grid-cols-1 gap-4">
+      <p class="mt-6 font-mono text-sm text-muted-foreground">
+        Undergrad &apos;23 · AI ·
         <a
-          href="https://arxiv.org/abs/2603.26835"
+          href="https://www.ncst.edu.cn/"
           target="_blank"
           rel="noopener"
-          class="group block rounded-xl border border-border p-5 transition-all hover:border-accent/50 hover:shadow-md"
-        >
-          <h3 class="text-lg font-semibold group-hover:text-accent">ANVIL: Accelerator-Native Video Interpolation via Codec Motion Vector Priors</h3>
-          <p class="mt-2 text-sm text-foreground/60">arXiv 2603.26835</p>
-        </a>
+          class="underline decoration-dotted underline-offset-4 hover:text-accent"
+        >NCST</a>
+      </p>
+
+      <div class="mt-8 flex items-center gap-4">
+        <Socials />
       </div>
     </section>
 
-    <!-- Recent Posts (compact) -->
-    <section id="recent-posts" class="pt-10 pb-6">
-      <h2 class="text-2xl font-semibold tracking-wide mb-4">Recent Posts</h2>
-      <ul class="space-y-2">
-        {sortedPosts.slice(0, 5).map(({ data, id }) => (
-          <li>
-            <a href={`/posts/${id}/`} class="flex items-baseline justify-between gap-4 py-1.5 group">
-              <span class="text-foreground/90 group-hover:text-accent transition-colors truncate">{data.title}</span>
-              <span class="shrink-0 text-sm text-foreground/40">{data.pubDatetime.toISOString().slice(0, 10)}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-      <div class="mt-6 text-center">
-        <LinkButton href="/posts/">
-          All Posts
-          <IconArrowRight class="inline-block rtl:-rotate-180" />
-        </LinkButton>
+    <!-- Featured · 01 — Research (ANVIL) -->
+    <section id="featured-anvil" class="border-t border-border pt-10 pb-16">
+      <div class="mb-6 flex items-baseline justify-between">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Featured · 01 — Research
+        </h2>
+        <a href="/anvil" class="text-xs text-muted-foreground hover:text-accent">
+          Project page →
+        </a>
       </div>
+
+      <div class="space-y-6">
+        {anvil?.data.teaserVideo && (
+          <AnvilTeaser
+            src={anvil.data.teaserVideo}
+            poster={anvil.data.teaserPoster}
+          />
+        )}
+
+        <div>
+          <h3 class="text-2xl font-semibold tracking-tight sm:text-3xl">
+            {anvil?.data.title}
+          </h3>
+          <p class="mt-2 font-mono text-xs text-muted-foreground">
+            {anvil?.data.venueDetail}
+          </p>
+          <p class="mt-4 max-w-prose-app text-foreground/85">{anvil?.data.tldr}</p>
+
+          {anvil?.data.keyNumbers && (
+            <dl class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {anvil.data.keyNumbers.map(n => (
+                <div class="border-t border-border pt-3">
+                  <dt class="metric-value text-2xl text-foreground">{n.value}</dt>
+                  <dd class="mt-1 text-xs text-muted-foreground">{n.caption}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            <a
+              href="/anvil"
+              class="inline-flex items-center gap-1.5 rounded-md bg-foreground px-3.5 py-1.5 text-sm font-medium text-background hover:bg-accent hover:text-accent-foreground"
+            >
+              Read project page →
+            </a>
+            {anvil?.data.links.map(l => (
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-1.5 rounded-md border border-border px-3.5 py-1.5 text-sm font-mono hover:border-accent hover:text-accent"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured · 02..N — from featured collection -->
+    {
+      sortedFeatured.map((entry, i) => (
+        <section
+          id={`featured-${entry.id}`}
+          class="border-t border-border pt-10 pb-16"
+        >
+          <div class="mb-6 flex items-baseline justify-between">
+            <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              Featured · {padIdx(i + 2)}
+              {entry.data.eyebrow && <span> — {entry.data.eyebrow}</span>}
+            </h2>
+          </div>
+
+          <h3 class="text-2xl font-semibold tracking-tight sm:text-3xl">
+            {entry.data.title}
+          </h3>
+
+          {entry.data.status && (
+            <span
+              class:list={[
+                "badge mt-3",
+                entry.data.statusVariant === "in-progress" && "badge-progress",
+                entry.data.statusVariant === "live" && "badge-live",
+                entry.data.statusVariant === "archived" && "badge-archived",
+              ]}
+            >
+              <span class="badge-dot" />
+              {entry.data.status}
+            </span>
+          )}
+
+          {entry.data.metaTags.length > 0 && (
+            <ul class="mt-3 flex flex-wrap gap-x-2 gap-y-1 font-mono text-xs text-muted-foreground">
+              {entry.data.metaTags.map(t => (
+                <li class="before:mr-2 before:content-['·'] before:text-muted-foreground/40 first:before:hidden">
+                  {t}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <p class="mt-4 max-w-prose-app text-foreground/85">{entry.data.summary}</p>
+
+          {entry.data.badges.length > 0 && (
+            <div class="mt-4 flex flex-wrap gap-2">
+              {entry.data.badges.map(b =>
+                b.href ? (
+                  <a href={b.href} target="_blank" rel="noopener" aria-label={b.alt}>
+                    <img src={b.src} alt={b.alt} class="h-5" />
+                  </a>
+                ) : (
+                  <img src={b.src} alt={b.alt} class="h-5" />
+                )
+              )}
+            </div>
+          )}
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            {entry.data.links.map(l => (
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-1.5 rounded-md border border-border px-3.5 py-1.5 text-sm font-mono hover:border-accent hover:text-accent"
+              >
+                {l.label} <span aria-hidden>↗</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    <!-- Selected Open Source (non-Featured) -->
+    {spotlightProjects.length > 0 && (
+      <section id="selected-oss" class="border-t border-border pt-10 pb-16">
+        <div class="mb-6 flex items-baseline justify-between">
+          <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            Selected Open Source
+          </h2>
+          <a href="/projects" class="text-xs text-muted-foreground hover:text-accent">
+            All projects →
+          </a>
+        </div>
+
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {spotlightProjects.map(p => (
+            <li>
+              <a
+                href={`https://github.com/${p.data.repo}`}
+                target="_blank"
+                rel="noopener"
+                class="group block h-full rounded-md border border-border p-5 transition-colors hover:border-accent/60"
+              >
+                <div class="flex items-baseline justify-between gap-3">
+                  <span class="font-mono text-base font-medium group-hover:text-accent">
+                    {p.data.name}
+                  </span>
+                  {p.data.language && (
+                    <span class="font-mono text-xs text-muted-foreground">
+                      {p.data.language}
+                    </span>
+                  )}
+                </div>
+                <p class="mt-3 text-sm text-foreground/80">{p.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <!-- Publications -->
+    <section id="publications" class="border-t border-border pt-10 pb-20">
+      <div class="mb-6 flex items-baseline justify-between">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Publications
+        </h2>
+        <a href="/papers" class="text-xs text-muted-foreground hover:text-accent">
+          All publications →
+        </a>
+      </div>
+
+      <ul class="space-y-6">
+        {
+          sortedPapers.map(p => (
+            <li>
+              <div class="flex items-baseline gap-3">
+                <span class="font-mono text-xs text-muted-foreground tabular-nums">
+                  {p.data.year}
+                </span>
+                {p.data.status === "under-review" && (
+                  <span class="font-mono text-xs uppercase tracking-wide text-amber-600 dark:text-amber-400">
+                    Under review
+                  </span>
+                )}
+                {p.data.status === "preprint" && (
+                  <span class="font-mono text-xs uppercase tracking-wide text-muted-foreground">
+                    Preprint
+                  </span>
+                )}
+                {p.data.status === "published" && (
+                  <span class="font-mono text-xs uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+                    Published
+                  </span>
+                )}
+              </div>
+              <h3 class="mt-1 text-base font-medium leading-snug">
+                {p.data.hasProjectPage && p.data.projectPageSlug ? (
+                  <a href={`/${p.data.projectPageSlug}`} class="hover:text-accent">
+                    {p.data.title}
+                  </a>
+                ) : (
+                  p.data.title
+                )}
+              </h3>
+              <p
+                class="mt-1 text-sm text-muted-foreground"
+                set:html={fmtAuthors(p.data.authors)}
+              />
+              <p class="font-mono text-xs text-muted-foreground">{p.data.venue}</p>
+            </li>
+          ))
+        }
+      </ul>
     </section>
   </main>
   <Footer />
 </Layout>
 
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
-      ?.dataset?.layout;
-    if (indexLayout) {
-      sessionStorage.setItem("backUrl", "/");
-    }
-  });
-</script>
