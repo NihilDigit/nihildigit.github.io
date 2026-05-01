@@ -75,6 +75,20 @@ html[data-theme="dark"] {
     @apply font-mono;
     font-feature-settings: "calt" 0;
   }
+
+  /* Respect users who prefer less motion. Decorative motion stays in the
+     codebase for everyone else; this collapses it to a static state without
+     breaking layout. Paired with JS-side gating in AnvilTeaser for video loop. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 /* Layout utilities */
@@ -122,3 +136,16 @@ html[data-theme="dark"] {
 :target {
   scroll-margin-block: 4rem;
 }
+
+/* Hero entrance: 8px rise + fade, ease-out-expo. The global
+   prefers-reduced-motion rule already collapses these to instant. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-rise {
+  opacity: 0;
+  animation: hero-rise 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-rise-1 { animation-delay: 100ms; }
+.hero-rise-2 { animation-delay: 200ms; }

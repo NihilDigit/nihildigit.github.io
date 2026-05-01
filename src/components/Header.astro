@@ -48,7 +48,7 @@ const navItems: { href: string; label: string }[] = [
     <nav id="nav-menu" class="flex items-center">
       <button
         id="menu-btn"
-        class="p-2 sm:hidden"
+        class="inline-flex size-11 items-center justify-center sm:hidden"
         aria-label="Open Menu"
         aria-expanded="false"
         aria-controls="menu-items"
@@ -79,7 +79,7 @@ const navItems: { href: string; label: string }[] = [
           <LinkButton
             href="/search"
             class:list={[
-              "p-2",
+              "size-11 justify-center",
               { "[&>svg]:stroke-accent": isActive("/search") },
             ]}
             title="Search"
@@ -92,7 +92,7 @@ const navItems: { href: string; label: string }[] = [
             SITE.lightAndDarkMode && (
               <button
                 id="theme-btn"
-                class="relative size-8 p-2 hover:[&>svg]:stroke-accent"
+                class="relative size-11 hover:[&>svg]:stroke-accent"
                 title="Toggle light & dark"
                 aria-label="auto"
                 aria-live="polite"

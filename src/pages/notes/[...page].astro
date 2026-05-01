@@ -45,7 +45,7 @@ const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
               <span class="font-mono text-xs tabular-nums text-muted-foreground sm:w-28 sm:shrink-0">
                 {fmtDate(post.data.pubDatetime)}
               </span>
-              <span class="flex-1 text-sm font-medium text-foreground/90 group-hover:text-accent">
+              <span class="flex-1 text-sm font-medium transition-colors group-hover:text-accent">
                 {post.data.title}
               </span>
               <span class="badge badge-archived sm:shrink-0">

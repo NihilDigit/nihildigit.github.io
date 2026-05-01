@@ -6,6 +6,7 @@ interface Props {
   aspectRatio?: string;
   rounded?: string;
   caption?: string;
+  priority?: boolean;
 }
 
 const {
@@ -15,9 +16,16 @@ const {
   aspectRatio = "2780 / 1264",
   rounded = "rounded-md",
   caption,
+  priority = false,
 } = Astro.props;
 ---
 
+<!--
+  bg-black / text-white literals are deliberate. The play overlay is video
+  chrome — universally readable as media UI regardless of theme. Tokenizing
+  it through --background/--foreground would (incorrectly) make it follow
+  the site's light/dark theme.
+-->
 <figure class="w-full">
   <div
     data-anvil-player
@@ -40,7 +48,8 @@ const {
           src={poster}
           alt=""
           class="h-full w-full object-cover"
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
+          fetchpriority={priority ? "high" : "auto"}
           decoding="async"
         />
       )
@@ -88,13 +97,20 @@ const {
         const rounded = trigger.dataset.videoRounded ?? "rounded-md";
         if (!src) return;
 
+        // The user just clicked, so a single autoplay is consented motion.
+        // The infinite loop is what `prefers-reduced-motion: reduce` is meant
+        // to suppress — let the demo play once and stop for those users.
+        const reducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+
         const video = document.createElement("video");
         video.src = src;
         if (poster) video.poster = poster;
         video.controls = true;
         video.autoplay = true;
         video.muted = true;
-        video.loop = true;
+        video.loop = !reducedMotion;
         video.playsInline = true;
         video.preload = "auto";
         video.className = `w-full ${rounded} border border-border bg-black`;

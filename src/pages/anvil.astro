@@ -56,6 +56,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
             src={anvil.data.teaserVideo}
             poster={anvil.data.teaserPoster}
             caption="Real-time 30 to 60 fps frame doubling on Snapdragon 8 Gen 3 (mpv-android-anvil)."
+            priority
           />
         </div>
       )}
@@ -66,7 +67,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
           <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             TL;DR
           </h2>
-          <p class="mt-2 max-w-prose-app text-lg text-foreground/90">{anvil.data.tldr}</p>
+          <p class="mt-2 max-w-prose-app text-lg text-foreground">{anvil.data.tldr}</p>
         </section>
       )}
 
@@ -97,7 +98,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         <h3 class="mb-4 text-2xl font-semibold tracking-tight">
           Real-time 1080p frame interpolation on a phone is structurally hard
         </h3>
-        <div class="space-y-4 text-base leading-relaxed text-foreground/90">
+        <div class="space-y-4 text-base leading-relaxed text-foreground">
           <p>
             Doubling 30 fps video to 60 fps on a phone gives you a hard 33.3 ms budget per
             synthesized frame. Modern mobile SoCs have an NPU that can hit it on paper, but the
@@ -144,7 +145,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         <h3 class="mb-4 text-2xl font-semibold tracking-tight">
           The motion vectors are already in the bitstream. Use them.
         </h3>
-        <div class="space-y-4 text-base leading-relaxed text-foreground/90">
+        <div class="space-y-4 text-base leading-relaxed text-foreground">
           <p>
             The H.264/AVC decoder produces block-level motion vectors as a byproduct of normal
             playback. They are noisy, blocky, and not flow fields&mdash;but they are free. ANVIL
@@ -223,7 +224,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         </h2>
 
         <h3 class="mb-3 text-xl font-semibold tracking-tight">End-to-end latency on Snapdragon 8 Gen 3</h3>
-        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground/90">
+        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground">
           Median over 54,623 consecutive frame pairs (30-minute continuous 1080p playback,
           SM8650, ANVIL-S INT8). 94.9% of frame pairs complete within the 33.3 ms budget; the
           5.1% that don&rsquo;t are concentrated in the late thermal phase.
@@ -243,43 +244,43 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
                 <td class="px-4 py-3 font-mono text-xs">P1a</td>
                 <td class="px-4 py-3">CPU</td>
                 <td class="px-4 py-3 text-right font-mono">2.9 ms</td>
-                <td class="px-4 py-3 text-foreground/85">ZOH densify + 4&times; downsample + YUV pack</td>
+                <td class="px-4 py-3 text-foreground/80">ZOH densify + 4&times; downsample + YUV pack</td>
               </tr>
               <tr>
                 <td class="px-4 py-3 font-mono text-xs">P1b + P2</td>
                 <td class="px-4 py-3">GPU</td>
                 <td class="px-4 py-3 text-right font-mono">3.7 ms</td>
-                <td class="px-4 py-3 text-foreground/85">median-5 + Gaussian &sigma;=2 + warp + quant</td>
+                <td class="px-4 py-3 text-foreground/80">median-5 + Gaussian &sigma;=2 + warp + quant</td>
               </tr>
               <tr>
                 <td class="px-4 py-3 font-mono text-xs">Copy</td>
                 <td class="px-4 py-3">CPU</td>
                 <td class="px-4 py-3 text-right font-mono">0.9 ms</td>
-                <td class="px-4 py-3 text-foreground/85">12 MB uint8 NHWC to QNN buffer</td>
+                <td class="px-4 py-3 text-foreground/80">12 MB uint8 NHWC to QNN buffer</td>
               </tr>
               <tr>
                 <td class="px-4 py-3 font-mono text-xs">P3</td>
                 <td class="px-4 py-3">HTP</td>
                 <td class="px-4 py-3 text-right font-mono">17.0 ms</td>
-                <td class="px-4 py-3 text-foreground/85">INT8 graphExecute (async, pipelined)</td>
+                <td class="px-4 py-3 text-foreground/80">INT8 graphExecute (async, pipelined)</td>
               </tr>
               <tr>
                 <td class="px-4 py-3 font-mono text-xs">P4</td>
                 <td class="px-4 py-3">GPU</td>
                 <td class="px-4 py-3 text-right font-mono">3.3 ms</td>
-                <td class="px-4 py-3 text-foreground/85">dequant + residual + RGB&rarr;YUV420</td>
+                <td class="px-4 py-3 text-foreground/80">dequant + residual + RGB&rarr;YUV420</td>
               </tr>
               <tr class="bg-muted/30 font-medium">
                 <td class="px-4 py-3" colspan="2">Total per pair (median)</td>
                 <td class="px-4 py-3 text-right font-mono">28.4 ms</td>
-                <td class="px-4 py-3 text-foreground/85">94.9% &le; 33.3 ms</td>
+                <td class="px-4 py-3 text-foreground/80">94.9% &le; 33.3 ms</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <h3 class="mt-10 mb-3 text-xl font-semibold tracking-tight">NPU forward-pass latency at 1080p INT8</h3>
-        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground/90">
+        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground">
           Network-only inference, three Snapdragon generations. RIFE has to drop to 360p to even
           attempt the budget. ANVIL holds 1080p across two generations. Older HTP V69 silicon
           fails for everyone.
@@ -439,13 +440,13 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         <h3 class="mb-4 text-2xl font-semibold tracking-tight">
           Why iterative flow methods break under INT8
         </h3>
-        <div class="space-y-4 text-base leading-relaxed text-foreground/90">
+        <div class="space-y-4 text-base leading-relaxed text-foreground">
           <p>
             INT8 post-training quantization usually loses fractions of a dB on classification and
             detection networks. On iterative flow VFI it loses 4 dB. Per-operator instrumentation
             on RIFE and IFRNet shows the failure follows the same pattern in both:
           </p>
-          <ol class="ml-6 list-decimal space-y-2 text-foreground/90">
+          <ol class="ml-6 list-decimal space-y-2 text-foreground">
             <li>Quantizing convolutions introduces a small initial error (CosSim drops 0.048 for RIFE, 0.055 for IFRNet). Acceptable.</li>
             <li>Quantizing PReLU adds zero further degradation. Benign.</li>
             <li>
@@ -492,7 +493,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
                 github.com/NihilDigit/anvil &rarr;
               </a>
             </div>
-            <p class="mt-3 text-base leading-relaxed text-foreground/90">
+            <p class="mt-3 text-base leading-relaxed text-foreground">
               Training and evaluation code for ANVIL-S and ANVIL-M, plus the ONNX export and INT8
               calibration pipeline. Includes the per-operator quantization instrumentation used to
               localize the iterative-flow collapse, the cross-vendor operator benchmark
@@ -514,7 +515,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
                 github.com/NihilDigit/mpv-android-anvil &rarr;
               </a>
             </div>
-            <p class="mt-3 text-base leading-relaxed text-foreground/90">
+            <p class="mt-3 text-base leading-relaxed text-foreground">
               A fork of mpv-android that runs the full three-processor pipeline live: software
               H.264 decode (via FFmpeg, since Android&rsquo;s MediaCodec doesn&rsquo;t expose
               per-macroblock MVs), a Vulkan compute shader for smoothing and warp, and Qualcomm
@@ -531,7 +532,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Abstract
         </h2>
-        <p class="text-base leading-relaxed text-foreground/85">
+        <p class="text-base leading-relaxed text-foreground/80">
           {anvil.data.abstract}
         </p>
       </section>
@@ -541,7 +542,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Limitations
         </h2>
-        <div class="space-y-4 text-base leading-relaxed text-foreground/90">
+        <div class="space-y-4 text-base leading-relaxed text-foreground">
           <p>
             ANVIL is built on a specific assumption: the decoder hands you motion vectors. Today
             that means H.264/AVC playback with software decoding through FFmpeg. Android&rsquo;s
@@ -594,13 +595,21 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
     const code = document.querySelector<HTMLElement>("[data-bibtex-text]");
     if (!btn || !code) return;
     btn.addEventListener("click", async () => {
+      const orig = btn.textContent;
       try {
         await navigator.clipboard.writeText(code.textContent ?? "");
-        const orig = btn.textContent;
         btn.textContent = "Copied";
         setTimeout(() => (btn.textContent = orig), 1200);
       } catch {
-        /* noop */
+        // Clipboard API unavailable (insecure context, old browsers).
+        // Select the BibTeX so the user can finish the copy with Cmd/Ctrl+C.
+        const range = document.createRange();
+        range.selectNodeContents(code);
+        const sel = window.getSelection();
+        sel?.removeAllRanges();
+        sel?.addRange(range);
+        btn.textContent = "Selected — Cmd/Ctrl+C";
+        setTimeout(() => (btn.textContent = orig), 2400);
       }
     });
   });
