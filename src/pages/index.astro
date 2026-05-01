@@ -5,6 +5,7 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Socials from "@/components/Socials.astro";
 import AnvilTeaser from "@/components/AnvilTeaser.astro";
+import { inlineCode } from "@/utils/inlineCode";
 
 const anvil = await getEntry("papers", "anvil");
 
@@ -190,10 +191,10 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
       ))
     }
 
-    <!-- Selected Open Source (non-Featured) -->
+    <!-- Selected Open Source -->
     {spotlightProjects.length > 0 && (
       <section id="selected-oss" class="border-t border-border pt-10 pb-16">
-        <div class="mb-6 flex items-baseline justify-between">
+        <div class="mb-8 flex items-baseline justify-between">
           <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             Selected Open Source
           </h2>
@@ -202,27 +203,35 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
           </a>
         </div>
 
-        <ul class="grid gap-4 sm:grid-cols-2">
+        <ul class="space-y-10">
           {spotlightProjects.map(p => (
-            <li>
+            <li class="max-w-prose-app">
+              <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <a
+                  href={`https://github.com/${p.data.repo}`}
+                  target="_blank"
+                  rel="noopener"
+                  class="font-mono text-lg font-medium transition-colors hover:text-accent break-all"
+                >
+                  {p.data.name}
+                </a>
+                <span class="font-mono text-xs text-muted-foreground">
+                  {p.data.language}
+                  {p.data.license && <> · {p.data.license}</>}
+                </span>
+              </div>
               <a
                 href={`https://github.com/${p.data.repo}`}
                 target="_blank"
                 rel="noopener"
-                class="group block h-full rounded-md border border-border p-5 transition-colors hover:border-accent/60"
+                class="font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
               >
-                <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                  <span class="font-mono text-base font-medium transition-colors group-hover:text-accent break-all">
-                    {p.data.name}
-                  </span>
-                  {p.data.language && (
-                    <span class="font-mono text-xs text-muted-foreground shrink-0">
-                      {p.data.language}
-                    </span>
-                  )}
-                </div>
-                <p class="mt-3 text-sm text-foreground/80">{p.data.description}</p>
+                github.com/{p.data.repo} ↗
               </a>
+              <p
+                class="mt-3 text-sm leading-relaxed text-foreground/80"
+                set:html={inlineCode(p.data.description)}
+              />
             </li>
           ))}
         </ul>

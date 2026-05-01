@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import IconClaude from "@/assets/icons/IconClaude.svg";
 
 const currentYear = new Date().getFullYear();
 
@@ -37,17 +38,8 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
               target="_blank"
               rel="noopener"
               class="inline-flex items-center gap-1 hover:text-foreground"
-              aria-label="Claude"
             >
-              <img
-                src="/claude-icon.png"
-                alt=""
-                width="14"
-                height="14"
-                class="inline-block"
-                loading="lazy"
-                decoding="async"
-              />
+              <IconClaude class="inline-block h-3.5 w-3.5" />
               <span>Claude</span>
             </a>.
           </span>

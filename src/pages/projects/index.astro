@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import { inlineCode } from "@/utils/inlineCode";
 import { SITE } from "@/config";
 
 const all = await getCollection("projects");
@@ -30,35 +31,38 @@ const others = sorted.filter(p => !p.data.spotlight);
 
     {spotlight.length > 0 && (
       <section class="mb-12">
-        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <h2 class="mb-8 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Spotlight
         </h2>
-        <ul class="grid gap-4 sm:grid-cols-2">
+        <ul class="space-y-10">
           {spotlight.map(p => (
-            <li>
+            <li class="max-w-prose-app">
+              <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <a
+                  href={`https://github.com/${p.data.repo}`}
+                  target="_blank"
+                  rel="noopener"
+                  class="font-mono text-lg font-medium transition-colors hover:text-accent break-all"
+                >
+                  {p.data.name}
+                </a>
+                <span class="font-mono text-xs text-muted-foreground">
+                  {p.data.language}
+                  {p.data.license && <> · {p.data.license}</>}
+                </span>
+              </div>
               <a
                 href={`https://github.com/${p.data.repo}`}
                 target="_blank"
                 rel="noopener"
-                class="group block h-full rounded-md border border-border p-5 transition-colors hover:border-accent/60"
+                class="font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
               >
-                <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                  <span class="font-mono text-base font-medium transition-colors group-hover:text-accent break-all">
-                    {p.data.name}
-                  </span>
-                  <span class="font-mono text-xs text-muted-foreground shrink-0">
-                    {p.data.language}
-                  </span>
-                </div>
-                <p class="mt-3 text-sm text-foreground/80">
-                  {p.data.description}
-                </p>
-                {p.data.license && (
-                  <p class="mt-3 font-mono text-xs text-muted-foreground">
-                    {p.data.license}
-                  </p>
-                )}
+                github.com/{p.data.repo} ↗
               </a>
+              <p
+                class="mt-3 text-sm leading-relaxed text-foreground/80"
+                set:html={inlineCode(p.data.description)}
+              />
             </li>
           ))}
         </ul>

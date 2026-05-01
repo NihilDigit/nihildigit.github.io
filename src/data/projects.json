@@ -12,12 +12,22 @@
   {
     "id": "renpak",
     "name": "renpak",
-    "description": "AVIF compression toolchain for Ren'Py games. Shrinks RPA archives by re-encoding images to AVIF — games load them transparently at runtime, no engine patches needed.",
+    "description": "AVIF compression for Ren'Py visual novel archives — typically 4–5× smaller on image data, without forking the engine. Hooks Ren'Py's standard `file_open_callback`, so the game decodes AVIF transparently at runtime. Tested on Eternum (Caribdis): 11.3 → 7.2 GiB on disk, 4.73× on the image bytes themselves.",
     "repo": "NihilDigit/renpak",
     "language": "Rust",
     "license": "MPL-2.0",
     "spotlight": true,
     "order": 20
+  },
+  {
+    "id": "shulker",
+    "name": "shulker",
+    "description": "TUI for a friend-group Minecraft (Paper/Purpur) server. Whitelist, ops, world switching, `server.properties` / `paper-global.yml` editing, scheduled restarts and backups, chunk pre-gen, SakuraFrp tunnel control — reading and writing only the files Paper itself writes. Quit `shulker` and the server is unchanged.",
+    "repo": "NihilDigit/shulker",
+    "language": "Rust",
+    "license": "MIT",
+    "spotlight": true,
+    "order": 25
   },
   {
     "id": "pikpak-kotlin",
