@@ -37,6 +37,7 @@ const papers = defineCollection({
       })
     ),
     venue: z.string(),
+    venueHref: z.string().optional(),
     venueDetail: z.string().optional(),
     status: z.enum(["preprint", "under-review", "accepted", "published"]),
     year: z.number(),
@@ -74,7 +75,11 @@ const featured = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: `./${FEATURED_PATH}` }),
   schema: z.object({
     title: z.string(),
+    titleHref: z.string().optional(),
+    repo: z.string().optional(),
+    fallbackStars: z.number().optional(),
     eyebrow: z.string().optional(),
+    eyebrowHref: z.string().optional(),
     order: z.number().default(0),
     status: z.string().optional(),
     statusVariant: z.enum(["live", "in-progress", "archived"]).optional(),
@@ -83,9 +88,28 @@ const featured = defineCollection({
     badges: z
       .array(
         z.object({
-          src: z.string(),
-          alt: z.string(),
+          label: z.string().optional(),
+          src: z.string().optional(),
+          alt: z.string().optional(),
           href: z.string().optional(),
+        })
+      )
+      .default([]),
+    contributions: z
+      .array(
+        z.object({
+          status: z.enum(["done", "active", "planned"]),
+          diffstat: z.string().default(""),
+          label: z.string(),
+          detail: z.string(),
+          links: z
+            .array(
+              z.object({
+                label: z.string(),
+                href: z.string(),
+              })
+            )
+            .default([]),
         })
       )
       .default([]),

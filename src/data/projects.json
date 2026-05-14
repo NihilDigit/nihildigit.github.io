@@ -1,15 +1,5 @@
 [
   {
-    "id": "waybar-ai-usage",
-    "name": "waybar-ai-usage",
-    "description": "Monitor Claude Code, OpenAI Codex CLI, GitHub Copilot, and OpenCode Zen usage directly in your Waybar status bar. Shipped to AUR.",
-    "repo": "NihilDigit/waybar-ai-usage",
-    "language": "Python",
-    "license": "MIT",
-    "spotlight": false,
-    "order": 10
-  },
-  {
     "id": "renpak",
     "name": "renpak",
     "description": "AVIF compression for Ren'Py visual novel archives — typically 4–5× smaller on image data, without forking the engine. Hooks Ren'Py's standard `file_open_callback`, so the game decodes AVIF transparently at runtime. Tested on Eternum (Caribdis): 11.3 → 7.2 GiB on disk, 4.73× on the image bytes themselves.",
@@ -22,10 +12,20 @@
   {
     "id": "shulker",
     "name": "shulker",
-    "description": "TUI for a friend-group Minecraft (Paper/Purpur) server. Whitelist, ops, world switching, `server.properties` / `paper-global.yml` editing, scheduled restarts and backups, chunk pre-gen, SakuraFrp tunnel control — reading and writing only the files Paper itself writes. Quit `shulker` and the server is unchanged.",
+    "description": "TUI for a friend-group Minecraft (Paper/Purpur) server: whitelist, ops, world switching, config editing, backups, chunk pre-gen, and SakuraFrp tunnel control.",
     "repo": "NihilDigit/shulker",
     "language": "Rust",
     "license": "MIT",
+    "spotlight": false,
+    "order": 25
+  },
+  {
+    "id": "tokmato",
+    "name": "tokmato",
+    "description": "Personal token-economy pomodoro app. Focus and health behaviors earn auditable tokens; tokens recharge a shared time pool used for entertainment, snacks, and wishlist redemption. Includes multi-device sync, Web Push, and an Android relay for high-priority FCM reminders.",
+    "repo": "NihilDigit/tokmato",
+    "language": "TypeScript / Kotlin",
+    "license": "AGPL-3.0",
     "spotlight": true,
     "order": 25
   },
@@ -36,40 +36,37 @@
     "repo": "NihilDigit/pikpak-kotlin",
     "language": "Kotlin",
     "license": "MIT",
-    "spotlight": false,
-    "partOf": "Animeko × PikPak",
+    "spotlight": true,
     "order": 30
   },
   {
-    "id": "animeko-pikpak",
-    "name": "animeko-pikpak",
-    "description": "Animeko fork hosting the PikPak cloud offline-download integration. See PR #2978 for the upstream patch series.",
-    "repo": "NihilDigit/animeko-pikpak",
-    "language": "Kotlin",
-    "license": "AGPL-3.0",
+    "id": "writing-style",
+    "name": "writing-style",
+    "description": "Agent skill for prose style checks: register matching, no translation smell, no marketing voice, and no AI-essay phrasing in Chinese and English.",
+    "repo": "NihilDigit/writing-style",
+    "language": "Markdown",
+    "license": "MIT",
     "spotlight": false,
-    "partOf": "Animeko × PikPak",
     "order": 40
   },
   {
-    "id": "anvil",
-    "name": "anvil",
-    "description": "Training, evaluation, and ONNX export pipeline for the ANVIL paper. INT8 quantization analysis; Qualcomm HTP and MediaTek NPU backends.",
-    "repo": "NihilDigit/anvil",
-    "language": "Python",
+    "id": "csync",
+    "name": "csync",
+    "description": "Chrome extension that syncs cookies and localStorage from normal windows to incognito for configured sites.",
+    "repo": "NihilDigit/csync",
+    "language": "JavaScript",
     "license": "MIT",
     "spotlight": false,
-    "partOf": "ANVIL",
     "order": 50
   },
   {
-    "id": "mpv-android-anvil",
-    "name": "mpv-android-anvil",
-    "description": "Companion Android player for the ANVIL paper. Vulkan + QNN/HTP + libplacebo. Real-time 30→60 fps frame doubling on Snapdragon SoCs.",
-    "repo": "NihilDigit/mpv-android-anvil",
-    "language": "C / Kotlin",
+    "id": "deepseek-structured-output-for-langchain",
+    "name": "DeepSeek-Structured-Output-for-LangChain",
+    "description": "Small compatibility patch for using structured output with DeepSeek models through LangChain's ChatOpenAI interface.",
+    "repo": "NihilDigit/DeepSeek-Structured-Output-for-LangChain",
+    "language": "Python",
+    "license": "MIT",
     "spotlight": false,
-    "partOf": "ANVIL",
     "order": 60
   }
 ]

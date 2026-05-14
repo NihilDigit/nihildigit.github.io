@@ -175,7 +175,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
           <img
             src="/anvil/figures/architecture.png"
             alt="UNet-v3b architecture diagram showing 4-level encoder, ResBlock bottleneck, and decoder with additive skip connections"
-            class="w-full"
+            class="w-full dark:brightness-75"
             loading="lazy"
           />
           <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
@@ -201,7 +201,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
           <img
             src="/anvil/figures/pipeline.png"
             alt="Three-processor pipeline: H.264 decode and CPU prealign, GPU smoothing and warp, HTP INT8 inference, GPU post-process"
-            class="w-full"
+            class="w-full dark:brightness-75"
             loading="lazy"
           />
           <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
@@ -419,7 +419,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
           <img
             src="/anvil/figures/scaling.png"
             alt="Vimeo90K PSNR vs. parameter count for ANVIL variants, RIFE HDv3, and NAFNet ceiling"
-            class="mx-auto max-w-xl"
+            class="mx-auto max-w-xl dark:brightness-75"
             loading="lazy"
           />
           <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
@@ -588,6 +588,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
   </main>
   <Footer />
 </Layout>
+
 
 <script>
   document.addEventListener("astro:page-load", () => {

@@ -4,6 +4,7 @@ authors:
   - name: Shibo Liu
     isMe: true
 venue: "IEEE TCSVT"
+venueHref: "https://ieee-cas.org/publication/tcsvt"
 venueDetail: "Submitted to IEEE Transactions on Circuits and Systems for Video Technology · arXiv:2603.26835"
 status: under-review
 year: 2026
@@ -44,4 +45,3 @@ bibtex: |
 
 <!-- Body content lives in src/pages/anvil.astro to allow rich figure/table layout.
      This file holds frontmatter (metadata) consumed by index.astro and anvil.astro. -->
-

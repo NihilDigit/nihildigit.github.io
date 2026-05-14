@@ -115,16 +115,16 @@ html[data-theme="dark"] {
 
 /* Status badges */
 .badge {
-  @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-mono uppercase tracking-wide;
+  @apply inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wide;
 }
 .badge-dot {
   @apply h-1.5 w-1.5 rounded-full;
 }
-.badge-live { @apply border-emerald-500/40 text-emerald-700 dark:text-emerald-400; }
+.badge-live { @apply text-emerald-700 dark:text-emerald-400; }
 .badge-live .badge-dot { @apply bg-emerald-500; }
-.badge-progress { @apply border-amber-500/40 text-amber-700 dark:text-amber-400; }
+.badge-progress { @apply text-amber-700 dark:text-amber-400; }
 .badge-progress .badge-dot { @apply bg-amber-500; }
-.badge-archived { @apply border-zinc-400/40 text-muted-foreground; }
+.badge-archived { @apply text-muted-foreground; }
 .badge-archived .badge-dot { @apply bg-zinc-400; }
 
 /* Box-drawing rule (subtle ricing flair) */

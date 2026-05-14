@@ -6,11 +6,15 @@ import Footer from "@/components/Footer.astro";
 import Socials from "@/components/Socials.astro";
 import AnvilTeaser from "@/components/AnvilTeaser.astro";
 import { inlineCode } from "@/utils/inlineCode";
+import { formatStars, getGitHubRepoStats } from "@/utils/githubStats";
 
 const anvil = await getEntry("papers", "anvil");
 
 const allFeatured = await getCollection("featured");
 const sortedFeatured = allFeatured.sort((a, b) => a.data.order - b.data.order);
+const featuredRepoStats = await getGitHubRepoStats(
+  sortedFeatured.map(entry => entry.data.repo).filter(repo => repo !== undefined)
+);
 
 const allProjects = await getCollection("projects");
 const spotlightProjects = allProjects
@@ -28,6 +32,15 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
     .join(", ");
 
 const padIdx = (n: number) => String(n).padStart(2, "0");
+
+const contributionStatusLabel = {
+  done: "Merged",
+  active: "Active",
+  planned: "Planned",
+} as const;
+
+const splitDiffstat = (diffstat: string) =>
+  diffstat.match(/^(\+[^/]+)(\/)(-.+)$/);
 ---
 
 <Layout>
@@ -77,11 +90,31 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
 
         <div>
           <h3 class="text-2xl font-semibold tracking-tight sm:text-3xl">
-            {anvil?.data.title}
+            <a
+              href="https://github.com/NihilDigit/anvil"
+              target="_blank"
+              rel="noopener"
+              class="transition-colors hover:text-accent"
+            >
+              {anvil?.data.title}
+            </a>
           </h3>
-          <p class="mt-2 font-mono text-xs text-muted-foreground">
-            {anvil?.data.venueDetail}
-          </p>
+          <div class="badge badge-live mt-3">
+            <span class="badge-dot" />
+            <span>Submitted to</span>
+            {anvil?.data.venueHref ? (
+              <a
+                href={anvil.data.venueHref}
+                target="_blank"
+                rel="noopener"
+                class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+              >
+                {anvil.data.venue}
+              </a>
+            ) : (
+              anvil?.data.venue
+            )}
+          </div>
           <p class="mt-4 max-w-prose-app text-foreground/80">{anvil?.data.tldr}</p>
 
           {anvil?.data.keyNumbers && (
@@ -102,7 +135,9 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
             >
               Read project page →
             </a>
-            {anvil?.data.links.map(l => (
+            {anvil?.data.links
+              .filter(l => !l.label.includes("APK") && l.label !== "Training Code")
+              .map(l => (
               <a
                 href={l.href}
                 target="_blank"
@@ -119,7 +154,13 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
 
     <!-- Featured · 02..N — from featured collection -->
     {
-      sortedFeatured.map((entry, i) => (
+      sortedFeatured.map((entry, i) => {
+        const repoStats = entry.data.repo
+          ? featuredRepoStats.get(entry.data.repo)
+          : undefined;
+        const stars = repoStats?.stars ?? entry.data.fallbackStars;
+
+        return (
         <section
           id={`featured-${entry.id}`}
           class="border-t border-border pt-10 pb-16"
@@ -127,13 +168,52 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
           <div class="mb-6 flex items-baseline justify-between">
             <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
               Featured · {padIdx(i + 2)}
-              {entry.data.eyebrow && <span> — {entry.data.eyebrow}</span>}
+              {entry.data.eyebrow && (
+                <span>
+                  {" "}
+                  —{" "}
+                  {entry.data.eyebrowHref ? (
+                    <a
+                      href={entry.data.eyebrowHref}
+                      target="_blank"
+                      rel="noopener"
+                      class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+                    >
+                      {entry.data.eyebrow}
+                    </a>
+                  ) : (
+                    entry.data.eyebrow
+                  )}
+                </span>
+              )}
             </h2>
           </div>
 
-          <h3 class="text-2xl font-semibold tracking-tight sm:text-3xl">
-            {entry.data.title}
-          </h3>
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+            <h3 class="text-2xl font-semibold tracking-tight sm:text-3xl">
+              {entry.data.titleHref ? (
+                <a
+                  href={entry.data.titleHref}
+                  target="_blank"
+                  rel="noopener"
+                  class="transition-colors hover:text-accent"
+                >
+                  {entry.data.title}
+                </a>
+              ) : (
+                entry.data.title
+              )}
+            </h3>
+
+            {stars !== undefined && (
+              <span class="inline-flex items-baseline gap-1 font-mono text-sm text-muted-foreground">
+                <span aria-hidden class="text-foreground/80">
+                  ★
+                </span>
+                <span>{formatStars(stars)}</span>
+              </span>
+            )}
+          </div>
 
           {entry.data.status && (
             <span
@@ -161,15 +241,99 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
 
           <p class="mt-4 max-w-prose-app text-foreground/80">{entry.data.summary}</p>
 
+          {entry.data.contributions.length > 0 && (
+            <ol class="mt-6 max-w-3xl divide-y divide-border border-y border-border">
+              {entry.data.contributions.map(item => {
+                const diffstat = splitDiffstat(item.diffstat);
+
+                return (
+                  <li class="grid gap-3 py-4 sm:grid-cols-[5.5rem_minmax(0,1fr)] sm:items-start">
+                    <span class="font-mono text-xs leading-6 text-muted-foreground sm:text-right">
+                      {diffstat ? (
+                        <>
+                          <span class="text-emerald-700/80 dark:text-emerald-300/80">
+                            {diffstat[1]}
+                          </span>
+                          <span class="text-muted-foreground/50">{diffstat[2]}</span>
+                          <span class="text-rose-700/75 dark:text-rose-300/75">
+                            {diffstat[3]}
+                          </span>
+                        </>
+                      ) : (
+                        item.diffstat
+                      )}
+                    </span>
+                    <div class="min-w-0">
+                      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-sm font-medium text-foreground">
+                          {item.label}
+                        </span>
+                        <span
+                          class:list={[
+                            "font-mono text-[0.65rem] uppercase leading-none tracking-widest",
+                            item.status === "done" &&
+                              "text-accent",
+                            item.status === "active" &&
+                              "text-muted-foreground",
+                            item.status === "planned" &&
+                              "text-muted-foreground",
+                          ]}
+                        >
+                          {contributionStatusLabel[item.status]}
+                        </span>
+                        {item.links.length > 0 && (
+                          <span class="flex flex-wrap gap-1.5">
+                            {item.links.map(link => (
+                              <>
+                                <a
+                                  href={link.href}
+                                  target="_blank"
+                                  rel="noopener"
+                                  class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-0.5 font-mono text-[0.7rem] leading-5 text-muted-foreground transition-colors hover:border-accent hover:text-accent"
+                                >
+                                  {link.label} ↗
+                                </a>
+                              </>
+                            ))}
+                          </span>
+                        )}
+                      </div>
+                      <p class="mt-1 text-sm leading-relaxed text-foreground/80">
+                        {item.detail}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
+
           {entry.data.badges.length > 0 && (
             <div class="mt-4 flex flex-wrap gap-2">
               {entry.data.badges.map(b =>
-                b.href ? (
+                b.label ? (
+                  b.href ? (
+                    <a
+                      href={b.href}
+                      target="_blank"
+                      rel="noopener"
+                      class="font-mono text-xs text-muted-foreground underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+                    >
+                      {b.label} ↗
+                    </a>
+                  ) : (
+                    <span class="font-mono text-xs text-muted-foreground">
+                      {b.label}
+                    </span>
+                  )
+                ) : b.href && b.src ? (
                   <a href={b.href} target="_blank" rel="noopener" aria-label={b.alt}>
-                    <img src={b.src} alt={b.alt} class="h-5" />
+                    <img src={b.src} alt={b.alt ?? ""} class="h-5" />
                   </a>
+                ) : b.src ? (
+                  <img src={b.src} alt={b.alt ?? ""} class="h-5" />
                 ) : (
-                  <img src={b.src} alt={b.alt} class="h-5" />
+                  null
                 )
               )}
             </div>
@@ -188,7 +352,8 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
             ))}
           </div>
         </section>
-      ))
+        );
+      })
     }
 
     <!-- Selected Open Source -->
@@ -258,7 +423,7 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
                   {p.data.year}
                 </span>
                 {p.data.status === "under-review" && (
-                  <span class="font-mono text-xs uppercase tracking-wide text-amber-600 dark:text-amber-400">
+                  <span class="font-mono text-xs uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
                     Under review
                   </span>
                 )}
@@ -295,4 +460,3 @@ const padIdx = (n: number) => String(n).padStart(2, "0");
   </main>
   <Footer />
 </Layout>
-

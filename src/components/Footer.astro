@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import IconClaude from "@/assets/icons/IconClaude.svg";
+import IconOpenAI from "@/assets/icons/IconOpenAI.svg";
 
 const currentYear = new Date().getFullYear();
 
@@ -23,9 +24,6 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
           <li>
             <a href="/notes" class="hover:text-foreground">Notes archive</a>
           </li>
-          <li>
-            <a href="/rss.xml" class="hover:text-foreground">RSS</a>
-          </li>
         </ul>
       </div>
       <div class="space-y-2 sm:text-right">
@@ -41,6 +39,16 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
             >
               <IconClaude class="inline-block h-3.5 w-3.5" />
               <span>Claude</span>
+            </a>
+            and
+            <a
+              href="https://openai.com/codex/"
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-1 hover:text-foreground"
+            >
+              <IconOpenAI class="inline-block h-3.5 w-3.5" />
+              GPT
             </a>.
           </span>
           <br />
