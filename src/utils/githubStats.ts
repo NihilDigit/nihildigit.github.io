@@ -28,6 +28,7 @@ export const formatStars = (stars: number) => {
 export const getGitHubRepoStats = async (repos: string[]) => {
   const uniqueRepos = [...new Set(repos.filter(Boolean))];
   const stats = new Map<string, GitHubRepoStats>();
+  const authMode = process.env.GITHUB_TOKEN ? "authenticated" : "anonymous";
 
   await Promise.all(
     uniqueRepos.map(async repo => {
@@ -36,14 +37,31 @@ export const getGitHubRepoStats = async (repos: string[]) => {
           headers: githubHeaders(),
         });
 
-        if (!response.ok) return;
+        if (!response.ok) {
+          console.warn(
+            `[github-stats] ${repo}: ${response.status} ${response.statusText}; using fallback if configured (${authMode})`
+          );
+          return;
+        }
 
         const data = (await response.json()) as GitHubRepoResponse;
-        if (typeof data.stargazers_count !== "number") return;
+        if (typeof data.stargazers_count !== "number") {
+          console.warn(
+            `[github-stats] ${repo}: missing stargazers_count; using fallback if configured (${authMode})`
+          );
+          return;
+        }
 
         stats.set(repo, { stars: data.stargazers_count });
-      } catch {
+        console.info(
+          `[github-stats] ${repo}: ${data.stargazers_count} stars (${authMode})`
+        );
+      } catch (error) {
         // Stars are decorative repo context; never fail the site build for them.
+        const message = error instanceof Error ? error.message : "unknown error";
+        console.warn(
+          `[github-stats] ${repo}: ${message}; using fallback if configured (${authMode})`
+        );
       }
     })
   );

@@ -30,6 +30,8 @@ jobs:
         run: bun install
 
       - name: Build
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           bun run astro build
           npx pagefind --site dist

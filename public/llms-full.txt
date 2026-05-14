@@ -1,6 +1,6 @@
 # NihilDigit — Full Index
 
-> Personal portfolio of Shibo Liu (NihilDigit), a third-year undergraduate at North China University of Science and Technology, working on edge AI, video systems, and open-source tooling.
+> Personal portfolio of Shibo Liu (NihilDigit), an undergraduate at North China University of Science and Technology, working on edge AI, video systems, and open-source tooling.
 
 Site: https://nihildigit.dev/
 GitHub: https://github.com/NihilDigit
@@ -8,15 +8,13 @@ ORCID: 0009-0004-9426-3713
 
 ## About
 
-Shibo Liu is a third-year undergraduate at North China University of Science and Technology (NCST) studying intelligence science. He uses frontier AI to push into problems that genuinely interest him.
+Shibo Liu is an undergraduate at North China University of Science and Technology (NCST), studying intelligence science. His work sits around edge AI, video systems, Linux tooling, and practical open-source maintenance.
 
-ANVIL grew out of two threads he had been pulling on — being picky about frame rate, and tinkering with mobile NPUs. Standard flow-based video frame interpolation breaks down under INT8 quantization, so he went looking for alternatives and landed on reusing the H.264 decoder's motion vectors instead of learning optical flow. The paper is under review at IEEE TCSVT; the project page collects the training code, the Android demo, and the arXiv preprint.
+ANVIL grew out of two threads: being picky about frame rate, and tinkering with mobile NPUs. Standard flow-based video frame interpolation breaks down under INT8 quantization, so ANVIL reuses H.264 decoder motion vectors instead of learning optical flow. The paper has been submitted to IEEE Transactions on Circuits and Systems for Video Technology (TCSVT) and is under review. The project page collects the arXiv preprint and Android demo.
 
-RAFNet was his first academic project — a classifier for student behavior in crowded classrooms built on top of GroupRec (a hypergraph encoder) with a gated fusion head. He ran the experiments. It is under review at The Visual Computer.
+RAFNet was his first academic project: a classifier for student behavior in crowded classrooms built on top of GroupRec, a hypergraph encoder, with a gated fusion head. He contributed as third author and ran the experiments.
 
-He wants his code to do something for people, not just sit in a repo. A fair amount of free time goes to open source — most visibly waybar-ai-usage, a Waybar widget that shows quota and reset time for Claude Code, Codex CLI, GitHub Copilot, and OpenCode Zen, packaged on AUR.
-
-A short list of things he is into: LLMs, Linux, ACGN, Rammstein. ACGN bleeds into what he builds: an upstream PR in review for cloud offline-download in Animeko (an open-source anime streaming app), and renpak, an AVIF compression toolchain for Ren'Py visual novels.
+He also works on open-source projects that solve concrete workflow problems. Current highlights include waybar-ai-usage, a Waybar widget for AI coding assistant quota visibility, and ongoing upstream contributions to open-ani/animeko, an open-source anime streaming app.
 
 ### Education
 
@@ -35,9 +33,8 @@ A short list of things he is into: LLMs, Linux, ACGN, Rammstein. ACGN bleeds int
 
 - Project page: https://nihildigit.dev/anvil/
 - arXiv: https://arxiv.org/abs/2603.26835
-- Training code: https://github.com/NihilDigit/anvil
+- Main repository / training code: https://github.com/NihilDigit/anvil
 - Mobile demo: https://github.com/NihilDigit/mpv-android-anvil
-- APK (Snapdragon 8 Gen 3 only, 155 MB): https://github.com/NihilDigit/mpv-android-anvil/releases/download/v1.3.0/anvil-demo-v1.3.0-arm64.apk
 - Authors: Shibo Liu (first author)
 - Venue: Submitted to IEEE Transactions on Circuits and Systems for Video Technology (TCSVT). Status: under review.
 
@@ -55,16 +52,10 @@ Real-time 30→60 fps video frame interpolation on mobile NPUs by reusing H.264 
 
 Real-time 30-to-60 fps video frame interpolation on mobile neural processing units (NPUs) requires each synthesized frame to fit within a 33.3 ms budget. Mainstream flow-based VFI faces three structural deployment barriers on mobile NPUs: spatial sampling operators exceed the frame budget or lack hardware support, iterative flow refinement collapses under 8-bit integer post-training quantization, and memory-bound operators dominate the inference graph. ANVIL addresses these barriers by reusing motion vectors from the H.264/AVC decoder to prealign input frames, removing learned optical flow, spatial sampling, and iterative accumulation from the accelerator graph. The remaining residual is refined by a convolution-dominated network composed almost entirely of compute-bound operators. On a Snapdragon 8 Gen 3 device, ANVIL achieves 12.8 ms 1080p inference at 8-bit integer precision; an open-source Android player sustains 28.4 ms median end-to-end latency over 30-minute continuous playback. Per-operator causal analysis identifies quantized accumulation on recurrent flow states as a key mechanism behind integer quantization failure in iterative methods. The current design targets H.264/AVC playback with decoder-exposed motion vectors.
 
-### Method
-
-- Codec motion-vector reuse. The H.264/AVC decoder produces block-level motion vectors during normal playback; ANVIL reuses them to prealign input frames, removing learned optical flow, spatial sampling, and iterative accumulation from the accelerator graph.
-- Compute-bound residual refinement. The remaining residual is corrected by a convolution-only network composed almost entirely of compute-bound operators.
-- Quantization-friendly by construction. By removing recurrent flow states, ANVIL avoids the dominant failure mode of iterative methods under post-training INT8 quantization.
-
 ### Components
 
-- anvil — Training, evaluation, ONNX export. Training scripts for ANVIL-S and ANVIL-M; evaluations on Vimeo90K and Xiph 1080p; ONNX export with INT8 quantization analysis. Comparative benchmarks against RIFE and IFRNet. Backends: Qualcomm HTP and MediaTek NPU.
-- mpv-android-anvil — Mobile demo player. A fork of mpv-android integrating ANVIL. Three-accelerator pipeline (CPU + GPU + NPU) using Vulkan compute and Qualcomm QNN/HTP. Real-time A/B comparison toggle. Bundled with four Xiph 1080p test sequences.
+- anvil — Training, evaluation, and ONNX export pipeline. Includes ANVIL-S and ANVIL-M training scripts, evaluations on Vimeo90K and Xiph 1080p, INT8 quantization analysis, and Qualcomm HTP / MediaTek NPU backend work.
+- mpv-android-anvil — Companion Android player. A fork of mpv-android integrating ANVIL through a CPU + GPU + NPU pipeline using Vulkan compute, Qualcomm QNN/HTP, and libplacebo.
 
 ### Limitations
 
@@ -72,7 +63,7 @@ The current design targets H.264/AVC playback with decoder-exposed motion vector
 
 ### BibTeX
 
-```
+```bibtex
 @article{liu2026anvil,
   title   = {ANVIL: Accelerator-Native Video Interpolation via Codec Motion Vector Priors},
   author  = {Liu, Shibo},
@@ -99,44 +90,58 @@ Spatially-aware multimodal fusion for dense classroom student behavior recogniti
 
 ### Abstract
 
-RAFNet classifies individual student behaviors in dense classroom imagery by fusing two complementary feature streams: relation embeddings from a pretrained GroupRec hypergraph encoder (capturing group dynamics and peer interactions) and appearance features from ConvNeXt-Base (encoding visual evidence). The fusion mechanism employs a gated architecture weighted per sample with entropy regularization during training.
+RAFNet classifies individual student behaviors in dense classroom imagery by fusing two complementary feature streams: relation embeddings from a pretrained GroupRec hypergraph encoder, which captures group dynamics and peer interactions, and appearance features from ConvNeXt-Base, which encode visual evidence. The fusion mechanism uses a gated architecture weighted per sample with entropy regularization during training.
 
-## Featured open source
+## Featured Open Source
 
 ### waybar-ai-usage
 
 - GitHub: https://github.com/NihilDigit/waybar-ai-usage
 - AUR: https://aur.archlinux.org/packages/waybar-ai-usage
-- Status: Live, 40+ stars. Mentioned in Awesome Codex CLI.
+- Status: Developing.
+- Mentioned in Awesome Codex CLI: https://github.com/RoggeOhta/awesome-codex-cli
 - Language: Python. License: MIT.
 
-A Waybar widget that surfaces remaining quota and reset time for Claude Code, Codex CLI, GitHub Copilot, and OpenCode Zen. Uses browser cookies for Claude and Codex; no API keys required.
+A Waybar widget that surfaces remaining quota and reset time for Claude Code, Codex CLI, GitHub Copilot, and OpenCode Zen. It uses browser cookies for Claude and Codex, so no API keys are required.
 
-### Animeko × PikPak
+### open-ani/animeko contributions
 
-- RFC: https://github.com/open-ani/animeko/issues/2976
-- PR: https://github.com/open-ani/animeko/pull/2978
-- Fork: https://github.com/NihilDigit/animeko-pikpak
-- SDK: https://github.com/NihilDigit/pikpak-kotlin
-- Status: Pending upstream review.
+- Upstream repository: https://github.com/open-ani/animeko
+- Status: Contributing.
+- PikPak RFC: https://github.com/open-ani/animeko/issues/2976
+- PikPak PR: https://github.com/open-ani/animeko/pull/2978
+- WOA64 mediamp PR: https://github.com/open-ani/mediamp/pull/32
+- WOA64 anitorrent PR: https://github.com/open-ani/anitorrent/pull/3
+- WOA64 workspace: https://github.com/NihilDigit/animeko-woa64
 
-Cloud offline-download backend for Animeko, an open-source anime streaming app. Downloads magnet links on overseas PikPak servers and serves them as HTTPS streams to local players, with fallback to BitTorrent. PikPak provides cloud offline-download capability that complements peer-to-peer BitTorrent. The integration adds a backend-agnostic OfflineDownloadEngine interface so additional cloud providers (115, Xunlei) can be added later. Credentials are obscured at rest (AES-CTR) and excluded from settings backup. Coverage: 4 unit tests + 1 live smoke test, 33 files changed. A Kotlin Multiplatform SDK (pikpak-kotlin) was extracted from the work.
+Animeko is an open-source anime streaming app. Shibo Liu contributes upstream and adjacent repository work rather than owning the main project.
 
-## All projects
+Current contribution list:
 
-- renpak — https://github.com/NihilDigit/renpak — Rust, MPL-2.0. AVIF compression toolchain for Ren'Py games. Shrinks RPA archives by re-encoding images to AVIF; games load them transparently at runtime, no engine patches needed. (Spotlight)
-- waybar-ai-usage — https://github.com/NihilDigit/waybar-ai-usage — Python, MIT. Monitor Claude Code, OpenAI Codex CLI, GitHub Copilot, and OpenCode Zen usage in Waybar. Shipped to AUR.
-- pikpak-kotlin — https://github.com/NihilDigit/pikpak-kotlin — Kotlin, MIT. Kotlin Multiplatform SDK for PikPak cloud storage. Session persistence, captcha auth, rate limiting, resumable uploads. Extracted from the Animeko PikPak work.
-- animeko-pikpak — https://github.com/NihilDigit/animeko-pikpak — Kotlin, AGPL-3.0. Animeko fork hosting the PikPak cloud offline-download integration. See PR #2978 for the upstream patch series.
-- anvil — https://github.com/NihilDigit/anvil — Python, MIT. Training, evaluation, and ONNX export pipeline for the ANVIL paper. INT8 quantization analysis; Qualcomm HTP and MediaTek NPU backends.
-- mpv-android-anvil — https://github.com/NihilDigit/mpv-android-anvil — C / Kotlin. Companion Android player for the ANVIL paper. Vulkan + QNN/HTP + libplacebo. Real-time 30→60 fps frame doubling on Snapdragon SoCs.
+- PikPak cloud offline-download: merged upstream, +3,054/-41 diffstat. Adds a cloud-backed alternative to local BitTorrent, with HTTPS stream handoff, transparent fallback, credential handling, and a reusable Kotlin Multiplatform SDK extracted from the work.
+- WOA64 build support: active WIP. Workaround track for running Animeko on Windows on Arm64 today, upstreaming the mediamp FFmpeg runtime piece while keeping a known-good workspace that can produce portable zip builds.
+- Touch-mode detection: planned support for detecting touch-capable 2-in-1 and touchscreen devices, then enabling touch-friendly layout and input affordances instead of treating them as plain desktop pointer environments.
+- Character detail wiring: planned smaller upstream UI/data-flow work around connecting character detail pages into the app.
 
-## Site map
+## Selected Open Source
+
+- renpak — https://github.com/NihilDigit/renpak — Rust, MPL-2.0. AVIF compression for Ren'Py visual novel archives. Typically shrinks image data by 4–5× without forking the engine; games decode AVIF transparently at runtime via Ren'Py's standard file_open_callback.
+- tokmato — https://github.com/NihilDigit/tokmato — TypeScript / Kotlin, AGPL-3.0. Personal token-economy pomodoro app. Focus and health behaviors earn auditable tokens; tokens recharge a shared time pool used for entertainment, snacks, and wishlist redemption. Includes multi-device sync, Web Push, and Android relay reminders.
+- pikpak-kotlin — https://github.com/NihilDigit/pikpak-kotlin — Kotlin, MIT. Kotlin Multiplatform SDK for PikPak cloud storage. Handles session persistence, captcha auth, rate limiting, and resumable uploads. Extracted from the Animeko PikPak work.
+
+## Other Projects
+
+- shulker — https://github.com/NihilDigit/shulker — Rust, MIT. TUI for a friend-group Minecraft server: whitelist, ops, world switching, config editing, backups, chunk pre-generation, and SakuraFrp tunnel control.
+- writing-style — https://github.com/NihilDigit/writing-style — Markdown, MIT. Agent skill for prose style checks: register matching, no translation smell, no marketing voice, and no AI-essay phrasing in Chinese and English.
+- csync — https://github.com/NihilDigit/csync — JavaScript, MIT. Chrome extension that syncs cookies and localStorage from normal windows to incognito for configured sites.
+- DeepSeek-Structured-Output-for-LangChain — https://github.com/NihilDigit/DeepSeek-Structured-Output-for-LangChain — Python, MIT. Small compatibility patch for using structured output with DeepSeek models through LangChain's ChatOpenAI interface.
+
+## Site Map
 
 - Home: https://nihildigit.dev/
 - About: https://nihildigit.dev/about/
 - ANVIL project page: https://nihildigit.dev/anvil/
 - Papers: https://nihildigit.dev/papers/
 - Projects: https://nihildigit.dev/projects/
-- Notes archive (old, low signal): https://nihildigit.dev/notes/
+- Notes archive: https://nihildigit.dev/notes/
 - RSS: https://nihildigit.dev/rss.xml
