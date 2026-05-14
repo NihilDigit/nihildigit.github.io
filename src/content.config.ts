@@ -34,7 +34,7 @@ const papers = defineCollection({
       z.object({
         name: z.string(),
         isMe: z.boolean().optional(),
-      })
+      }),
     ),
     venue: z.string(),
     venueHref: z.string().optional(),
@@ -53,7 +53,7 @@ const papers = defineCollection({
         z.object({
           label: z.string(),
           href: z.string(),
-        })
+        }),
       )
       .default([]),
     featured: z.boolean().default(false),
@@ -64,7 +64,7 @@ const papers = defineCollection({
         z.object({
           value: z.string(),
           caption: z.string(),
-        })
+        }),
       )
       .optional(),
     bibtex: z.string().optional(),
@@ -92,7 +92,7 @@ const featured = defineCollection({
           src: z.string().optional(),
           alt: z.string().optional(),
           href: z.string().optional(),
-        })
+        }),
       )
       .default([]),
     contributions: z
@@ -107,10 +107,10 @@ const featured = defineCollection({
               z.object({
                 label: z.string(),
                 href: z.string(),
-              })
+              }),
             )
             .default([]),
-        })
+        }),
       )
       .default([]),
     links: z
@@ -118,7 +118,7 @@ const featured = defineCollection({
         z.object({
           label: z.string(),
           href: z.string(),
-        })
+        }),
       )
       .default([]),
   }),

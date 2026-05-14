@@ -11,16 +11,13 @@ tags:
 
 There are some `built-in` names in Python:
 
-
 ```python
 >>> from math import pi, sin
 >>> sin(pi/2)
 1.0
 ```
 
-
 We can define our own names using `Assignment statements`:
-
 
 ```python
 >>> radius = 10
@@ -34,9 +31,7 @@ We can define our own names using `Assignment statements`:
 314.1592653589793 #didn't change!
 ```
 
-
 Assignment statements can also be used to gave name to `functions`:
-
 
 ```python
 >>> max(1, 2, 3)
@@ -56,9 +51,7 @@ Assignment statements can also be used to gave name to `functions`:
 3
 ```
 
-
 There are function names for common infix operators:
-
 
 ```python
 >>> from operator import add, mul
@@ -68,9 +61,7 @@ There are function names for common infix operators:
 <built-in function mul>
 ```
 
-
 A `def statement` lets us create our own functions:
-
 
 ```python
 >>> from operator import add, mul
@@ -85,9 +76,7 @@ A `def statement` lets us create our own functions:
 81
 ```
 
-
 Back to radius and area, area and radius now are out of sync:
-
 
 ```python
 >>> radius
@@ -106,19 +95,17 @@ Back to radius and area, area and radius now are out of sync:
 314.1592653589793
 ```
 
-
 There are two kinds of expressions:
 
--   Primitive expressions includes:
-    -   `Number` or `Numeral`
-    -   `Name`
-    -   `String`
--   Call expressions are combined with:
-    -   `operator`
-    -   `operand`
+- Primitive expressions includes:
+  - `Number` or `Numeral`
+  - `Name`
+  - `String`
+- Call expressions are combined with:
+  - `operator`
+  - `operand`
 
 What is the value of the final expression in this sequence?
-
 
 ```python
 >>> f = min
@@ -128,18 +115,17 @@ What is the value of the final expression in this sequence?
 >>> max(f(2, g(h(1, 5), 3)), 4)
 ```
 
-
 ### Environment Diagrams
 
 `Environment diagrams` visualize the `interpreter`'s process
 
--   Code (left):
-    -   Concludes statements and expressions:
-    -   Arrows indicate evaluation order
--   Frame (right):
-    -   Tracks name bounded to a value
-    -   Within a frame, a name cannot be repeated (the old bond will be lost)\
-        Here is the [link](https://pythontutor.com/cp/composingprograms.html#mode=edit) of the online python tutor
+- Code (left):
+  - Concludes statements and expressions:
+  - Arrows indicate evaluation order
+- Frame (right):
+  - Tracks name bounded to a value
+  - Within a frame, a name cannot be repeated (the old bond will be lost)\
+    Here is the [link](https://pythontutor.com/cp/composingprograms.html#mode=edit) of the online python tutor
 
 Assignment statements change the bindings between names and values in `frames`
 
@@ -153,13 +139,11 @@ Execution rule for assignment statements:
 
 Assignments bind names to values, and `function definition` is a more powerful means of `abstraction`: binds names to expressions
 
-
 ```python
 def <'name'>(<'formal parameters'>): #names refer to the arguments
                                     #values passed to the function
 	return <'return expression'>
 ```
-
 
 Execution procedure for def statements:
 
@@ -178,7 +162,6 @@ An environment is a sequence of frames\
 A name evaluates to the value bound to that name in the earliest frame of the current environment in which that name is found\
 Here is an example:
 
-
 ```python
 >>> from operator import mul
 >>> mul(3, 4)
@@ -192,13 +175,11 @@ Here is an example:
 16
 ```
 
-
-In the *frame* created by def statement, there is *already* a *formal parameter* called 'square', the program won't look it up in `global frame`, which will not make function square and expression square get mixed.
+In the _frame_ created by def statement, there is _already_ a _formal parameter_ called 'square', the program won't look it up in `global frame`, which will not make function square and expression square get mixed.
 
 ### Print and None
 
 Evaluating something in `interpter` is not equal to `print` it out
-
 
 ```python
 >>> -2
@@ -224,11 +205,9 @@ None None
 None None
 ```
 
-
 The special value `None` represents nothing in Python\
 A function that does not explicitly return a value will return None\
-None is *not displayed* by the interpreter as the value of an expression
-
+None is _not displayed_ by the interpreter as the value of an expression
 
 ```python
 >>> radius = 10
@@ -241,14 +220,14 @@ None is *not displayed* by the interpreter as the value of an expression
 >>> area
 314.1592653589793 #didn't change!
 ```
+
 0
 
 There are two kinds of functions:
 
--   Pure Functions:
-    -   Just return values
+- Pure Functions:
+  - Just return values
 
-        
 ```python
 >>> radius = 10
 >>> radius
@@ -260,11 +239,12 @@ There are two kinds of functions:
 >>> area
 314.1592653589793 #didn't change!
 ```
+
 1
--   Non-Pure Functions:
-    -   Have side effects\
-        A side effect isn't a value, but anything that happeds as a consequence of calling a function
 
+- Non-Pure Functions:
+  - Have side effects\
+    A side effect isn't a value, but anything that happeds as a consequence of calling a function
 
 ```python
 >>> radius = 10
@@ -277,4 +257,5 @@ There are two kinds of functions:
 >>> area
 314.1592653589793 #didn't change!
 ```
+
 2

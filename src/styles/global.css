@@ -29,8 +29,12 @@ html[data-theme="dark"] {
 }
 
 @theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", sans-serif;
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, "JetBrains Mono", "SF Mono",
+    Menlo, Consolas, monospace;
   --font-app: var(--font-sans);
 
   --color-background: var(--background);
@@ -66,12 +70,20 @@ html[data-theme="dark"] {
     cursor: pointer;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-sans tracking-tight;
     letter-spacing: -0.02em;
   }
 
-  code, pre, kbd, samp {
+  code,
+  pre,
+  kbd,
+  samp {
     @apply font-mono;
     font-feature-settings: "calt" 0;
   }
@@ -120,12 +132,24 @@ html[data-theme="dark"] {
 .badge-dot {
   @apply h-1.5 w-1.5 rounded-full;
 }
-.badge-live { @apply text-emerald-700 dark:text-emerald-400; }
-.badge-live .badge-dot { @apply bg-emerald-500; }
-.badge-progress { @apply text-amber-700 dark:text-amber-400; }
-.badge-progress .badge-dot { @apply bg-amber-500; }
-.badge-archived { @apply text-muted-foreground; }
-.badge-archived .badge-dot { @apply bg-zinc-400; }
+.badge-live {
+  @apply text-emerald-700 dark:text-emerald-400;
+}
+.badge-live .badge-dot {
+  @apply bg-emerald-500;
+}
+.badge-progress {
+  @apply text-amber-700 dark:text-amber-400;
+}
+.badge-progress .badge-dot {
+  @apply bg-amber-500;
+}
+.badge-archived {
+  @apply text-muted-foreground;
+}
+.badge-archived .badge-dot {
+  @apply bg-zinc-400;
+}
 
 /* Box-drawing rule (subtle ricing flair) */
 .rule-mono::before {
@@ -140,12 +164,22 @@ html[data-theme="dark"] {
 /* Hero entrance: 8px rise + fade, ease-out-expo. The global
    prefers-reduced-motion rule already collapses these to instant. */
 @keyframes hero-rise {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .hero-rise {
   opacity: 0;
   animation: hero-rise 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-.hero-rise-1 { animation-delay: 100ms; }
-.hero-rise-2 { animation-delay: 200ms; }
+.hero-rise-1 {
+  animation-delay: 100ms;
+}
+.hero-rise-2 {
+  animation-delay: 200ms;
+}

@@ -12,13 +12,13 @@ const ESCAPE: Record<string, string> = {
 };
 
 function escapeHtml(s: string): string {
-  return s.replace(/[&<>"']/g, c => ESCAPE[c]!);
+  return s.replace(/[&<>"']/g, (c) => ESCAPE[c]!);
 }
 
 export function inlineCode(s: string): string {
   return s
     .split(/(`[^`]+`)/)
-    .map(seg => {
+    .map((seg) => {
       if (seg.length > 2 && seg.startsWith("`") && seg.endsWith("`")) {
         return `<code class="font-mono text-[0.92em]">${escapeHtml(seg.slice(1, -1))}</code>`;
       }

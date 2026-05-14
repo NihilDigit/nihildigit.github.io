@@ -8,7 +8,7 @@ interface GroupFunction<T> {
 
 const getPostsByGroupCondition = (
   posts: CollectionEntry<"notes">[],
-  groupFunction: GroupFunction<CollectionEntry<"notes">>
+  groupFunction: GroupFunction<CollectionEntry<"notes">>,
 ) => {
   const result: Record<GroupKey, CollectionEntry<"notes">[]> = {};
   for (let i = 0; i < posts.length; i++) {

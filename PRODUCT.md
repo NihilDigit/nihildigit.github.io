@@ -3,6 +3,7 @@
 ### Users
 
 **Primary**: Academic peers, recruiters, fellow researchers, and OSS-curious developers landing on a research portfolio. They arrive in one of three states:
+
 - **Skim mode** — recruiter / PI / collaborator deciding in 15 seconds whether this person is serious. They need: who, what work, what status, where to dig deeper.
 - **Paper mode** — someone arrived from arXiv / a citation / a tweet, looking for one specific project (currently ANVIL). They need: TL;DR, figures, code, BibTeX, all immediately scannable.
 - **Browse mode** — engineer who saw an OSS project and wants to know what else this person makes. They need: project list, languages, repos, a sense of taste.
@@ -17,15 +18,17 @@ The site is not for general consumers. Users are technically literate, comfortab
 - **Playful** — easter eggs allowed and encouraged where they don't compromise scannability. The site should feel like a specific person made it, not a template.
 - **Honest** — no marketing language, no "leveraging synergies," no fake urgency. If a paper is under review, it says `Under review`. If a note is from 2024 and frozen, the banner says so. Status is signal, not decoration.
 
-Emotional goal: a visitor closes the tab thinking *"this person ships, has taste, and isn't trying to fool me."*
+Emotional goal: a visitor closes the tab thinking _"this person ships, has taste, and isn't trying to fool me."_
 
 ### Aesthetic Direction
 
 **References (positive)**:
+
 - **Terminal / TUI showcases** — charm.sh, ratatui demos, glow, gum. Mono type, box-drawing rules, status pills that read like CLI output, tabular-nums for any number a human will compare.
 - **Research paper project pages** — Anthropic / OpenAI single-paper landings. Figure-first when there's a figure. TL;DR up top. Key numbers as a 3-column metric strip. BibTeX block at the bottom. The `/anvil` page is the in-house realization of this.
 
 **Anti-references (rejected explicitly)**:
+
 - **Generic SaaS landing aesthetic** — gradient hero, glassmorphism cards, oversized one-word headlines, "Built for teams that ship." Avoid.
 - **Old-style academic homepages** — Jekyll/al-folio, gray background, blue underlined links, dated grid of headshots. Avoid.
 - **Notion / Substack long-form blog look** — emoji callouts, `> Quote of the day`, big drop caps, "5 min read" pill, full-bleed prose with no structure. Avoid; prose-mode pages still need scaffolding.
@@ -35,13 +38,13 @@ Emotional goal: a visitor closes the tab thinking *"this person ships, has taste
 
 ### Design Principles
 
-1. **Hacker shell, classical bones.** The visible layer is modern, terminal-flavored, slightly rough — `Featured · 01`, box-drawing rules, status pills, Arch easter eggs. The invisible layer underneath (type scale, measure, leading, hierarchy, contrast) follows orthodox typography by the book. The skeleton stays rigid precisely *so that* the surface can be playful without falling apart. If the shell ever fights the bones, the bones win.
+1. **Hacker shell, classical bones.** The visible layer is modern, terminal-flavored, slightly rough — `Featured · 01`, box-drawing rules, status pills, Arch easter eggs. The invisible layer underneath (type scale, measure, leading, hierarchy, contrast) follows orthodox typography by the book. The skeleton stays rigid precisely _so that_ the surface can be playful without falling apart. If the shell ever fights the bones, the bones win.
 
 2. **Personality before polish, in the shell.** Within the bounds of Principle 1: a site that's distinctive and slightly rough beats a site that's flawless and forgettable. When in doubt between "cleaner" and "more characteristic," pick characteristic. The Arch comment, the `──────────` rule, the eyebrow numbering, the ASCII console log — signature, not noise.
 
-3. **Typography is rule-bound, not negotiable.** Inter for reading, JetBrains Mono for labeling code-shaped things — never reversed. Body sits around 16–18px with measure ≤ 75ch (`max-w-prose-app` = 38rem ≈ 65ch is correct). Leading scales with size: tight (`tracking-tight`, `letter-spacing: -0.02em`) for display, normal for body, never loose. Hierarchy reads from a glance: one h1 per page, descending h2/h3 by size *and* role, no skipped levels for "vibes." Numbers that compare are `tabular-nums`. Long-form prose uses `max-w-prose-app`, never full-bleed. These are not preferences — they are the structural integrity that lets the shell be loud.
+3. **Typography is rule-bound, not negotiable.** Inter for reading, JetBrains Mono for labeling code-shaped things — never reversed. Body sits around 16–18px with measure ≤ 75ch (`max-w-prose-app` = 38rem ≈ 65ch is correct). Leading scales with size: tight (`tracking-tight`, `letter-spacing: -0.02em`) for display, normal for body, never loose. Hierarchy reads from a glance: one h1 per page, descending h2/h3 by size _and_ role, no skipped levels for "vibes." Numbers that compare are `tabular-nums`. Long-form prose uses `max-w-prose-app`, never full-bleed. These are not preferences — they are the structural integrity that lets the shell be loud.
 
-4. **Mono is a semantic tool, not a style.** Use `font-mono` for things that *are* code-shaped: file paths, version strings, arXiv IDs, metric values, kbd, status badges, eyebrow labels, code-ish identifiers. **Never `font-mono` an English sentence a human reads.** Inter does the reading; JetBrains Mono does the labeling.
+4. **Mono is a semantic tool, not a style.** Use `font-mono` for things that _are_ code-shaped: file paths, version strings, arXiv IDs, metric values, kbd, status badges, eyebrow labels, code-ish identifiers. **Never `font-mono` an English sentence a human reads.** Inter does the reading; JetBrains Mono does the labeling.
 
 5. **Figure-first for research, list-first for OSS, prose-last for everything.** Visual artifacts (teaser videos, architecture diagrams, key-number strips) earn the top of the page when they exist. Long prose belongs after the user has decided to dig in. The home page hero is the only place prose leads.
 

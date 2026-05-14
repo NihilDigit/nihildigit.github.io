@@ -11,15 +11,15 @@ import { slugifyStr } from "./slugify";
 export function getPath(
   id: string,
   filePath: string | undefined,
-  includeBase = true
+  includeBase = true,
 ) {
   const pathSegments = filePath
     ?.replace(NOTES_PATH, "")
     .split("/")
-    .filter(path => path !== "")
-    .filter(path => !path.startsWith("_"))
+    .filter((path) => path !== "")
+    .filter((path) => !path.startsWith("_"))
     .slice(0, -1)
-    .map(segment => slugifyStr(segment));
+    .map((segment) => slugifyStr(segment));
 
   const basePath = includeBase ? "/notes" : "";
 

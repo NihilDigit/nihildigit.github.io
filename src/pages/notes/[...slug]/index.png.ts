@@ -9,11 +9,11 @@ export async function getStaticPaths() {
     return [];
   }
 
-  const posts = await getCollection("notes").then(p =>
-    p.filter(({ data }) => !data.draft && !data.ogImage)
+  const posts = await getCollection("notes").then((p) =>
+    p.filter(({ data }) => !data.draft && !data.ogImage),
   );
 
-  return posts.map(post => ({
+  return posts.map((post) => ({
     params: { slug: getPath(post.id, post.filePath, false) },
     props: post,
   }));
@@ -27,7 +27,9 @@ export const GET: APIRoute = async ({ props }) => {
     });
   }
 
-  const buffer = await generateOgImageForPost(props as CollectionEntry<"notes">);
+  const buffer = await generateOgImageForPost(
+    props as CollectionEntry<"notes">,
+  );
   return new Response(new Uint8Array(buffer), {
     headers: { "Content-Type": "image/png" },
   });
