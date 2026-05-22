@@ -26,6 +26,16 @@
     "repo": "NihilDigit/tokmato",
     "language": "TypeScript / Kotlin",
     "license": "AGPL-3.0",
+    "spotlight": false,
+    "order": 55
+  },
+  {
+    "id": "focuswell",
+    "name": "FocusWell",
+    "description": "Android-first, ADHD-friendly time accounting app. It turns daytime focus into a storable leisure reserve, so high-energy days can support low-energy days without streak pressure or progress anxiety.",
+    "repo": "NihilDigit/focuswell",
+    "language": "Kotlin / TypeScript",
+    "license": "",
     "spotlight": true,
     "order": 25
   },
@@ -38,6 +48,16 @@
     "license": "MIT",
     "spotlight": true,
     "order": 30
+  },
+  {
+    "id": "coding-agents-setup",
+    "name": "coding-agents-setup",
+    "description": "A modern local toolchain setup for coding agents, packaged as Windows and Linux setup scripts. It can install and configure development tools, shell helpers, skills layout, and Codex/Claude rule files generated from shared fragments.",
+    "repo": "NihilDigit/coding-agents-setup",
+    "language": "PowerShell / Shell",
+    "license": "",
+    "spotlight": true,
+    "order": 35
   },
   {
     "id": "writing-style",

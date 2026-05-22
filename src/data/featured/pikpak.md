@@ -7,7 +7,7 @@ eyebrow: "Open Source"
 order: 2
 status: "Contributing"
 statusVariant: live
-summary: "As an upstream contributor to Animeko, an open-source anime streaming app, I work on cloud download, platform support, and smaller UI/data-flow pieces across the app and adjacent repositories."
+summary: "As an upstream contributor to Animeko, an open-source anime streaming app, I work on cloud download, platform support, and smaller UI/data-flow pieces across the app."
 contributions:
   - status: done
     diffstat: "+3,054/-41"
@@ -30,8 +30,8 @@ contributions:
       - label: "workspace"
         href: "https://github.com/NihilDigit/animeko-woa64"
   - status: planned
-    label: "Touch-mode detection"
-    detail: "Planned support for detecting touch-capable 2-in-1 and touchscreen devices, then enabling touch-friendly layout and input affordances instead of treating them as plain desktop pointer environments."
+    label: "Danmaku timing refactor"
+    detail: "Planned refactor of the danmaku pipeline to address timing drift and offset handling, so comments stay aligned with playback across seeks, buffering, and source changes."
   - status: planned
     label: "Character detail wiring"
     detail: "Planned smaller upstream UI/data-flow work around connecting character detail pages into the app."

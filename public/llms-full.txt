@@ -114,24 +114,38 @@ A Waybar widget that surfaces remaining quota and reset time for Claude Code, Co
 - WOA64 anitorrent PR: https://github.com/open-ani/anitorrent/pull/3
 - WOA64 workspace: https://github.com/NihilDigit/animeko-woa64
 
-Animeko is an open-source anime streaming app. Shibo Liu contributes upstream and adjacent repository work rather than owning the main project.
+Animeko is an open-source anime streaming app. Shibo Liu contributes upstream rather than owning the main project.
 
 Current contribution list:
 
 - PikPak cloud offline-download: merged upstream, +3,054/-41 diffstat. Adds a cloud-backed alternative to local BitTorrent, with HTTPS stream handoff, transparent fallback, credential handling, and a reusable Kotlin Multiplatform SDK extracted from the work.
 - WOA64 build support: active WIP. Workaround track for running Animeko on Windows on Arm64 today, upstreaming the mediamp FFmpeg runtime piece while keeping a known-good workspace that can produce portable zip builds.
-- Touch-mode detection: planned support for detecting touch-capable 2-in-1 and touchscreen devices, then enabling touch-friendly layout and input affordances instead of treating them as plain desktop pointer environments.
+- Danmaku timing refactor: planned. Refactor of the danmaku pipeline to address timing drift and offset handling, so comments stay aligned with playback across seeks, buffering, and source changes.
 - Character detail wiring: planned smaller upstream UI/data-flow work around connecting character detail pages into the app.
+
+### Open-source community notes
+
+Small, targeted upstream contributions and bug reports outside Shibo Liu's own repositories, collected separately from long-running project work.
+
+- pikpakcli time-range download PR: https://github.com/52funny/pikpakcli/pull/64
+- llama.cpp CJK tool-call issue: https://github.com/ggml-org/llama.cpp/issues/19391
+
+Current contribution list:
+
+- pikpakcli time-range download: merged upstream, +496/-140 diffstat. Adds a --time-range option for downloading a clipped segment from a single remote video through ffmpeg stream copy, with tests for parsing, output names, media URL selection, and missing-ffmpeg errors.
+- llama.cpp CJK tool-call issue: closed upstream issue. Diagnosed a llama.cpp CJK tool-call history pollution bug around ensure_ascii=true argument serialization, in the parser/tool-call subsystem later reshaped by the autoparser refactor (https://github.com/ggml-org/llama.cpp/pull/18675).
 
 ## Selected Open Source
 
 - renpak — https://github.com/NihilDigit/renpak — Rust, MPL-2.0. AVIF compression for Ren'Py visual novel archives. Typically shrinks image data by 4–5× without forking the engine; games decode AVIF transparently at runtime via Ren'Py's standard file_open_callback.
-- tokmato — https://github.com/NihilDigit/tokmato — TypeScript / Kotlin, AGPL-3.0. Personal token-economy pomodoro app. Focus and health behaviors earn auditable tokens; tokens recharge a shared time pool used for entertainment, snacks, and wishlist redemption. Includes multi-device sync, Web Push, and Android relay reminders.
+- FocusWell — https://github.com/NihilDigit/focuswell — Kotlin / TypeScript. Android-first, ADHD-friendly time accounting app. It turns daytime focus into a storable leisure reserve, so high-energy days can support low-energy days without streak pressure or progress anxiety.
 - pikpak-kotlin — https://github.com/NihilDigit/pikpak-kotlin — Kotlin, MIT. Kotlin Multiplatform SDK for PikPak cloud storage. Handles session persistence, captcha auth, rate limiting, and resumable uploads. Extracted from the Animeko PikPak work.
+- coding-agents-setup — https://github.com/NihilDigit/coding-agents-setup — PowerShell / Shell. A modern local toolchain setup for coding agents, packaged as Windows and Linux setup scripts. It can install and configure development tools, shell helpers, skills layout, and Codex/Claude rule files generated from shared fragments.
 
 ## Other Projects
 
 - shulker — https://github.com/NihilDigit/shulker — Rust, MIT. TUI for a friend-group Minecraft server: whitelist, ops, world switching, config editing, backups, chunk pre-generation, and SakuraFrp tunnel control.
+- tokmato — https://github.com/NihilDigit/tokmato — TypeScript / Kotlin, AGPL-3.0. Personal token-economy pomodoro app. Focus and health behaviors earn auditable tokens; tokens recharge a shared time pool used for entertainment, snacks, and wishlist redemption. Includes multi-device sync, Web Push, and Android relay reminders.
 - writing-style — https://github.com/NihilDigit/writing-style — Markdown, MIT. Agent skill for prose style checks: register matching, no translation smell, no marketing voice, and no AI-essay phrasing in Chinese and English.
 - csync — https://github.com/NihilDigit/csync — JavaScript, MIT. Chrome extension that syncs cookies and localStorage from normal windows to incognito for configured sites.
 - DeepSeek-Structured-Output-for-LangChain — https://github.com/NihilDigit/DeepSeek-Structured-Output-for-LangChain — Python, MIT. Small compatibility patch for using structured output with DeepSeek models through LangChain's ChatOpenAI interface.

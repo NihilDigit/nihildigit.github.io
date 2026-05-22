@@ -37,10 +37,17 @@ const contributionStatusLabel = {
   done: "Merged",
   active: "Active",
   planned: "Planned",
+  closed: "Closed",
 } as const;
 
 const splitDiffstat = (diffstat: string) =>
   diffstat.match(/^(\+[^/]+)(\/)(-.+)$/);
+
+const inlineLinks = (text: string) =>
+  text.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener" class="underline decoration-dotted underline-offset-4 hover:text-accent">$1</a>'
+  );
 ---
 
 <Layout>
@@ -277,6 +284,8 @@ const splitDiffstat = (diffstat: string) =>
                               "text-muted-foreground",
                             item.status === "planned" &&
                               "text-muted-foreground",
+                            item.status === "closed" &&
+                              "text-muted-foreground",
                           ]}
                         >
                           {contributionStatusLabel[item.status]}
@@ -298,9 +307,10 @@ const splitDiffstat = (diffstat: string) =>
                           </span>
                         )}
                       </div>
-                      <p class="mt-1 text-sm leading-relaxed text-foreground/80">
-                        {item.detail}
-                      </p>
+                      <p
+                        class="mt-1 text-sm leading-relaxed text-foreground/80"
+                        set:html={inlineLinks(item.detail)}
+                      />
                     </div>
                   </li>
                 );

@@ -72,7 +72,7 @@ const papers = defineCollection({
 });
 
 const featured = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: `./${FEATURED_PATH}` }),
+  loader: glob({ pattern: "**/[^_]*.md", base: `./${FEATURED_PATH}` }),
   schema: z.object({
     title: z.string(),
     titleHref: z.string().optional(),
@@ -98,7 +98,7 @@ const featured = defineCollection({
     contributions: z
       .array(
         z.object({
-          status: z.enum(["done", "active", "planned"]),
+          status: z.enum(["done", "active", "planned", "closed"]),
           diffstat: z.string().default(""),
           label: z.string(),
           detail: z.string(),
