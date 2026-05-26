@@ -1,4 +1,6 @@
 ---
+import ProjectVideo from "@/components/ProjectVideo.astro";
+
 interface Props {
   src: string;
   poster?: string;
@@ -20,118 +22,14 @@ const {
 } = Astro.props;
 ---
 
-<!--
-  bg-black / text-white literals are deliberate. The play overlay is video
-  chrome — universally readable as media UI regardless of theme. Tokenizing
-  it through --background/--foreground would (incorrectly) make it follow
-  the site's light/dark theme.
--->
-<figure class="w-full">
-  <div
-    data-anvil-player
-    data-video-src={src}
-    data-video-poster={poster ?? ""}
-    data-video-aspect={aspectRatio}
-    data-video-rounded={rounded}
-    class:list={[
-      "group relative w-full cursor-pointer overflow-hidden border border-border bg-muted transition-colors hover:border-accent/40",
-      rounded,
-    ]}
-    style={`aspect-ratio: ${aspectRatio};`}
-    role="button"
-    tabindex="0"
-    aria-label="Play teaser video"
-  >
-    {
-      poster && (
-        <img
-          src={poster}
-          alt=""
-          class="h-full w-full object-cover"
-          loading={priority ? "eager" : "lazy"}
-          fetchpriority={priority ? "high" : "auto"}
-          decoding="async"
-        />
-      )
-    }
-    <div
-      class="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/45"
-    >
-      <span
-        class="inline-flex items-center gap-2 rounded-md bg-black/70 px-4 py-2 font-mono text-xs uppercase tracking-widest text-white backdrop-blur"
-      >
-        <svg
-          class="h-3 w-3"
-          viewBox="0 0 12 12"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path d="M2 1l9 5-9 5z"></path>
-        </svg>
-        Play teaser · {fileSize}
-      </span>
-    </div>
-  </div>
-  {
-    caption && (
-      <figcaption class="mt-3 text-center font-mono text-xs text-muted-foreground">
-        {caption}
-      </figcaption>
-    )
-  }
-</figure>
-
-<script>
-  function initAnvilPlayer() {
-    const triggers = document.querySelectorAll<HTMLElement>(
-      "[data-anvil-player]"
-    );
-    triggers.forEach(trigger => {
-      if (trigger.dataset.bound === "true") return;
-      trigger.dataset.bound = "true";
-
-      const activate = () => {
-        const src = trigger.dataset.videoSrc;
-        const poster = trigger.dataset.videoPoster;
-        const aspect = trigger.dataset.videoAspect ?? "2780 / 1264";
-        const rounded = trigger.dataset.videoRounded ?? "rounded-md";
-        if (!src) return;
-
-        // The user just clicked, so a single autoplay is consented motion.
-        // The infinite loop is what `prefers-reduced-motion: reduce` is meant
-        // to suppress — let the demo play once and stop for those users.
-        const reducedMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)"
-        ).matches;
-
-        const video = document.createElement("video");
-        video.src = src;
-        if (poster) video.poster = poster;
-        video.controls = true;
-        video.autoplay = true;
-        video.muted = true;
-        video.loop = !reducedMotion;
-        video.playsInline = true;
-        video.preload = "auto";
-        video.className = `w-full ${rounded} border border-border bg-black`;
-        video.style.aspectRatio = aspect;
-        trigger.replaceWith(video);
-        video.play().catch(() => {
-          /* user-gesture should already be present from click */
-        });
-      };
-
-      trigger.addEventListener("click", activate);
-      trigger.addEventListener("keydown", e => {
-        const k = (e as KeyboardEvent).key;
-        if (k === "Enter" || k === " ") {
-          e.preventDefault();
-          activate();
-        }
-      });
-    });
-  }
-
-  initAnvilPlayer();
-  document.addEventListener("astro:page-load", initAnvilPlayer);
-</script>
+<ProjectVideo
+  src={src}
+  poster={poster}
+  fileSize={fileSize}
+  aspectRatio={aspectRatio}
+  rounded={rounded}
+  caption={caption}
+  priority={priority}
+  ariaLabel="Play teaser video"
+  ctaLabel="Play teaser"
+/>

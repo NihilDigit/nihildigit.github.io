@@ -33,56 +33,89 @@ import { SITE } from "@/config";
 
         <p>
           <a
-            href="/anvil"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >ANVIL</a> grew out of two threads I'd been pulling on: I'm
-          picky about frame rate, and I'd been tinkering with mobile NPUs.
-          Standard flow-based VFI breaks down under INT8 quantization, so
-          I went looking for alternatives and landed on reusing the H.264
-          decoder's motion vectors instead of learning optical flow. The
-          paper is under review at IEEE TCSVT; the project page collects
-          the training code, the Android demo, and the arXiv preprint.
-        </p>
-
-        <p>
-          <a
             href="https://github.com/NihilDigit/RAFNet"
             target="_blank"
             rel="noopener"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >RAFNet</a> was my first academic project. We built a classifier
-          for student behavior in crowded classrooms on top of GroupRec, an
-          existing hypergraph encoder, with a gated fusion head; I ran the
-          experiments. It's under review at The Visual Computer.
+          >RAFNet</a> was my first academic project, and also where I
+          learned computer vision by doing it. We built a classifier for
+          student behavior in crowded classrooms on top of
+          <a
+            href="https://github.com/boycehbz/GroupRec"
+            target="_blank"
+            rel="noopener"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >GroupRec</a>, an existing hypergraph encoder, with a gated fusion
+          head; I ran the experiments. It's under review at The Visual
+          Computer.
         </p>
 
         <p>
-          A lot of what I build is just whatever interests me &mdash;
-          luckily, some of it makes the world a slightly better place.
-          The most visible is
+          <a
+            href="/tongxing"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >TongXing</a> ran in parallel with that work, but from the
+          deployment side. It is a 4C2026 competition project and an
+          assistive system for blind and low-vision users, with NPU-based
+          obstacle warning, offline speech, and a local LLM agent for
+          travel services. The project made the potential of mobile NPUs
+          concrete for me, and it made engineering optimization feel like a
+          field with real room for research and product judgment.
+        </p>
+
+        <p>
+          <a
+            href="/anvil"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >ANVIL</a> came out of the overlap between those two tracks:
+          RAFNet gave me a practical CV foundation, while TongXing made the
+          NPU constraints concrete. Standard flow-based VFI breaks down
+          under INT8 quantization, so I looked for a graph that fit the
+          accelerator instead of forcing the accelerator to imitate a
+          desktop model. The result reuses H.264 decoder motion vectors
+          instead of learning optical flow. The paper is under review at
+          IEEE TCSVT; the project page collects the training code, the
+          Android demo, and the arXiv preprint.
+        </p>
+
+        <p>
           <a
             href="https://github.com/NihilDigit/waybar-ai-usage"
             target="_blank"
             rel="noopener"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
           >waybar-ai-usage</a>, a Waybar widget that shows quota and reset
-          time for Claude Code, Codex CLI, Copilot, and OpenCode Zen. It's
-          packaged on AUR. I also keep
+          time for Claude Code, Codex CLI, Copilot, and OpenCode Zen, began
+          as a small tool for my own desktop. It became my first real open
+          source maintenance experience after users started filing issues
+          and PRs, including multi-browser support and support for providers
+          they used themselves. It's packaged on AUR.
+        </p>
+
+        <p>
+          I also keep
           <a
             href="https://github.com/NihilDigit/coding-agents-setup"
             target="_blank"
             rel="noopener"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >coding-agents-setup</a>, a bootstrap kit that sets up local
-          coding-agent environments: tools, shell helpers, skills layout,
-          and generated Codex/Claude rule files. I also contribute upstream to
+          >coding-agents-setup</a>, a personal setup repository for coding agents.
+          It is where I keep the tools, shell helpers, skills layout, and
+          Codex/Claude rule files that I actually use and keep testing
+          across my own machines.
+        </p>
+
+        <p>
           <a
             href="https://github.com/open-ani/animeko"
             target="_blank"
             rel="noopener"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >open-ani/animeko</a>, mostly around cloud download, Windows on
-          Arm64 support, and smaller UI/data-flow pieces.
+          >open-ani/animeko</a> is an app I use continuously, so my
+          contributions tend to start from real friction: cloud download,
+          Windows on Arm64 support, HLS playback behavior, and smaller
+          UI/data-flow pieces. I expect to keep contributing to it over a
+          longer horizon.
         </p>
 
         <p>
@@ -99,11 +132,10 @@ import { SITE } from "@/config";
             target="_blank"
             rel="noopener"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >FocusWell</a> is one of the more personal ones &mdash; an
-          Android-first time accounting app I wrote for my own attention
-          and energy patterns. It is also a good example of how I tend to
-          build small tools around real frictions in my day-to-day life,
-          instead of leaving those problems as vague annoyances.
+          >FocusWell</a> is one of the more personal ones: an Android-first
+          time accounting app I wrote for my own attention and energy
+          patterns. It turns real day-to-day friction into a tool I can
+          actually use.
         </p>
       </section>
 
@@ -176,16 +208,6 @@ import { SITE } from "@/config";
               target="_blank"
               rel="noopener"
               class="hover:text-accent">@NihilDigit</a
-            >
-          </dd>
-
-          <dt class="text-muted-foreground">Zhihu</dt>
-          <dd>
-            <a
-              href="https://www.zhihu.com/people/stars-50-20"
-              target="_blank"
-              rel="noopener"
-              class="hover:text-accent">stars-50-20</a
             >
           </dd>
         </dl>

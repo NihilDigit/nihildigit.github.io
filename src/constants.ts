@@ -2,7 +2,6 @@ import type { Props } from "astro";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconTelegram from "@/assets/icons/IconTelegram.svg";
 import IconOrcid from "@/assets/icons/IconOrcid.svg";
-import IconZhihu from "@/assets/icons/IconZhihu.svg";
 import IconBrandX from "@/assets/icons/IconBrandX.svg";
 import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
 import IconFacebook from "@/assets/icons/IconFacebook.svg";
@@ -29,12 +28,6 @@ export const SOCIALS: Social[] = [
     href: "https://t.me/NihilDigit",
     linkTitle: `${SITE.author} on Telegram`,
     icon: IconTelegram,
-  },
-  {
-    name: "Zhihu",
-    href: "https://www.zhihu.com/people/stars-50-20",
-    linkTitle: `${SITE.author} on Zhihu`,
-    icon: IconZhihu,
   },
   {
     name: "ORCID",

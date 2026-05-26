@@ -82,6 +82,12 @@ const featured = defineCollection({
     eyebrowHref: z.string().optional(),
     order: z.number().default(0),
     status: z.string().optional(),
+    statusLink: z
+      .object({
+        label: z.string(),
+        href: z.string(),
+      })
+      .optional(),
     statusVariant: z.enum(["live", "in-progress", "archived"]).optional(),
     summary: z.string(),
     metaTags: z.array(z.string()).default([]),

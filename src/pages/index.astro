@@ -48,6 +48,8 @@ const inlineLinks = (text: string) =>
     /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
     '<a href="$2" target="_blank" rel="noopener" class="underline decoration-dotted underline-offset-4 hover:text-accent">$1</a>'
   );
+
+const isExternalHref = (href: string) => /^https?:\/\//.test(href);
 ---
 
 <Layout>
@@ -70,7 +72,16 @@ const inlineLinks = (text: string) =>
         >NCST</a>
       </p>
 
-      <div class="hero-rise hero-rise-2 mt-8 flex items-center gap-4">
+      <div class="hero-rise hero-rise-2 mt-8 flex flex-wrap items-center gap-3">
+        <a
+          href="mailto:spencerliu@stu.ncst.edu.cn"
+          class="inline-flex items-baseline gap-2 rounded-md border border-border bg-muted/30 px-3.5 py-2 text-sm transition-colors hover:border-accent hover:text-accent"
+        >
+          <span class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            School email
+          </span>
+          <span class="font-mono">spencerliu@stu.ncst.edu.cn</span>
+        </a>
         <Socials />
       </div>
     </section>
@@ -201,8 +212,8 @@ const inlineLinks = (text: string) =>
               {entry.data.titleHref ? (
                 <a
                   href={entry.data.titleHref}
-                  target="_blank"
-                  rel="noopener"
+                  target={isExternalHref(entry.data.titleHref) ? "_blank" : undefined}
+                  rel={isExternalHref(entry.data.titleHref) ? "noopener" : undefined}
                   class="transition-colors hover:text-accent"
                 >
                   {entry.data.title}
@@ -233,6 +244,16 @@ const inlineLinks = (text: string) =>
             >
               <span class="badge-dot" />
               {entry.data.status}
+              {entry.data.statusLink && (
+                <a
+                  href={entry.data.statusLink.href}
+                  target="_blank"
+                  rel="noopener"
+                  class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+                >
+                  {entry.data.statusLink.label}
+                </a>
+              )}
             </span>
           )}
 
@@ -323,21 +344,26 @@ const inlineLinks = (text: string) =>
               {entry.data.badges.map(b =>
                 b.label ? (
                   b.href ? (
-                    <a
-                      href={b.href}
-                      target="_blank"
-                      rel="noopener"
-                      class="font-mono text-xs text-muted-foreground underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
-                    >
-                      {b.label} ↗
-                    </a>
+                <a
+                  href={b.href}
+                  target={isExternalHref(b.href) ? "_blank" : undefined}
+                  rel={isExternalHref(b.href) ? "noopener" : undefined}
+                  class="font-mono text-xs text-muted-foreground underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+                >
+                  {b.label}{isExternalHref(b.href) ? " ↗" : ""}
+                </a>
                   ) : (
                     <span class="font-mono text-xs text-muted-foreground">
                       {b.label}
                     </span>
                   )
                 ) : b.href && b.src ? (
-                  <a href={b.href} target="_blank" rel="noopener" aria-label={b.alt}>
+                  <a
+                    href={b.href}
+                    target={isExternalHref(b.href) ? "_blank" : undefined}
+                    rel={isExternalHref(b.href) ? "noopener" : undefined}
+                    aria-label={b.alt}
+                  >
                     <img src={b.src} alt={b.alt ?? ""} class="h-5" />
                   </a>
                 ) : b.src ? (
@@ -353,11 +379,12 @@ const inlineLinks = (text: string) =>
             {entry.data.links.map(l => (
               <a
                 href={l.href}
-                target="_blank"
-                rel="noopener"
+                target={isExternalHref(l.href) ? "_blank" : undefined}
+                rel={isExternalHref(l.href) ? "noopener" : undefined}
                 class="inline-flex items-center gap-1.5 rounded-md border border-border px-3.5 py-1.5 text-sm font-mono hover:border-accent hover:text-accent"
               >
-                {l.label} <span aria-hidden>↗</span>
+                {l.label}
+                {isExternalHref(l.href) && <span aria-hidden>↗</span>}
               </a>
             ))}
           </div>

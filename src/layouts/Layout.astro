@@ -49,10 +49,6 @@ const structuredData = {
 ---
 
 <!doctype html>
-<!--
-  btw, i use arch.
-  https://archlinux.org/
--->
 <html
   dir={SITE.dir}
   lang=`${SITE.lang ?? "en"}`
@@ -166,12 +162,6 @@ const structuredData = {
 
         // Set theme immediately to prevent flash
         document.firstElementChild?.setAttribute("data-theme", themeValue);
-
-        // Easter egg
-        console.log(
-          "%c        /\\\n       /  \\\n      /\\   \\\n     /  __  \\\n    /  (  )  \\\n   / __|  |__ \\\n  //          \\\\\n /_-          -_\\\n\nbtw, i use arch.",
-          "color:#1793D1;font:13px/1.3 ui-monospace,Menlo,Consolas,monospace"
-        );
 
         // Export minimal API for external script
         window.theme = {

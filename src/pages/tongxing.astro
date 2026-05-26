@@ -1,0 +1,732 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import ProjectVideo from "@/components/ProjectVideo.astro";
+import ScrollableRow from "@/components/ScrollableRow.astro";
+
+const safetyDemos = [
+  {
+    title: "Non-standard obstacle",
+    src: "/tongxing/videos/pole.mp4",
+    poster: "/tongxing/posters/pole.jpg",
+    caption:
+      "A pole-like obstacle missed by detection is recovered through segmentation.",
+  },
+  {
+    title: "Street walking",
+    src: "/tongxing/videos/street.mp4",
+    poster: "/tongxing/posters/street.jpg",
+    caption:
+      "Static roadside objects stay quiet while approaching pedestrians are upgraded.",
+  },
+  {
+    title: "Crowded pedestrian flow",
+    src: "/tongxing/videos/pedestrian.mp4",
+    poster: "/tongxing/posters/pedestrian.jpg",
+    caption:
+      "Multi-target tracking keeps object identities stable, so warnings do not flicker on every noisy frame.",
+  },
+];
+
+const keyNumbers = [
+  {
+    value: "35.16 ms",
+    caption: "Mean SafetyCore latency measured on 1,636 walking frames",
+  },
+  {
+    value: "11 tools",
+    caption: "AgentCore tools for navigation, ride hailing, transit, weather, and vision",
+  },
+  {
+    value: "6 models",
+    caption: "NPU vision, GPU LLM, and CPU offline speech on one phone",
+  },
+];
+
+const closedLoopGaps = [
+  {
+    title: "Perception",
+    copy: "A cane only covers near-ground contact. Hanging signs, poles, parked vehicles, and crossing traffic remain outside its sensing range.",
+  },
+  {
+    title: "Risk",
+    copy: "Binary obstacle signals do not tell the user what the object is, whether it is approaching, or how urgently to react.",
+  },
+  {
+    title: "Latency",
+    copy: "Cloud vision can describe scenes, but 377-1300+ ms is too slow for collision warnings during walking.",
+  },
+  {
+    title: "Services",
+    copy: "Navigation, ride hailing, ticket queries, weather, and visual description are scattered across touch-first apps.",
+  },
+];
+
+const edgeRationale = [
+  {
+    title: "Compute is already in the phone",
+    copy: "Affordable Android phones increasingly ship with NPUs and GPUs that sit idle for most daily tasks. Assistive perception is a good use for that local compute.",
+  },
+  {
+    title: "No extra hardware changes adoption",
+    copy: "The marginal deployment cost is close to zero when the system reuses a phone and Bluetooth earphones instead of requiring smart glasses or a special cane.",
+  },
+  {
+    title: "Local is the right safety boundary",
+    copy: "Obstacle warning should not depend on uplink latency, coverage, or server availability. Keeping the safety path on device also keeps camera data local.",
+  },
+  {
+    title: "Agentic UI is an accessibility layer",
+    copy: "A tool-using voice agent can turn touch-first services into spoken workflows, as long as the tool surface is constrained enough for a small local model.",
+  },
+];
+
+const designPrinciples = [
+  {
+    title: "No extra hardware",
+    copy: "Chest-mounted phone, Bluetooth earphones, no smart glasses, no electronic cane dependency.",
+  },
+  {
+    title: "Safety stays local",
+    copy: "Obstacle warning, ASR, and TTS keep running in tunnels, elevators, and weak-signal areas.",
+  },
+  {
+    title: "Cloud is optional",
+    copy: "Scene description can call a cloud vision model, but the safety path does not depend on it.",
+  },
+];
+
+const engineeringJudgments = [
+  {
+    title: "Post-fusion over joint training",
+    copy: "YOLOX, MiDaS, and FFNet stay independently quantized and replaceable. The cost is more fusion code; the benefit is a deployable pipeline without a custom training set.",
+  },
+  {
+    title: "Agent design before prompting",
+    copy: "A 1.7B model is not asked to copy long POI IDs or inspect raw service schemas. ComboTool, short LID mapping, OutputDistiller, and Stem Context reduce the task before prompting begins.",
+  },
+  {
+    title: "Hardware isolation over raw peak speed",
+    copy: "Vision runs on Hexagon NPU, Qwen3-1.7B runs on Adreno GPU, and offline speech stays on CPU. The design protects the 15 Hz safety loop while the assistant is thinking.",
+  },
+];
+
+const modelDeployments = [
+  {
+    unit: "Hexagon NPU",
+    workload: "YOLOX, MiDaS, FFNet, MobileNetV2",
+    detail: "W8A8 TFLite models handle detection, depth, segmentation, and tracking features.",
+  },
+  {
+    unit: "Adreno GPU",
+    workload: "Qwen3-1.7B",
+    detail: "Q4_0 GGUF runs through a llama.cpp OpenCL backend, isolated from the vision path.",
+  },
+  {
+    unit: "CPU",
+    workload: "Paraformer ASR, TTS, fusion glue",
+    detail: "Offline speech and lightweight control code keep the service usable without network.",
+  },
+];
+
+const safetyPipeline = [
+  {
+    title: "Scale recovery",
+    copy: "MiDaS gives relative depth, so SafetyCore uses chest-mounted camera geometry and FFNet ground pixels to recover a usable scene scale.",
+  },
+  {
+    title: "Dual-path extraction",
+    copy: "YOLOX covers people and vehicles. FFNet adds poles, fences, walls, and other non-standard obstacles that object detection misses.",
+  },
+  {
+    title: "Tracking first",
+    copy: "DeepSORT-style association keeps identities stable before any warning is spoken, so the user hears sustained risks rather than per-frame noise.",
+  },
+  {
+    title: "TTC warning",
+    copy: "Distance and approach speed produce HIGH or CRITICAL warnings. A short vote window suppresses single-frame spikes.",
+  },
+];
+
+const agentMechanisms = [
+  {
+    title: "ComboTool",
+    copy: "Multi-step MCP calls are wrapped as one semantic action, such as find_nearby plus navigate_to or estimate plus call_taxi.",
+  },
+  {
+    title: "Short LID",
+    copy: "Long POI IDs are mapped to L1, L2, L3. The LLM copies short identifiers; the app keeps the real IDs internally.",
+  },
+  {
+    title: "OutputDistiller",
+    copy: "Tool outputs keep only fields needed for the next decision, such as names, distances, IDs, and short status text.",
+  },
+  {
+    title: "Stem Context",
+    copy: "System prompt and tool definitions stay warm in KV Cache, so each new command only prefills the changed task context.",
+  },
+];
+
+const validationRows = [
+  {
+    scope: "SafetyCore",
+    evidence: "1,636 effective frames from three self-collected walking videos",
+    result: "35.16 ms mean, P95 47.07 ms, P99 54.02 ms",
+  },
+  {
+    scope: "Scale recovery",
+    evidence: "Street and alley scenes with different ground geometry",
+    result: "Recovered distance trends stay comparable enough to reuse warning thresholds",
+  },
+  {
+    scope: "AgentCore",
+    evidence: "Scripted navigation, ride hailing, query, vision, and control flows",
+    result: "Tool routing stayed stable across the tested main paths",
+  },
+  {
+    scope: "Full pipeline",
+    evidence: "SafetyCore alone vs. SafetyCore plus AgentCore on Snapdragon 8 Gen 3",
+    result: "NPU vision and GPU LLM run concurrently with CPU P95 at 51.9%",
+  },
+];
+
+const interfaceScreens = [
+  {
+    title: "Onboarding",
+    src: "/tongxing/screens/onboarding.png",
+    alt: "TongXing onboarding feature screen",
+    copy: "The first-run flow explains the three operating assumptions: live obstacle sensing, voice control, and a persistent floating state.",
+  },
+  {
+    title: "Service plugins",
+    src: "/tongxing/screens/services.jpg",
+    alt: "TongXing service plugin settings screen",
+    copy: "External services are exposed as switchable plugins, so unavailable providers do not pollute the tool list shown to the assistant.",
+  },
+  {
+    title: "Preferences",
+    src: "/tongxing/screens/preferences.jpg",
+    alt: "TongXing preference settings screen",
+    copy: "Speech speed, speech pitch, vibration, and obstacle-engine toggles remain visible as normal app settings rather than hidden debug flags.",
+  },
+  {
+    title: "Safety debug view",
+    src: "/tongxing/screens/safety-debug.png",
+    alt: "TongXing SafetyCore debug view with obstacle overlays",
+    copy: "The internal view overlays class, track ID, distance, and warning level on top of the live camera stream.",
+  },
+];
+
+const agentScreens = [
+  {
+    title: "Ride status",
+    src: "/tongxing/screens/call-taxi-result.jpg",
+    alt: "TongXing ride-hailing status screenshot",
+  },
+  {
+    title: "Train query",
+    src: "/tongxing/screens/train.jpg",
+    alt: "TongXing train query result screenshot",
+  },
+  {
+    title: "Weather",
+    src: "/tongxing/screens/weather.jpg",
+    alt: "TongXing weather query result screenshot",
+  },
+  {
+    title: "Screen reading",
+    src: "/tongxing/screens/screen-reading-result.jpg",
+    alt: "TongXing screen description screenshot",
+  },
+];
+
+---
+
+<Layout
+  title="TongXing edge agentic assistive system"
+  description="TongXing is an edge assistive system for blind and low-vision users, combining local NPU obstacle warning with an on-device LLM agent for voice-driven travel services."
+>
+  <Header />
+  <main id="main-content" class="app-layout">
+    <article class="pt-10 pb-20">
+      <header class="pb-10">
+        <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Edge AI for assistive mobility on mobile NPU
+        </p>
+        <h1 class="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+          TongXing: local perception and a voice agent on one phone
+        </h1>
+        <p class="mt-4 max-w-prose-app text-lg leading-relaxed text-foreground/80">
+          The name means walking with the user. A chest-mounted Android phone becomes the assistive
+          computer: NPU obstacle warning, offline speech, and a local LLM agent that routes spoken
+          requests to navigation, ride hailing, transit, weather, and visual-description tools.
+        </p>
+      </header>
+
+      <section class="mb-12 rounded-md border border-border bg-muted/30 p-5">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          TL;DR
+        </h2>
+        <p class="mt-2 max-w-5xl text-lg text-foreground">
+          TongXing is built around a systems bet: mobile NPUs make assistive computing practical to
+          deploy through software. SafetyCore keeps semantic obstacle warning on the phone NPU at
+          35.16 ms average latency. AgentCore runs Qwen3-1.7B locally on the GPU and turns daily
+          travel services into voice tools. Offline speech stays on the CPU path; cloud vision is
+          only an optional description path.
+        </p>
+      </section>
+
+      <p
+        class="mb-14 inline-flex rounded-md border border-border bg-muted/20 px-3 py-2 text-sm text-muted-foreground"
+      >
+        TongXing is currently a{" "}
+        <a
+          href="https://jsjds.blcu.edu.cn/"
+          target="_blank"
+          rel="noopener"
+          class="mx-1 text-foreground underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+        >
+          4C2026
+        </a>{" "}
+        competition project; the implementation repository is not public.
+      </p>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Key Numbers
+        </h2>
+        <dl class="grid grid-cols-1 gap-6 border-t border-border pt-6 sm:grid-cols-3">
+          {keyNumbers.map(n => (
+            <div>
+              <dt class="metric-value text-3xl text-foreground">{n.value}</dt>
+              <dd class="mt-2 text-sm text-muted-foreground">{n.caption}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section class="mb-14">
+        <div class="mb-5 flex flex-wrap items-baseline justify-between gap-3">
+          <div>
+            <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              Safety Evidence
+            </h2>
+            <p class="mt-2 max-w-prose-app text-sm leading-relaxed text-muted-foreground">
+              Three walking clips from the test assets. Each one exercises a different failure mode:
+              non-standard obstacles, moving street traffic, and crowded pedestrian flow.
+            </p>
+          </div>
+        </div>
+        <ScrollableRow ariaLabel="TongXing SafetyCore demo videos">
+          {safetyDemos.map(demo => (
+            <section class="flex h-[34rem] w-[22rem] shrink-0 flex-col rounded-md border border-border bg-muted/20 p-3 sm:w-[26rem]">
+              <ProjectVideo
+                src={demo.src}
+                poster={demo.poster}
+                aspectRatio="1302 / 1280"
+                ariaLabel={`Play ${demo.title} demo`}
+                ctaLabel="Play demo"
+              />
+              <h3 class="mt-4 text-lg font-semibold tracking-tight">{demo.title}</h3>
+              <p class="mt-2 max-h-20 overflow-hidden text-sm leading-relaxed text-foreground/80">
+                {demo.caption}
+              </p>
+            </section>
+          ))}
+        </ScrollableRow>
+      </section>
+
+      <section class="mb-14 max-w-prose-app">
+        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          The Problem
+        </h2>
+        <h3 class="mb-4 text-2xl font-semibold tracking-tight">
+          The missing piece is not another description app. It is an on-device safety loop.
+        </h3>
+        <div class="space-y-4 text-base leading-relaxed text-foreground">
+          <p>
+            A white cane is reliable, but its sensing range is short and mostly near-ground. It
+            does not tell the user whether the object ahead is a parked vehicle, an approaching
+            pedestrian, a pole, or a hanging obstacle.
+          </p>
+          <p>
+            Cloud vision systems can describe rich scenes, but their latency and network dependency
+            are wrong for collision warnings. Safety alerts have to survive tunnels, elevators, and
+            weak signal areas.
+          </p>
+          <p>
+            Everyday travel also needs service orchestration. Navigation, taxi, train, flight,
+            weather, and visual description need one voice loop that can recover from intermediate
+            choices without forcing the user back to the screen.
+          </p>
+        </div>
+        <div class="mt-8 grid gap-4 border-t border-border pt-6 sm:grid-cols-2">
+          {closedLoopGaps.map(gap => (
+            <section>
+              <h4 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                {gap.title}
+              </h4>
+              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{gap.copy}</p>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Why Edge
+        </h2>
+        <div class="grid gap-5 border-t border-border pt-6 md:grid-cols-2">
+          {edgeRationale.map(item => (
+            <section>
+              <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{item.copy}</p>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Design Constraints
+        </h2>
+        <div class="grid gap-5 border-t border-border pt-6 md:grid-cols-3">
+          {designPrinciples.map(principle => (
+            <section>
+              <h3 class="text-lg font-semibold tracking-tight">{principle.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-foreground/80">
+                {principle.copy}
+              </p>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          System
+        </h2>
+        <figure class="rounded-md border border-border bg-muted/20 p-4 sm:p-6">
+          <img
+            src="/tongxing/figures/system-overview-en.png"
+            alt="TongXing system overview showing SafetyCore, AgentCore, user interaction, and audio priority"
+            class="w-full dark:brightness-90"
+            loading="lazy"
+          />
+          <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
+            <span class="font-mono text-xs uppercase tracking-widest">Fig. 1: System overview.</span>
+            SafetyCore handles local perception and warning priority. AgentCore handles voice intent,
+            service tools, and multi-step assistive workflows.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Architecture
+        </h2>
+        <figure class="rounded-md border border-border bg-muted/20 p-4 sm:p-6">
+          <img
+            src="/tongxing/figures/tech-pipeline-en.png"
+            alt="TongXing architecture diagram for SafetyCore, AgentCore, and voice interaction"
+            class="w-full dark:brightness-90"
+            loading="lazy"
+          />
+          <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
+            <span class="font-mono text-xs uppercase tracking-widest">Fig. 2: Architecture.</span>
+            SafetyCore, AgentCore, and the voice loop are split across NPU, GPU, and CPU so the
+            warning path stays responsive while assistant tasks run.
+          </figcaption>
+        </figure>
+        <div class="mt-6 grid gap-5 border-t border-border pt-6 text-base leading-relaxed text-foreground md:grid-cols-3">
+          <div>
+            <h3 class="text-xl font-semibold tracking-tight">SafetyCore</h3>
+            <p class="mt-2 text-foreground/80">
+              YOLOX, MiDaS, and FFNet run as independent INT8 models on the NPU. Post-fusion turns
+              category, relative depth, and walkable-area semantics into tracked obstacles, distance
+              estimates, TTC, and warning levels.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold tracking-tight">AgentCore</h3>
+            <p class="mt-2 text-foreground/80">
+              Qwen3-1.7B drives a ReAct loop over 11 Combo tools. The tool layer compresses MCP
+              outputs, maps long POI IDs to short LIDs, and keeps repeated tool definitions warm in
+              KV Cache.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold tracking-tight">Voice Loop</h3>
+            <p class="mt-2 text-foreground/80">
+              Offline ASR and system TTS sit on the CPU path. A safety warning can stop ASR, cancel
+              the active LLM request, clear lower-priority speech, and speak immediately.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Engineering Judgment
+        </h2>
+        <div class="space-y-6 border-t border-border pt-6">
+          {engineeringJudgments.map(item => (
+            <section class="grid gap-2 md:grid-cols-[14rem_minmax(0,1fr)]">
+              <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
+              <p class="max-w-prose-app text-base leading-relaxed text-foreground/80">
+                {item.copy}
+              </p>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Edge Deployment
+        </h2>
+        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground/80">
+          The project is a resource-placement exercise, not just a model demo. Six models share one
+          Android process. Vision gets the NPU, language gets the GPU, and speech stays on CPU
+          because safety audio must keep working while the assistant is generating.
+        </p>
+        <div class="grid gap-4 border-t border-border pt-6 lg:grid-cols-3">
+          {modelDeployments.map(item => (
+            <section class="rounded-md border border-border bg-muted/20 p-4">
+              <h3 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                {item.unit}
+              </h3>
+              <p class="mt-3 text-base font-semibold tracking-tight">{item.workload}</p>
+              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{item.detail}</p>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          SafetyCore Details
+        </h2>
+        <div class="grid gap-6 lg:grid-cols-[minmax(18rem,0.85fr)_minmax(0,1.15fr)] lg:items-start">
+          <div class="space-y-5 text-base leading-relaxed text-foreground">
+            <div>
+              <h3 class="text-xl font-semibold tracking-tight">Three models, one warning stream</h3>
+              <p class="mt-2 text-foreground/80">
+                YOLOX supplies object boxes for common categories such as people and vehicles.
+                MiDaS supplies relative depth. FFNet marks walkable ground and structural obstacles
+                such as poles, walls, and fences. The post-fusion layer keeps the three models
+                independent, so any model can be replaced or re-quantized without retraining a fused
+                network.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold tracking-tight">Ground-constrained scale recovery</h3>
+              <p class="mt-2 text-foreground/80">
+                MiDaS depth is relative, so TongXing uses the chest-mounted camera assumption and
+                FFNet ground pixels to recover a scene scale. A short median history smooths the
+                scale factor. If ground pixels are unreliable, the system falls back conservatively
+                instead of speaking overconfident warnings.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold tracking-tight">Tracking before warning</h3>
+              <p class="mt-2 text-foreground/80">
+                DeepSORT-style tracking links detections across frames, then the warning layer uses
+                distance, approach speed, central-region constraints, and a short vote window before
+                speaking. This is why the demo emphasizes sustained warnings rather than single-frame
+                detections.
+              </p>
+            </div>
+          </div>
+          <figure class="rounded-md border border-border bg-muted/20 p-4 sm:p-6">
+            <img
+              src="/tongxing/figures/scale-recovery-en.png"
+              alt="Scale recovery diagram using ground pixels and chest-mounted camera geometry"
+              class="w-full dark:brightness-90"
+              loading="lazy"
+            />
+            <figcaption class="mt-4 text-sm text-muted-foreground">
+              <span class="font-mono text-xs uppercase tracking-widest">Fig. 3: Scale recovery.</span>
+              Ground segmentation turns relative monocular depth into a usable distance signal for
+              warning thresholds.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Warning Pipeline
+        </h2>
+        <div class="grid gap-5 border-t border-border pt-6 md:grid-cols-2">
+          {safetyPipeline.map(item => (
+            <section>
+              <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{item.copy}</p>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          AgentCore Showcase
+        </h2>
+        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground/80">
+          AgentCore is tuned for short, practical voice tasks rather than open-ended chat.
+        </p>
+        <ScrollableRow ariaLabel="TongXing AgentCore showcase">
+          <figure class="flex h-[35.5rem] shrink-0 flex-col rounded-md border border-border bg-muted/20 p-3">
+            <div class="h-[32rem] w-[14.55rem] overflow-hidden rounded-sm bg-muted [&>figure]:h-full [&>figure>div]:h-full">
+              <ProjectVideo
+                src="/tongxing/videos/navigate-to.mp4"
+                poster="/tongxing/posters/navigate-to.jpg"
+                aspectRatio="1264 / 2780"
+                ariaLabel="Play voice navigation demo"
+                ctaLabel="Play demo"
+              />
+            </div>
+            <figcaption class="mt-3">
+              <h3 class="text-base font-semibold tracking-tight">Voice navigation</h3>
+            </figcaption>
+          </figure>
+          {agentScreens.map(item => (
+            <figure class="flex h-[35.5rem] shrink-0 flex-col rounded-md border border-border bg-muted/20 p-3">
+              <div class="overflow-hidden rounded-sm bg-muted">
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  class="h-[32rem] w-auto max-w-none"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="mt-3">
+                <h3 class="text-base font-semibold tracking-tight">{item.title}</h3>
+              </figcaption>
+            </figure>
+          ))}
+        </ScrollableRow>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          AgentCore Mechanics
+        </h2>
+        <div class="grid gap-5 border-t border-border pt-6 md:grid-cols-2">
+          {agentMechanisms.map(item => (
+            <section>
+              <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{item.copy}</p>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Product Surface
+        </h2>
+        <p class="mb-5 max-w-prose-app text-sm leading-relaxed text-muted-foreground">
+          The app surface is deliberately sparse: first-run setup, service switches, speech
+          preferences, and a debug view for inspecting the safety pipeline.
+        </p>
+        <ScrollableRow ariaLabel="TongXing interface screenshots">
+          {interfaceScreens.map(item => (
+            <figure class="flex h-[42rem] w-[16.05rem] shrink-0 flex-col rounded-md border border-border bg-muted/20 p-3">
+              <div class="w-fit overflow-hidden rounded-sm bg-muted">
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  class="block h-[32rem] w-auto max-w-none"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="mt-3 overflow-hidden">
+                <h3 class="text-base font-semibold tracking-tight">{item.title}</h3>
+                <p class="mt-1 max-h-24 overflow-hidden text-sm leading-relaxed text-muted-foreground">
+                  {item.copy}
+                </p>
+              </figcaption>
+            </figure>
+          ))}
+        </ScrollableRow>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Performance
+        </h2>
+        <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)] lg:items-start">
+          <figure class="rounded-md border border-border bg-muted/20 p-4">
+            <img
+              src="/tongxing/figures/safetycore-latency.png"
+              alt="SafetyCore pipeline latency chart"
+              class="w-full dark:brightness-75"
+              loading="lazy"
+            />
+            <figcaption class="mt-3 text-sm text-muted-foreground">
+              <span class="font-mono text-xs uppercase tracking-widest">SafetyCore.</span>
+              35 ms end-to-end obstacle warning, P95 47 ms, P99 54 ms.
+            </figcaption>
+          </figure>
+          <div class="space-y-4 text-base leading-relaxed text-foreground">
+            <p>
+              The SafetyCore benchmark is the rigorous number on this page: 1,636 effective frames
+              from three self-collected walking videos, processed through detection, depth,
+              segmentation, feature extraction, tracking, and warning assessment.
+            </p>
+            <p class="text-foreground/80">
+              The system runs the safety loop at 15 Hz for power and stability, even though the
+              measured throughput is higher. The remaining latency variance mostly comes from
+              feature processing, because the number of tracked objects changes from frame to frame.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-14">
+        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Validation
+        </h2>
+        <div class="overflow-x-auto border-t border-border">
+          <table class="w-full min-w-[42rem] border-collapse text-left text-sm">
+            <thead>
+              <tr class="border-b border-border text-muted-foreground">
+                <th class="py-3 pr-4 font-mono text-xs uppercase tracking-widest">Scope</th>
+                <th class="py-3 pr-4 font-mono text-xs uppercase tracking-widest">Evidence</th>
+                <th class="py-3 font-mono text-xs uppercase tracking-widest">Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validationRows.map(row => (
+                <tr class="border-b border-border/70">
+                  <td class="py-4 pr-4 align-top font-semibold">{row.scope}</td>
+                  <td class="py-4 pr-4 align-top text-foreground/80">{row.evidence}</td>
+                  <td class="py-4 align-top text-foreground/80">{row.result}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </article>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  function logTongXingSlogan() {
+    const sloganWindow = window as Window & { __tongXingSloganLogged?: boolean };
+    if (sloganWindow.__tongXingSloganLogged) return;
+    sloganWindow.__tongXingSloganLogged = true;
+    console.log(
+      "%c!瞳的瞳双耀闪，星的星星",
+      "color:#047857;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace"
+    );
+  }
+
+  logTongXingSlogan();
+  document.addEventListener("astro:page-load", logTongXingSlogan);
+</script>

@@ -20,6 +20,13 @@ contributions:
         href: "https://github.com/open-ani/animeko/pull/2978"
   - status: active
     diffstat: "WIP"
+    label: "HLS manifest filtering"
+    detail: "RFC for filtering short ad-like segment groups before HLS playback reaches the platform player, using a playback-scoped localhost proxy while keeping ExoPlayer, VLC, AVKit, and mediamp boundaries unchanged."
+    links:
+      - label: "RFC #3039"
+        href: "https://github.com/open-ani/animeko/issues/3039"
+  - status: active
+    diffstat: "WIP"
     label: "WOA64 build support"
     detail: "Workaround track for running Animeko on Windows on Arm64 today: upstreaming the mediamp FFmpeg runtime piece while keeping a known-good workspace that can produce portable zip builds."
     links:
