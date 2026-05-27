@@ -28,22 +28,25 @@ const repoHref = (repo: string) => `https://github.com/${repo}`;
 
 const status = (paper: Paper) => {
   const venue = paper.data.venue;
-  if (paper.data.status === "under-review") return `submitted to ${venue} and under review`;
+  if (paper.data.status === "under-review")
+    return `submitted to ${venue} and under review`;
   if (paper.data.status === "preprint") return `preprint for ${venue}`;
   if (paper.data.status === "accepted") return `accepted at ${venue}`;
   return `published in ${venue}`;
 };
 
 const keyNumbers = (paper: Paper) =>
-  paper.data.keyNumbers?.map(n => `${n.value} ${n.caption}`).join("; ");
+  paper.data.keyNumbers?.map((n) => `${n.value} ${n.caption}`).join("; ");
 
 const linkLines = (links: { label: string; href: string }[]) =>
-  links.map(link => `- ${link.label}: ${absoluteUrl(link.href)}`).join("\n");
+  links.map((link) => `- ${link.label}: ${absoluteUrl(link.href)}`).join("\n");
 
 const contributionLines = (entry: Featured) =>
   entry.data.contributions
-    .map(item => {
-      const links = item.links.map(link => `${link.label} ${link.href}`).join("; ");
+    .map((item) => {
+      const links = item.links
+        .map((link) => `${link.label} ${link.href}`)
+        .join("; ");
       const suffix = links ? ` Links: ${links}.` : "";
       const diffstat = item.diffstat ? ` ${item.diffstat}.` : "";
       return `- ${item.label}: ${item.status}.${diffstat} ${item.detail}${suffix}`;
@@ -60,11 +63,13 @@ export function buildLlmsTxt({
   projects: Project[];
 }) {
   const sortedPapers = [...papers].sort(
-    (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf()
+    (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf(),
   );
-  const sortedFeatured = [...featured].sort((a, b) => a.data.order - b.data.order);
+  const sortedFeatured = [...featured].sort(
+    (a, b) => a.data.order - b.data.order,
+  );
   const spotlightProjects = [...projects]
-    .filter(project => project.data.spotlight)
+    .filter((project) => project.data.spotlight)
     .sort((a, b) => a.data.order - b.data.order);
 
   return [
@@ -80,12 +85,13 @@ export function buildLlmsTxt({
     "## Featured work",
     "",
     ...sortedFeatured.map(
-      entry => `- [${entry.data.title}](${featuredHref(entry)}): ${entry.data.summary}`
+      (entry) =>
+        `- [${entry.data.title}](${featuredHref(entry)}): ${entry.data.summary}`,
     ),
     "",
     "## Papers",
     "",
-    ...sortedPapers.map(paper => {
+    ...sortedPapers.map((paper) => {
       const numbers = keyNumbers(paper);
       return `- [${paper.data.title}](${paperHref(paper)}): ${status(paper)}. ${paper.data.tldr ?? paper.data.abstract}${numbers ? ` Key numbers: ${numbers}.` : ""}`;
     }),
@@ -93,8 +99,8 @@ export function buildLlmsTxt({
     "## Selected open source",
     "",
     ...spotlightProjects.map(
-      project =>
-        `- [${project.data.name}](${repoHref(project.data.repo)}): ${project.data.description}`
+      (project) =>
+        `- [${project.data.name}](${repoHref(project.data.repo)}): ${project.data.description}`,
     ),
     "",
     "## Site",
@@ -121,12 +127,16 @@ export function buildLlmsFullTxt({
   projects: Project[];
 }) {
   const sortedPapers = [...papers].sort(
-    (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf()
+    (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf(),
   );
-  const sortedFeatured = [...featured].sort((a, b) => a.data.order - b.data.order);
-  const sortedProjects = [...projects].sort((a, b) => a.data.order - b.data.order);
+  const sortedFeatured = [...featured].sort(
+    (a, b) => a.data.order - b.data.order,
+  );
+  const sortedProjects = [...projects].sort(
+    (a, b) => a.data.order - b.data.order,
+  );
 
-  const featuredSections = sortedFeatured.map(entry => {
+  const featuredSections = sortedFeatured.map((entry) => {
     const lines = [
       `### ${entry.data.title}`,
       "",
@@ -141,19 +151,24 @@ export function buildLlmsFullTxt({
     ].filter(Boolean);
 
     if (entry.data.contributions.length) {
-      lines.push("", "Current contribution list:", "", contributionLines(entry));
+      lines.push(
+        "",
+        "Current contribution list:",
+        "",
+        contributionLines(entry),
+      );
     }
 
     return lines.join("\n");
   });
 
-  const paperSections = sortedPapers.map(paper => {
+  const paperSections = sortedPapers.map((paper) => {
     const numbers = keyNumbers(paper);
     return [
       `## ${paper.data.title}`,
       "",
       `- Page: ${paperHref(paper)}`,
-      `- Authors: ${paper.data.authors.map(author => author.name).join(", ")}`,
+      `- Authors: ${paper.data.authors.map((author) => author.name).join(", ")}`,
       `- Venue: ${status(paper)}.`,
       paper.data.links.length ? linkLines(paper.data.links) : "",
       numbers ? `- Key numbers: ${numbers}.` : "",
@@ -165,7 +180,16 @@ export function buildLlmsFullTxt({
       "### Abstract",
       "",
       paper.data.abstract,
-      paper.data.bibtex ? ["", "### BibTeX", "", "```bibtex", paper.data.bibtex.trim(), "```"].join("\n") : "",
+      paper.data.bibtex
+        ? [
+            "",
+            "### BibTeX",
+            "",
+            "```bibtex",
+            paper.data.bibtex.trim(),
+            "```",
+          ].join("\n")
+        : "",
     ]
       .filter(Boolean)
       .join("\n");
@@ -204,7 +228,7 @@ export function buildLlmsFullTxt({
     "",
     "## Projects",
     "",
-    ...sortedProjects.map(project => {
+    ...sortedProjects.map((project) => {
       const meta = [project.data.language, project.data.license]
         .filter(Boolean)
         .join(", ");

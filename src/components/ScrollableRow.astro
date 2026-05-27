@@ -20,6 +20,7 @@ const {
     data-embla-row-viewport
     class:list={[
       "overflow-hidden pb-3",
+      "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dashed focus-visible:outline-accent",
       "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
     ]}
     role="region"
@@ -35,7 +36,7 @@ const {
   <button
     type="button"
     data-embla-row-prev
-    class="absolute top-1/2 left-2 z-10 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-md bg-accent text-accent-foreground shadow-sm ring-1 ring-background/70 transition-transform hover:scale-105"
+    class="absolute top-1/2 left-2 z-10 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-md bg-accent text-accent-foreground shadow-sm ring-1 ring-background/70 transition-transform hover:scale-105 disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none motion-reduce:hover:scale-100"
     aria-label="Previous items"
   >
     <IconChevronLeft class="h-5 w-5" />
@@ -43,7 +44,7 @@ const {
   <button
     type="button"
     data-embla-row-next
-    class="absolute top-1/2 right-2 z-10 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-md bg-accent text-accent-foreground shadow-sm ring-1 ring-background/70 transition-transform hover:scale-105"
+    class="absolute top-1/2 right-2 z-10 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-md bg-accent text-accent-foreground shadow-sm ring-1 ring-background/70 transition-transform hover:scale-105 disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none motion-reduce:hover:scale-100"
     aria-label="Next items"
   >
     <IconChevronRight class="h-5 w-5" />

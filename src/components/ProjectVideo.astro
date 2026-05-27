@@ -36,7 +36,7 @@ const {
     data-video-aspect={aspectRatio}
     data-video-rounded={rounded}
     class:list={[
-      "group relative w-full cursor-pointer overflow-hidden border border-border bg-muted transition-colors hover:border-accent/40",
+      "group relative w-full cursor-pointer overflow-hidden border border-border bg-muted transition-colors hover:border-accent/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dashed focus-visible:outline-accent motion-reduce:transition-none",
       rounded,
     ]}
     style={`aspect-ratio: ${aspectRatio};`}
@@ -57,7 +57,7 @@ const {
       )
     }
     <div
-      class="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/45"
+      class="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/45 group-focus-visible:bg-black/45 motion-reduce:transition-none"
     >
       <span
         class="inline-flex items-center gap-2 rounded-md bg-black/70 px-4 py-2 font-mono text-xs uppercase tracking-widest text-white backdrop-blur"
