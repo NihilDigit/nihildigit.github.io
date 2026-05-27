@@ -5,12 +5,17 @@ import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 interface Props {
   ariaLabel?: string;
   class?: string;
+  loop?: boolean;
 }
 
-const { ariaLabel = "Scrollable content", class: className = "" } = Astro.props;
+const {
+  ariaLabel = "Scrollable content",
+  class: className = "",
+  loop = true,
+} = Astro.props;
 ---
 
-<div class:list={["relative", className]} data-embla-row>
+<div class:list={["relative", className]} data-embla-row data-loop={String(loop)}>
   <div
     data-embla-row-viewport
     class:list={[
@@ -19,6 +24,7 @@ const { ariaLabel = "Scrollable content", class: className = "" } = Astro.props;
     ]}
     role="region"
     aria-label={ariaLabel}
+    aria-roledescription="carousel"
     tabindex="0"
   >
     <div class="flex items-stretch gap-4">
@@ -46,6 +52,7 @@ const { ariaLabel = "Scrollable content", class: className = "" } = Astro.props;
 
 <script>
   import EmblaCarousel from "embla-carousel";
+  import type { EmblaCarouselType } from "embla-carousel";
 
   function initEmblaRows() {
     const shells = document.querySelectorAll<HTMLElement>("[data-embla-row]");
@@ -61,19 +68,58 @@ const { ariaLabel = "Scrollable content", class: className = "" } = Astro.props;
       const next = shell.querySelector<HTMLButtonElement>("[data-embla-row-next]");
       if (!viewport || !prev || !next) return;
 
+      const shouldLoop = shell.dataset.loop !== "false";
       const embla = EmblaCarousel(viewport, {
         align: "start",
         containScroll: false,
         dragFree: false,
-        loop: true,
+        loop: shouldLoop,
         skipSnaps: true,
       });
 
+      shellEmblaInstances.set(shell, embla);
+
+      const syncControls = () => {
+        prev.disabled = !embla.canScrollPrev();
+        next.disabled = !embla.canScrollNext();
+        prev.toggleAttribute("aria-disabled", prev.disabled);
+        next.toggleAttribute("aria-disabled", next.disabled);
+      };
+
       prev.addEventListener("click", () => embla.scrollPrev());
       next.addEventListener("click", () => embla.scrollNext());
+      viewport.addEventListener("keydown", event => {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          embla.scrollPrev();
+        }
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          embla.scrollNext();
+        }
+      });
+
+      embla.on("select", syncControls);
+      embla.on("reInit", syncControls);
+      syncControls();
+    });
+  }
+
+  const shellEmblaInstances = new WeakMap<HTMLElement, EmblaCarouselType>();
+
+  function destroyEmblaRows() {
+    const shells = document.querySelectorAll<HTMLElement>("[data-embla-row]");
+
+    shells.forEach(shell => {
+      const embla = shellEmblaInstances.get(shell);
+      if (!embla) return;
+      embla.destroy();
+      shellEmblaInstances.delete(shell);
+      delete shell.dataset.bound;
     });
   }
 
   initEmblaRows();
   document.addEventListener("astro:page-load", initEmblaRows);
+  document.addEventListener("astro:before-swap", destroyEmblaRows);
 </script>

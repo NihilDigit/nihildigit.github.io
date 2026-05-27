@@ -39,7 +39,7 @@ const keyNumbers = [
     caption: "MCP and accessibility-backed tools for touch-first app tasks",
   },
   {
-    value: "6 models",
+    value: "3 compute paths",
     caption: "NPU vision, GPU LLM, and CPU offline speech on one phone",
   },
 ];
@@ -59,7 +59,7 @@ const closedLoopGaps = [
   },
   {
     title: "App access",
-    copy: "Navigation, ride hailing, ticket queries, weather, and visual description are scattered across touch-first apps that are hard to close through speech alone.",
+    copy: "Navigation, ride-hailing, ticket queries, weather, and visual description are scattered across touch-first apps that are hard to close through speech alone.",
   },
 ];
 
@@ -181,7 +181,7 @@ const validationRows = [
   },
   {
     scope: "AgentCore",
-    evidence: "Scripted navigation, ride hailing, query, vision, and accessibility-control flows",
+    evidence: "Scripted navigation, ride-hailing, query, vision, and accessibility-control flows",
     result: "Voice-loop task routing stayed stable across the tested main paths",
   },
   {
@@ -260,7 +260,7 @@ const agentScreens = [
         <p class="mt-4 max-w-prose-app text-lg leading-relaxed text-foreground/80">
           The name means walking with the user. A chest-mounted Android phone becomes the assistive
           computer: NPU obstacle warning, offline speech, and a local LLM agent that routes spoken
-          requests into closed-loop app actions for navigation, ride hailing, transit, weather, and
+          requests into closed-loop app actions for navigation, ride-hailing, transit, weather, and
           visual description.
         </p>
       </header>
@@ -275,22 +275,25 @@ const agentScreens = [
           35.16 ms average latency. AgentCore runs Qwen3-1.7B locally on the GPU and turns daily
           touch-first app tasks into MCP and accessibility-backed voice workflows. Offline speech
           stays on the CPU path; cloud vision is only an optional description path.
+          The underlying research question is how commodity phones can host trustworthy assistive
+          agents: keeping safety-critical perception local, constraining tool-use side effects, and
+          separating real-time warnings from best-effort reasoning.
         </p>
       </section>
 
       <p
         class="mb-14 inline-flex rounded-md border border-border bg-muted/20 px-3 py-2 text-sm text-muted-foreground"
       >
-        TongXing is currently a{" "}
+        TongXing is currently competing in the{" "}
         <a
           href="https://jsjds.blcu.edu.cn/"
           target="_blank"
           rel="noopener"
           class="mx-1 text-foreground underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
         >
-          4C2026
+          4C2026 Chinese Collegiate Computing Competition
         </a>{" "}
-        competition project; the implementation repository is not public.
+        provincial round; the implementation repository remains private during the competition.
       </p>
 
       <section class="mb-14">
@@ -690,25 +693,18 @@ const agentScreens = [
         <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Validation
         </h2>
-        <div class="overflow-x-auto border-t border-border">
-          <table class="w-full min-w-[42rem] border-collapse text-left text-sm">
-            <thead>
-              <tr class="border-b border-border text-muted-foreground">
-                <th class="py-3 pr-4 font-mono text-xs uppercase tracking-widest">Scope</th>
-                <th class="py-3 pr-4 font-mono text-xs uppercase tracking-widest">Evidence</th>
-                <th class="py-3 font-mono text-xs uppercase tracking-widest">Result</th>
-              </tr>
-            </thead>
-            <tbody>
-              {validationRows.map(row => (
-                <tr class="border-b border-border/70">
-                  <td class="py-4 pr-4 align-top font-semibold">{row.scope}</td>
-                  <td class="py-4 pr-4 align-top text-foreground/80">{row.evidence}</td>
-                  <td class="py-4 align-top text-foreground/80">{row.result}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div class="grid gap-5 border-t border-border pt-6 md:grid-cols-2">
+          {validationRows.map(row => (
+            <section>
+              <h3 class="text-lg font-semibold tracking-tight">{row.scope}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-foreground/80">
+                <span class="font-medium text-foreground">Evidence:</span> {row.evidence}.
+              </p>
+              <p class="mt-1 text-sm leading-relaxed text-foreground/80">
+                <span class="font-medium text-foreground">Result:</span> {row.result}.
+              </p>
+            </section>
+          ))}
         </div>
       </section>
 
