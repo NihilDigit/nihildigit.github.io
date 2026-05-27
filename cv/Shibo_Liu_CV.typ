@@ -25,7 +25,7 @@
     ),
   ),
   layout: (
-    fill_color: "#f4f1eb",
+    fill_color: "#ffffff",
     paper_size: "a4",
     accent_color: "#d4d2cc",
     text: (
@@ -54,9 +54,10 @@
   "https://github.com/NihilDigit",
   "https://orcid.org/0009-0004-9426-3713",
 )
-#show link: it => {
-  let weight = if it.dest in contact-links { "medium" } else { "bold" }
-  text(fill: rgb(link-color), weight: weight, underline(stroke: 0.35pt + rgb(link-color), offset: 1.5pt, it.body))
+#show link: set text(fill: rgb(link-color))
+#let cv-link(dest, body) = {
+  let weight = if dest in contact-links { "medium" } else { "bold" }
+  link(dest)[#text(weight: weight, underline(stroke: 0.35pt + rgb(link-color), offset: 1.5pt, body))]
 }
 
 #let summary = [
@@ -71,7 +72,7 @@
   #experience-entry(
     title: [ANVIL - Accelerator-Native Video Interpolation],
     date: [2026],
-    company: [Sole-author manuscript under review at #link("https://ieee-cas.org/publication/tcsvt")[IEEE TCSVT]; #link("https://arxiv.org/abs/2603.26835")[arXiv:2603.26835]],
+    company: [Sole-author manuscript under review at #cv-link("https://ieee-cas.org/publication/tcsvt")[IEEE TCSVT]; #cv-link("https://arxiv.org/abs/2603.26835")[arXiv:2603.26835]],
   )
 
   - Built a 30-to-60 fps video interpolation system under mobile NPU, INT8, and end-to-end playback latency constraints.
@@ -95,18 +96,18 @@
   #experience-entry(
     title: [RAFNet - Dense Classroom Behavior Recognition],
     date: [2025-2026],
-    company: [Under review at #link("https://link.springer.com/journal/371")[The Visual Computer]],
+    company: [Under review at #cv-link("https://link.springer.com/journal/371")[The Visual Computer]],
   )
 
-  - Third author; designed evaluation and ablations for gated fusion over #link("https://github.com/boycehbz/GroupRec")[GroupRec (ICCV 2023)] relation context and ConvNeXt appearance features.
+  - Third author; designed evaluation and ablations for gated fusion over #cv-link("https://github.com/boycehbz/GroupRec")[GroupRec (ICCV 2023)] relation context and ConvNeXt appearance features.
   - Reached 63.08 ± 0.40 Macro F1 on the self-built NCST Classroom dataset (+2.79 over ConvNeXt-only) and 96.76 cross-dataset Macro F1 on SCB3-U.
 ]
 
 #let open-source = [
   = Open Source
 
-  - *#link("https://github.com/open-ani/animeko")[Animeko] / #link("https://github.com/NihilDigit/pikpak-kotlin")[pikpak-kotlin]:* merged PikPak cloud offline-download into open-ani/animeko, an 18k-star app, with streaming, BitTorrent fallback, credential handling, and a Maven-published KMP SDK.
-  - *#link("https://github.com/NihilDigit/waybar-ai-usage")[waybar-ai-usage]:* maintains an AUR-packaged Waybar quota widget for coding agents; 40+ stars and 8 accepted external contributions.
+  - *#cv-link("https://github.com/open-ani/animeko")[Animeko] / #cv-link("https://github.com/NihilDigit/pikpak-kotlin")[pikpak-kotlin]:* merged PikPak cloud offline-download into open-ani/animeko, an 18k-star app, with streaming, BitTorrent fallback, credential handling, and a Maven-published KMP SDK.
+  - *#cv-link("https://github.com/NihilDigit/waybar-ai-usage")[waybar-ai-usage]:* maintains an AUR-packaged Waybar quota widget for coding agents; 40+ stars and 8 accepted external contributions.
 ]
 
 #let education = [
@@ -125,9 +126,9 @@
 #let awards = [
   = Awards
 
-  - #link("https://jsjds.blcu.edu.cn/")[4C2026]: 1st Prize, university round; provincial round in progress.
-  - #link("https://jsjds.blcu.edu.cn/")[4C2025]: 3rd Prize, Hebei provincial round.
-  - #link("https://www.apmcm.org/")[APMCM 2024]: Second Prize.
+  - #cv-link("https://jsjds.blcu.edu.cn/")[4C2026]: 1st Prize, university round; provincial round in progress.
+  - #cv-link("https://jsjds.blcu.edu.cn/")[4C2025]: 3rd Prize, Hebei provincial round.
+  - #cv-link("https://www.apmcm.org/")[APMCM 2024]: Second Prize.
 ]
 
 #let skills = [
@@ -143,11 +144,11 @@
 #let links = [
   = Links
 
-  - #link("https://nihildigit.dev/tongxing")[TongXing Showcase]
-  - #link("https://nihildigit.dev/anvil")[ANVIL Showcase]
-  - #link("https://arxiv.org/abs/2603.26835")[ANVIL arXiv]
-  - ANVIL: #link("https://github.com/NihilDigit/anvil")[Code] / #link("https://github.com/NihilDigit/mpv-android-anvil")[Player]
-  - #link("https://github.com/NihilDigit/RAFNet")[RAFNet OSS Repo]
+  - #cv-link("https://nihildigit.dev/tongxing")[TongXing Showcase]
+  - #cv-link("https://nihildigit.dev/anvil")[ANVIL Showcase]
+  - #cv-link("https://arxiv.org/abs/2603.26835")[ANVIL arXiv]
+  - ANVIL: #cv-link("https://github.com/NihilDigit/anvil")[Code] / #cv-link("https://github.com/NihilDigit/mpv-android-anvil")[Player]
+  - #cv-link("https://github.com/NihilDigit/RAFNet")[RAFNet OSS Repo]
 ]
 
 #show: cv.with(
