@@ -22,12 +22,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          submodules: recursive
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v4
+
       - name: Install dependencies
         run: bun install
+
+      - name: Build CV PDF
+        run: typst compile --root . cv/Shibo_Liu_CV.typ public/Shibo_Liu_CV.pdf
 
       - name: Build
         env:

@@ -32,7 +32,7 @@
   {
     "id": "focuswell",
     "name": "FocusWell",
-    "description": "Android-first, ADHD-friendly time accounting app. It turns daytime focus into a storable leisure reserve, so high-energy days can support low-energy days without streak pressure or progress anxiety.",
+    "description": "Android-first time accounting app for uneven energy and focus. It turns daytime focus into a storable leisure reserve, so high-energy days can support low-energy days without streak pressure or progress anxiety.",
     "repo": "NihilDigit/focuswell",
     "language": "Kotlin / TypeScript",
     "license": "",

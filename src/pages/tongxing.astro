@@ -36,7 +36,7 @@ const keyNumbers = [
   },
   {
     value: "11 tools",
-    caption: "AgentCore tools for navigation, ride hailing, transit, weather, and vision",
+    caption: "MCP and accessibility-backed tools for touch-first app tasks",
   },
   {
     value: "6 models",
@@ -58,8 +58,8 @@ const closedLoopGaps = [
     copy: "Cloud vision can describe scenes, but 377-1300+ ms is too slow for collision warnings during walking.",
   },
   {
-    title: "Services",
-    copy: "Navigation, ride hailing, ticket queries, weather, and visual description are scattered across touch-first apps.",
+    title: "App access",
+    copy: "Navigation, ride hailing, ticket queries, weather, and visual description are scattered across touch-first apps that are hard to close through speech alone.",
   },
 ];
 
@@ -78,7 +78,7 @@ const edgeRationale = [
   },
   {
     title: "Agentic UI is an accessibility layer",
-    copy: "A tool-using voice agent can turn touch-first services into spoken workflows, as long as the tool surface is constrained enough for a small local model.",
+    copy: "A tool-using voice agent can close touch-first app tasks through spoken workflows, as long as MCP tools and accessibility actions give the small local model a constrained control surface.",
   },
 ];
 
@@ -104,7 +104,7 @@ const engineeringJudgments = [
   },
   {
     title: "Agent design before prompting",
-    copy: "A 1.7B model is not asked to copy long POI IDs or inspect raw service schemas. ComboTool, short LID mapping, OutputDistiller, and Stem Context reduce the task before prompting begins.",
+    copy: "A 1.7B model is not asked to copy long POI IDs, inspect raw service schemas, or operate arbitrary screens directly. ComboTool, short LID mapping, OutputDistiller, Stem Context, and accessibility actions reduce the task before prompting begins.",
   },
   {
     title: "Hardware isolation over raw peak speed",
@@ -152,7 +152,7 @@ const safetyPipeline = [
 const agentMechanisms = [
   {
     title: "ComboTool",
-    copy: "Multi-step MCP calls are wrapped as one semantic action, such as find_nearby plus navigate_to or estimate plus call_taxi.",
+    copy: "Multi-step MCP calls and accessibility operations are wrapped as one semantic action, such as find_nearby plus navigate_to or estimate plus call_taxi.",
   },
   {
     title: "Short LID",
@@ -181,8 +181,8 @@ const validationRows = [
   },
   {
     scope: "AgentCore",
-    evidence: "Scripted navigation, ride hailing, query, vision, and control flows",
-    result: "Tool routing stayed stable across the tested main paths",
+    evidence: "Scripted navigation, ride hailing, query, vision, and accessibility-control flows",
+    result: "Voice-loop task routing stayed stable across the tested main paths",
   },
   {
     scope: "Full pipeline",
@@ -245,7 +245,7 @@ const agentScreens = [
 
 <Layout
   title="TongXing edge agentic assistive system"
-  description="TongXing is an edge assistive system for blind and low-vision users, combining local NPU obstacle warning with an on-device LLM agent for voice-driven travel services."
+  description="TongXing is an edge assistive system for blind and low-vision users, combining local NPU obstacle warning with an on-device LLM agent that closes touch-first app tasks through MCP tools and Android accessibility actions."
 >
   <Header />
   <main id="main-content" class="app-layout">
@@ -260,7 +260,8 @@ const agentScreens = [
         <p class="mt-4 max-w-prose-app text-lg leading-relaxed text-foreground/80">
           The name means walking with the user. A chest-mounted Android phone becomes the assistive
           computer: NPU obstacle warning, offline speech, and a local LLM agent that routes spoken
-          requests to navigation, ride hailing, transit, weather, and visual-description tools.
+          requests into closed-loop app actions for navigation, ride hailing, transit, weather, and
+          visual description.
         </p>
       </header>
 
@@ -272,8 +273,8 @@ const agentScreens = [
           TongXing is built around a systems bet: mobile NPUs make assistive computing practical to
           deploy through software. SafetyCore keeps semantic obstacle warning on the phone NPU at
           35.16 ms average latency. AgentCore runs Qwen3-1.7B locally on the GPU and turns daily
-          travel services into voice tools. Offline speech stays on the CPU path; cloud vision is
-          only an optional description path.
+          touch-first app tasks into MCP and accessibility-backed voice workflows. Offline speech
+          stays on the CPU path; cloud vision is only an optional description path.
         </p>
       </section>
 
@@ -356,9 +357,9 @@ const agentScreens = [
             weak signal areas.
           </p>
           <p>
-            Everyday travel also needs service orchestration. Navigation, taxi, train, flight,
-            weather, and visual description need one voice loop that can recover from intermediate
-            choices without forcing the user back to the screen.
+            The same user also faces a digital-accessibility gap in touch-first apps. Navigation,
+            taxi, train, flight, weather, and visual description need one voice loop that can recover
+            from intermediate choices without forcing the user back to the screen.
           </p>
         </div>
         <div class="mt-8 grid gap-4 border-t border-border pt-6 sm:grid-cols-2">
@@ -417,7 +418,7 @@ const agentScreens = [
           <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
             <span class="font-mono text-xs uppercase tracking-widest">Fig. 1: System overview.</span>
             SafetyCore handles local perception and warning priority. AgentCore handles voice intent,
-            service tools, and multi-step assistive workflows.
+            MCP tools, accessibility actions, and multi-step assistive workflows.
           </figcaption>
         </figure>
       </section>
@@ -451,9 +452,9 @@ const agentScreens = [
           <div>
             <h3 class="text-xl font-semibold tracking-tight">AgentCore</h3>
             <p class="mt-2 text-foreground/80">
-              Qwen3-1.7B drives a ReAct loop over 11 Combo tools. The tool layer compresses MCP
-              outputs, maps long POI IDs to short LIDs, and keeps repeated tool definitions warm in
-              KV Cache.
+              Qwen3-1.7B drives a ReAct loop over 11 Combo tools and accessibility actions. The
+              tool layer compresses MCP outputs, maps long POI IDs to short LIDs, and keeps repeated
+              tool definitions warm in KV Cache.
             </p>
           </div>
           <div>
@@ -574,7 +575,7 @@ const agentScreens = [
           AgentCore Showcase
         </h2>
         <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground/80">
-          AgentCore is tuned for short, practical voice tasks rather than open-ended chat.
+          AgentCore is tuned to close short app tasks through voice rather than open-ended chat.
         </p>
         <ScrollableRow ariaLabel="TongXing AgentCore showcase">
           <figure class="flex h-[35.5rem] shrink-0 flex-col rounded-md border border-border bg-muted/20 p-3">

@@ -1,0 +1,3 @@
+[submodule "vendor/grotesk-cv"]
+	path = vendor/grotesk-cv
+	url = https://github.com/NihilDigit/grotesk-cv.git
