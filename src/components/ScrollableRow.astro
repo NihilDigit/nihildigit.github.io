@@ -55,6 +55,47 @@ const {
   import EmblaCarousel from "embla-carousel";
   import type { EmblaCarouselType } from "embla-carousel";
 
+  function disableCloneFocus(root: HTMLElement) {
+    root.setAttribute("aria-hidden", "true");
+    root
+      .querySelectorAll<HTMLElement>(
+        "a, button, input, select, textarea, [tabindex], [role='button']"
+      )
+      .forEach(el => {
+        el.setAttribute("tabindex", "-1");
+        delete el.dataset.bound;
+      });
+  }
+
+  function ensureLoopableTrack(viewport: HTMLElement) {
+    const track = viewport.firstElementChild;
+    if (!(track instanceof HTMLElement)) return;
+    if (track.dataset.loopFilled === "true") return;
+
+    const originals = Array.from(track.children).filter(
+      child => !(child instanceof HTMLElement && child.dataset.emblaClone)
+    );
+    if (originals.length < 2) return;
+
+    let pass = 0;
+    while (
+      track.scrollWidth < viewport.clientWidth * 2.5 &&
+      track.children.length < originals.length * 4 &&
+      pass < 3
+    ) {
+      originals.forEach(original => {
+        const clone = original.cloneNode(true);
+        if (!(clone instanceof HTMLElement)) return;
+        clone.dataset.emblaClone = "true";
+        disableCloneFocus(clone);
+        track.append(clone);
+      });
+      pass += 1;
+    }
+
+    track.dataset.loopFilled = "true";
+  }
+
   function initEmblaRows() {
     const shells = document.querySelectorAll<HTMLElement>("[data-embla-row]");
 
@@ -70,6 +111,8 @@ const {
       if (!viewport || !prev || !next) return;
 
       const shouldLoop = shell.dataset.loop !== "false";
+      if (shouldLoop) ensureLoopableTrack(viewport);
+
       const embla = EmblaCarousel(viewport, {
         align: "start",
         containScroll: false,
