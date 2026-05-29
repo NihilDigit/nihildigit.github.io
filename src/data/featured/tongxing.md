@@ -3,11 +3,11 @@ title: "TongXing"
 titleHref: "/tongxing"
 eyebrow: "Competition"
 order: 0
-status: "Submitted to"
+status: "Provincial Second Prize"
 statusLink:
-  label: "4C2026"
+  label: "4C2026 · national round ongoing"
   href: "https://jsjds.blcu.edu.cn/"
-statusVariant: live
+statusVariant: in-progress
 summary: "An edge assistive system for blind and low-vision users. TongXing runs NPU perception, GPU AgentCore, and CPU offline speech on one phone, keeping obstacle warning local while a tool-using voice agent closes touch-first app tasks through MCP tools and Android accessibility actions."
 links:
   - label: "Project page"
