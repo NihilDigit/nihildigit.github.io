@@ -40,6 +40,13 @@ const contributionStatusLabel = {
   closed: "Closed",
 } as const;
 
+const paperBadgePrefix = (status?: string) => {
+  if (status === "under-review") return "Under review at";
+  if (status === "accepted") return "Accepted at";
+  if (status === "published") return "Published in";
+  return "Available as";
+};
+
 const splitDiffstat = (diffstat: string) =>
   diffstat.match(/^(\+[^/]+)(\/)(-.+)$/);
 
@@ -119,7 +126,7 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
           </h3>
           <div class="badge badge-live mt-3">
             <span class="badge-dot" />
-            <span>Submitted to</span>
+            <span>{paperBadgePrefix(anvil?.data.status)}</span>
             {anvil?.data.venueHref ? (
               <a
                 href={anvil.data.venueHref}

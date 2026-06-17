@@ -1,7 +1,7 @@
 ---
 title: "Open-source community notes"
 eyebrow: "Community"
-order: 3
+order: 4
 summary: "Small, targeted upstream contributions and bug reports outside my own repositories, collected separately from my long-running project work."
 contributions:
   - status: done

@@ -30,7 +30,7 @@ const status = (paper: Paper) => {
   const venue = paper.data.venue;
   if (paper.data.status === "under-review")
     return `submitted to ${venue} and under review`;
-  if (paper.data.status === "preprint") return `preprint for ${venue}`;
+  if (paper.data.status === "preprint") return venue;
   if (paper.data.status === "accepted") return `accepted at ${venue}`;
   return `published in ${venue}`;
 };

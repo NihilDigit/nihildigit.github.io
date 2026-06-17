@@ -3,10 +3,10 @@ title: "ANVIL: Accelerator-Native Video Interpolation via Codec Motion Vector Pr
 authors:
   - name: Shibo Liu
     isMe: true
-venue: "IEEE TCSVT"
-venueHref: "https://ieee-cas.org/publication/tcsvt"
-venueDetail: "Submitted to IEEE Transactions on Circuits and Systems for Video Technology · arXiv:2603.26835"
-status: under-review
+venue: "arXiv preprint"
+venueHref: "https://arxiv.org/abs/2603.26835"
+venueDetail: "arXiv:2603.26835"
+status: preprint
 year: 2026
 pubDatetime: 2026-03-27
 arxivId: "2603.26835"

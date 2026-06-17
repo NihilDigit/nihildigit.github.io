@@ -7,7 +7,7 @@ eyebrow: "Open Source"
 order: 2
 status: "Contributing"
 statusVariant: live
-summary: "As an upstream contributor to Animeko, an open-source anime streaming app, I work on cloud download, platform support, and smaller UI/data-flow pieces across the app."
+summary: "As an upstream contributor to Animeko, an open-source anime streaming app I use regularly, I work on cloud download, platform support, and smaller UI/data-flow pieces across the app."
 contributions:
   - status: done
     diffstat: "+3,054/-41"

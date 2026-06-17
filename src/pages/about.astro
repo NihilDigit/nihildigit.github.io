@@ -96,9 +96,10 @@ import { SITE } from "@/config";
           under INT8 quantization, so I looked for a graph that fit the
           accelerator instead of forcing the accelerator to imitate a
           desktop model. The result reuses H.264 decoder motion vectors
-          instead of learning optical flow. The paper is under review at
-          IEEE TCSVT; the project page collects the training code, the
-          Android demo, and the arXiv preprint.
+          instead of learning optical flow. The arXiv preprint is public,
+          and I am continuing to reorganize the work into a more systematic
+          version. The project page collects the training code, the Android
+          demo, and the paper artifacts.
         </p>
 
         <p>
@@ -129,16 +130,23 @@ import { SITE } from "@/config";
         </p>
 
         <p>
+          I also contribute upstream to apps I actually use.
           <a
             href="https://github.com/open-ani/animeko"
             target="_blank"
             rel="noopener"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >open-ani/animeko</a> is an app I use continuously, so my
-          contributions tend to start from real friction: cloud download,
+          >open-ani/animeko</a> is where I work on cloud download,
           Windows on Arm64 support, HLS playback behavior, and smaller
-          UI/data-flow pieces. I expect to keep contributing to it over a
-          longer horizon.
+          UI/data-flow pieces.
+          <a
+            href="https://github.com/sinelaw/fresh"
+            target="_blank"
+            rel="noopener"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >sinelaw/fresh</a> is where I have been fixing platform
+          packaging and editor behavior issues, including Windows ARM64
+          release artifacts and vi-mode register handling.
         </p>
 
         <p>

@@ -72,7 +72,7 @@
   #experience-entry(
     title: [ANVIL - Accelerator-Native Video Interpolation],
     date: [2026],
-    company: [Sole-author manuscript under review at #cv-link("https://ieee-cas.org/publication/tcsvt")[IEEE TCSVT]; #cv-link("https://arxiv.org/abs/2603.26835")[arXiv:2603.26835]],
+    company: [Sole-author #cv-link("https://arxiv.org/abs/2603.26835")[arXiv:2603.26835] preprint],
   )
 
   - Built a 30-to-60 fps video interpolation system under mobile NPU, INT8, and end-to-end playback latency constraints.
@@ -107,6 +107,7 @@
   = Open Source
 
   - *#cv-link("https://github.com/open-ani/animeko")[Animeko] / #cv-link("https://github.com/NihilDigit/pikpak-kotlin")[pikpak-kotlin]:* merged PikPak cloud offline-download into open-ani/animeko, an 18k-star app, with streaming, BitTorrent fallback, credential handling, and a Maven-published KMP SDK.
+  - *#cv-link("https://github.com/sinelaw/fresh")[Fresh]:* upstream contributor to a terminal IDE/text editor; added Windows ARM64 release artifacts and is working on vi-mode unnamed-register behavior for delete, change, and yank operations.
   - *#cv-link("https://github.com/NihilDigit/waybar-ai-usage")[waybar-ai-usage]:* maintains an AUR-packaged Waybar quota widget for coding agents; 40+ stars and 8 accepted external contributions.
 ]
 
