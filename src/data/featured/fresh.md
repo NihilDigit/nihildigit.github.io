@@ -16,10 +16,10 @@ contributions:
     links:
       - label: "PR #2353"
         href: "https://github.com/sinelaw/fresh/pull/2353"
-  - status: active
+  - status: done
     diffstat: "+793/-166"
     label: "vi-mode unnamed register behavior"
-    detail: "Open upstream after review. Updates vi-mode delete, change, and yank operations so the unnamed register follows expected editor behavior."
+    detail: "Merged upstream. Updates vi-mode delete, change, and yank operations so the unnamed register follows expected editor behavior."
     links:
       - label: "PR #2368"
         href: "https://github.com/sinelaw/fresh/pull/2368"
