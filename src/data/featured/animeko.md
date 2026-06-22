@@ -19,29 +19,30 @@ contributions:
       - label: "PR #2978"
         href: "https://github.com/open-ani/animeko/pull/2978"
   - status: active
-    diffstat: "WIP"
+    diffstat: "+1,753/-17"
     label: "HLS manifest filtering"
-    detail: "RFC for filtering short ad-like segment groups before HLS playback reaches the platform player, using a playback-scoped localhost proxy while keeping ExoPlayer, VLC, AVKit, and mediamp boundaries unchanged."
+    detail: "Open upstream PR for experimental HLS ad-segment filtering before playback reaches the platform player, using a playback-scoped localhost proxy while keeping ExoPlayer, VLC, AVKit, and mediamp boundaries unchanged."
     links:
       - label: "RFC #3039"
         href: "https://github.com/open-ani/animeko/issues/3039"
-  - status: active
-    diffstat: "WIP"
-    label: "WOA64 build support"
-    detail: "Workaround track for running Animeko on Windows on Arm64 today: upstreaming the mediamp FFmpeg runtime piece while keeping a known-good workspace that can produce portable zip builds."
+      - label: "PR #3097"
+        href: "https://github.com/open-ani/animeko/pull/3097"
+  - status: done
+    diffstat: "+352/-34"
+    label: "mediamp Windows ARM64 FFmpeg runtime"
+    detail: "Merged upstream. Adds Windows ARM64 FFmpeg runtime support to mediamp, covering the media runtime piece needed by Animeko on Windows on Arm."
     links:
       - label: "mediamp PR #32"
         href: "https://github.com/open-ani/mediamp/pull/32"
+  - status: active
+    diffstat: "+258/-16"
+    label: "WOA64 build support"
+    detail: "Open follow-up track for running Animeko on Windows on Arm64: upstreaming the anitorrent native runtime piece while keeping a known-good workspace that can produce portable zip builds."
+    links:
       - label: "anitorrent PR #3"
         href: "https://github.com/open-ani/anitorrent/pull/3"
       - label: "workspace"
         href: "https://github.com/NihilDigit/animeko-woa64"
-  - status: planned
-    label: "Danmaku timing refactor"
-    detail: "Planned refactor of the danmaku pipeline to address timing drift and offset handling, so comments stay aligned with playback across seeks, buffering, and source changes."
-  - status: planned
-    label: "Character detail wiring"
-    detail: "Planned smaller upstream UI/data-flow work around connecting character detail pages into the app."
 links: []
 ---
 
