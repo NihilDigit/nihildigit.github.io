@@ -1,0 +1,302 @@
+[
+  {
+    "status": "active",
+    "diffstat": "+2,179/-2",
+    "label": "feat(exoplayer): add opt-in native WSOLA audio time-stretch",
+    "detail": "",
+    "date": "2026-07-17",
+    "links": [
+      {
+        "label": "PR #47",
+        "href": "https://github.com/open-ani/mediamp/pull/47"
+      }
+    ],
+    "sortLines": 2181,
+    "sortTime": 1784304873000
+  },
+  {
+    "status": "done",
+    "diffstat": "+1,063/-9",
+    "label": "feat(desktop): support native Windows touch input",
+    "detail": "",
+    "date": "2026-07-17",
+    "links": [
+      {
+        "label": "PR #3169",
+        "href": "https://github.com/open-ani/animeko/pull/3169"
+      }
+    ],
+    "sortLines": 1072,
+    "sortTime": 1784263183000
+  },
+  {
+    "status": "done",
+    "diffstat": "+193/-59",
+    "label": "feat(mpv): add Windows ARM64 zero-copy runtime",
+    "detail": "",
+    "date": "2026-07-16",
+    "links": [
+      {
+        "label": "PR #45",
+        "href": "https://github.com/open-ani/mediamp/pull/45"
+      }
+    ],
+    "sortLines": 252,
+    "sortTime": 1784230556000
+  },
+  {
+    "status": "done",
+    "diffstat": "+60/-32",
+    "label": "fix(mpv): run Windows x64 native smoke tests",
+    "detail": "",
+    "date": "2026-07-16",
+    "links": [
+      {
+        "label": "PR #42",
+        "href": "https://github.com/open-ani/mediamp/pull/42"
+      }
+    ],
+    "sortLines": 92,
+    "sortTime": 1784197456000
+  },
+  {
+    "status": "done",
+    "diffstat": "+1,930/-66",
+    "label": "feat(mpv): add Linux OpenGL playback support",
+    "detail": "",
+    "date": "2026-07-16",
+    "links": [
+      {
+        "label": "PR #40",
+        "href": "https://github.com/open-ani/mediamp/pull/40"
+      }
+    ],
+    "sortLines": 1996,
+    "sortTime": 1784197204000
+  },
+  {
+    "status": "done",
+    "diffstat": "+825/-62",
+    "label": "feat(player): improve Android seek interactions",
+    "detail": "",
+    "date": "2026-07-15",
+    "links": [
+      {
+        "label": "PR #3161",
+        "href": "https://github.com/open-ani/animeko/pull/3161"
+      }
+    ],
+    "sortLines": 887,
+    "sortTime": 1784143227000
+  },
+  {
+    "status": "done",
+    "diffstat": "+220/-4",
+    "label": "feat(player): support video screenshots on Android",
+    "detail": "",
+    "date": "2026-07-15",
+    "links": [
+      {
+        "label": "PR #3156",
+        "href": "https://github.com/open-ani/animeko/pull/3156"
+      }
+    ],
+    "sortLines": 224,
+    "sortTime": 1784140593000
+  },
+  {
+    "status": "done",
+    "diffstat": "+701/-26",
+    "label": "feat(desktop): add Windows ARM64 build support",
+    "detail": "",
+    "date": "2026-07-15",
+    "links": [
+      {
+        "label": "PR #3155",
+        "href": "https://github.com/open-ani/animeko/pull/3155"
+      }
+    ],
+    "sortLines": 727,
+    "sortTime": 1784129821000
+  },
+  {
+    "status": "done",
+    "diffstat": "+44/-5",
+    "label": "fix(player): improve keyboard shortcut behavior",
+    "detail": "",
+    "date": "2026-07-14",
+    "links": [
+      {
+        "label": "PR #3159",
+        "href": "https://github.com/open-ani/animeko/pull/3159"
+      }
+    ],
+    "sortLines": 49,
+    "sortTime": 1784033091000
+  },
+  {
+    "status": "done",
+    "diffstat": "+705/-69",
+    "label": "feat(appimage): support incremental updates",
+    "detail": "",
+    "date": "2026-07-13",
+    "links": [
+      {
+        "label": "PR #3149",
+        "href": "https://github.com/open-ani/animeko/pull/3149"
+      }
+    ],
+    "sortLines": 774,
+    "sortTime": 1783920012000
+  },
+  {
+    "status": "done",
+    "diffstat": "+185/-4",
+    "label": "feat(desktop): support Linux dynamic color",
+    "detail": "",
+    "date": "2026-07-13",
+    "links": [
+      {
+        "label": "PR #3146",
+        "href": "https://github.com/open-ani/animeko/pull/3146"
+      }
+    ],
+    "sortLines": 189,
+    "sortTime": 1783920000000
+  },
+  {
+    "status": "done",
+    "diffstat": "+32/-1",
+    "label": "fix(desktop): stabilize Linux AppImage runtime",
+    "detail": "",
+    "date": "2026-07-13",
+    "links": [
+      {
+        "label": "PR #3144",
+        "href": "https://github.com/open-ani/animeko/pull/3144"
+      }
+    ],
+    "sortLines": 33,
+    "sortTime": 1783906297000
+  },
+  {
+    "status": "done",
+    "diffstat": "+5/-0",
+    "label": "fix(desktop): use SwiftShader for JCEF on Linux",
+    "detail": "",
+    "date": "2026-07-12",
+    "links": [
+      {
+        "label": "PR #3145",
+        "href": "https://github.com/open-ani/animeko/pull/3145"
+      }
+    ],
+    "sortLines": 5,
+    "sortTime": 1783871373000
+  },
+  {
+    "status": "done",
+    "diffstat": "+946/-413",
+    "label": "fix(player): enable keyboard shortcuts in touch mode",
+    "detail": "",
+    "date": "2026-07-12",
+    "links": [
+      {
+        "label": "PR #3137",
+        "href": "https://github.com/open-ani/animeko/pull/3137"
+      }
+    ],
+    "sortLines": 1359,
+    "sortTime": 1783827606000
+  },
+  {
+    "status": "active",
+    "diffstat": "+77/-3",
+    "label": "feat(pikpak): support explicit BT caching over HTTPS",
+    "detail": "",
+    "date": "2026-07-11",
+    "links": [
+      {
+        "label": "PR #3141",
+        "href": "https://github.com/open-ani/animeko/pull/3141"
+      }
+    ],
+    "sortLines": 80,
+    "sortTime": 1783754881000
+  },
+  {
+    "status": "done",
+    "diffstat": "+1,760/-17",
+    "label": "feat(hls): 引入实验性 HLS 贴片广告过滤",
+    "detail": "",
+    "date": "2026-07-09",
+    "links": [
+      {
+        "label": "PR #3097",
+        "href": "https://github.com/open-ani/animeko/pull/3097"
+      }
+    ],
+    "sortLines": 1777,
+    "sortTime": 1783601625000
+  },
+  {
+    "status": "done",
+    "diffstat": "+9/-6",
+    "label": "fix(ci): pass release tag to Gradle explicitly",
+    "detail": "",
+    "date": "2026-07-06",
+    "links": [
+      {
+        "label": "PR #35",
+        "href": "https://github.com/open-ani/mediamp/pull/35"
+      }
+    ],
+    "sortLines": 15,
+    "sortTime": 1783375057000
+  },
+  {
+    "status": "done",
+    "diffstat": "+352/-34",
+    "label": "添加 Windows ARM64 FFmpeg runtime 支持",
+    "detail": "",
+    "date": "2026-06-20",
+    "links": [
+      {
+        "label": "PR #32",
+        "href": "https://github.com/open-ani/mediamp/pull/32"
+      }
+    ],
+    "sortLines": 386,
+    "sortTime": 1781956399000
+  },
+  {
+    "status": "active",
+    "diffstat": "+258/-16",
+    "label": "添加 Windows ARM64 native runtime 支持",
+    "detail": "",
+    "date": "2026-05-14",
+    "links": [
+      {
+        "label": "PR #3",
+        "href": "https://github.com/open-ani/anitorrent/pull/3"
+      }
+    ],
+    "sortLines": 274,
+    "sortTime": 1778755401000
+  },
+  {
+    "status": "done",
+    "diffstat": "+3,054/-41",
+    "label": "feat(pikpak): 引入 PikPak 云端离线下载作为 BT 备选方案",
+    "detail": "",
+    "date": "2026-05-06",
+    "links": [
+      {
+        "label": "PR #2978",
+        "href": "https://github.com/open-ani/animeko/pull/2978"
+      }
+    ],
+    "sortLines": 3095,
+    "sortTime": 1778043891000
+  }
+]

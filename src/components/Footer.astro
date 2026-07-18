@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from "astro/types";
 import IconClaude from "@/assets/icons/IconClaude.svg";
 import IconOpenAI from "@/assets/icons/IconOpenAI.svg";
+import IconKimi from "@/assets/icons/IconKimi.svg";
 
 const currentYear = new Date().getFullYear();
 
@@ -38,9 +39,8 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
               class="inline-flex items-center gap-1 hover:text-foreground"
             >
               <IconClaude class="inline-block h-3.5 w-3.5" />
-              <span>Claude</span>
+              <span>Claude,</span>
             </a>
-            and
             <a
               href="https://openai.com/codex/"
               target="_blank"
@@ -48,8 +48,17 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
               class="inline-flex items-center gap-1 hover:text-foreground"
             >
               <IconOpenAI class="inline-block h-3.5 w-3.5" />
-              GPT
-            </a>.
+              GPT and
+            </a>
+            <a
+              href="https://www.kimi.com/code"
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-1 hover:text-foreground"
+            >
+              <IconKimi class="relative -top-px inline-block h-3.5 w-3.5" />
+              Kimi.
+            </a>
           </span>
           <br />
           <a

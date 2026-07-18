@@ -4,7 +4,7 @@ titleHref: "https://github.com/NihilDigit/waybar-ai-usage"
 repo: "NihilDigit/waybar-ai-usage"
 fallbackStars: 43
 eyebrow: "Tooling"
-order: 1
+order: 2
 status: "Developing"
 statusVariant: live
 summary: "A Waybar widget that surfaces remaining quota and reset time for Claude Code, Codex CLI, GitHub Copilot, and OpenCode Zen. Uses browser cookies for Claude and Codex; no API keys required."

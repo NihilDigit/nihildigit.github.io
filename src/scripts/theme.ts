@@ -79,10 +79,72 @@ function setThemeFeature(): void {
   reflectPreference();
 
   // now this script can find and listen for clicks on the control
-  document.querySelector("#theme-btn")?.addEventListener("click", () => {
+  document.querySelector("#theme-btn")?.addEventListener("click", event => {
+    const mouseEvent = event as MouseEvent;
     themeValue = themeValue === LIGHT ? DARK : LIGHT;
-    window.theme?.setTheme(themeValue);
-    setPreference();
+
+    const applyTheme = () => {
+      window.theme?.setTheme(themeValue);
+      setPreference();
+    };
+
+    // Circular reveal expanding from the toggle icon, via View Transitions.
+    // Keyboard-triggered clicks carry clientX/Y = 0; use the button center.
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const startViewTransition = (
+      document as Document & {
+        startViewTransition?: (update: () => void) => {
+          ready: Promise<void>;
+          finished: Promise<void>;
+        };
+      }
+    ).startViewTransition;
+
+    if (!startViewTransition || reducedMotion) {
+      applyTheme();
+      return;
+    }
+
+    const button = document.querySelector("#theme-btn");
+    const rect = button?.getBoundingClientRect();
+    // Always expand from the toggle icon's center, not the click point.
+    const x = rect
+      ? rect.left + rect.width / 2
+      : mouseEvent.clientX || innerWidth;
+    const y = rect
+      ? rect.top + rect.height / 2
+      : mouseEvent.clientY || 0;
+
+    const transition = startViewTransition.call(document, applyTheme);
+    document.documentElement.classList.add("theme-reveal");
+    transition.ready
+      .then(() => {
+        const radius = Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y)
+        );
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${radius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 350,
+            easing: "cubic-bezier(0.83, 0, 0.17, 1)",
+            pseudoElement: "::view-transition-new(root)",
+          }
+        );
+      })
+      .catch(() => {
+        // View transition skipped or interrupted; theme is already applied.
+      });
+    transition.finished
+      .then(() => document.documentElement.classList.remove("theme-reveal"))
+      .catch(() => document.documentElement.classList.remove("theme-reveal"));
   });
 }
 

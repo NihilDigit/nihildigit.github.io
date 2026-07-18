@@ -105,10 +105,10 @@ html[data-theme="dark"] {
 
 /* Layout utilities */
 @utility max-w-app {
-  max-width: 64rem;
+  max-width: 56rem;
 }
 @utility max-w-prose-app {
-  max-width: 38rem;
+  max-width: 56rem;
 }
 @utility app-layout {
   @apply mx-auto w-full max-w-app px-5 sm:px-8;
@@ -182,4 +182,36 @@ html[data-theme="dark"] {
 }
 .hero-rise-2 {
   animation-delay: 200ms;
+}
+
+/* Scroll reveal: JS adds .reveal to [data-reveal] blocks (no-JS keeps them
+   visible), IntersectionObserver flips .is-visible once. The global
+   prefers-reduced-motion rule collapses this to instant. */
+.reveal {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: hero-rise 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Smooth theme toggle */
+body {
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+/* Theme circular reveal: disable the default crossfade so the new snapshot
+   can be clip-animated from the toggle icon (see src/scripts/theme.ts).
+   Scoped to .theme-reveal so Astro's navigation transitions stay intact. */
+html.theme-reveal::view-transition-old(root),
+html.theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+html.theme-reveal::view-transition-old(root) {
+  z-index: 1;
+}
+html.theme-reveal::view-transition-new(root) {
+  z-index: 2147483646;
 }

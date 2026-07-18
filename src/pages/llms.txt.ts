@@ -1,11 +1,12 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { buildLlmsTxt } from "@/utils/llms";
+import { resolveFeaturedCollection } from "@/utils/featuredContributions";
 
 export const GET: APIRoute = async () => {
   const [papers, featured, projects] = await Promise.all([
     getCollection("papers"),
-    getCollection("featured"),
+    getCollection("featured").then(resolveFeaturedCollection),
     getCollection("projects"),
   ]);
 

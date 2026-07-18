@@ -101,6 +101,7 @@ const featured = defineCollection({
         }),
       )
       .default([]),
+    contributionsSource: z.literal("open-ani").optional(),
     contributions: z
       .array(
         z.object({
@@ -108,6 +109,8 @@ const featured = defineCollection({
           diffstat: z.string().default(""),
           label: z.string(),
           detail: z.string(),
+          group: z.string().optional(),
+          date: z.string().optional(),
           links: z
             .array(
               z.object({
