@@ -1,0 +1,14 @@
+---
+import { hrefIcon, hrefIconTint } from "@/utils/hrefIcon";
+
+interface Props {
+  href: string;
+  class?: string;
+}
+
+const { href, class: className = "size-3.5 shrink-0" } = Astro.props;
+
+const Icon = hrefIcon(href);
+---
+
+<Icon class:list={[className, hrefIconTint(href)]} />

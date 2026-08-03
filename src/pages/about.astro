@@ -2,7 +2,28 @@
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import HrefIcon from "@/components/HrefIcon.astro";
 import { SITE } from "@/config";
+
+const CONTACTS = [
+  {
+    href: "mailto:spencerliu@stu.ncst.edu.cn",
+    label: "spencerliu@stu.ncst.edu.cn",
+    note: "school",
+  },
+  {
+    href: "mailto:starse.nd233@gmail.com",
+    label: "starse.nd233@gmail.com",
+    note: "personal",
+  },
+  { href: "https://github.com/NihilDigit", label: "@NihilDigit", note: "GitHub" },
+  {
+    href: "https://orcid.org/0009-0004-9426-3713",
+    label: "0009-0004-9426-3713",
+    note: "ORCID",
+  },
+  { href: "https://t.me/NihilDigit", label: "@NihilDigit", note: "Telegram" },
+];
 ---
 
 <Layout title={`About · ${SITE.title}`}>
@@ -152,7 +173,9 @@ import { SITE } from "@/config";
           <dd>
             B.S. in Intelligence Science<br />
             <span class="text-muted-foreground">
-              College of Science · NCST · Tangshan, Hebei, China
+              College of Science, North China University of Science and
+              Technology<br />
+              Tangshan, Hebei, China
             </span>
           </dd>
         </dl>
@@ -164,55 +187,26 @@ import { SITE } from "@/config";
         <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Contact
         </h2>
-        <dl class="grid grid-cols-[6rem_1fr] gap-x-6 gap-y-2 font-mono text-sm">
-          <dt class="text-muted-foreground">Email</dt>
-          <dd class="space-y-1">
-            <div>
-              <a
-                href="mailto:spencerliu@stu.ncst.edu.cn"
-                class="hover:text-accent"
-              >spencerliu<span class="text-muted-foreground">[at]</span>stu.ncst.edu.cn</a>
-              <span class="text-muted-foreground"> · school</span>
-            </div>
-            <div>
-              <a
-                href="mailto:starse.nd233@gmail.com"
-                class="hover:text-accent"
-              >starse.nd233<span class="text-muted-foreground">[at]</span>gmail.com</a>
-              <span class="text-muted-foreground"> · personal</span>
-            </div>
-          </dd>
-
-          <dt class="text-muted-foreground">GitHub</dt>
-          <dd>
-            <a
-              href="https://github.com/NihilDigit"
-              target="_blank"
-              rel="noopener"
-              class="hover:text-accent">@NihilDigit</a
-            >
-          </dd>
-
-          <dt class="text-muted-foreground">ORCID</dt>
-          <dd>
-            <a
-              href="https://orcid.org/0009-0004-9426-3713"
-              target="_blank"
-              rel="noopener"
-              class="hover:text-accent">0009-0004-9426-3713</a
-            >
-          </dd>
-
-          <dt class="text-muted-foreground">Telegram</dt>
-          <dd>
-            <a
-              href="https://t.me/NihilDigit"
-              target="_blank"
-              rel="noopener"
-              class="hover:text-accent">@NihilDigit</a
-            >
-          </dd>
-        </dl>
+        <ul class="space-y-2.5 font-mono text-sm">
+          {
+            CONTACTS.map(c => (
+              <li class="flex flex-wrap items-center gap-x-3">
+                <a
+                  href={c.href}
+                  target={c.href.startsWith("mailto:") ? undefined : "_blank"}
+                  rel={c.href.startsWith("mailto:") ? undefined : "noopener"}
+                  class="inline-flex items-center gap-2 transition-colors hover:text-accent"
+                >
+                  <HrefIcon href={c.href} class="size-4 shrink-0" />
+                  <span class="underline decoration-dotted underline-offset-4">
+                    {c.label}
+                  </span>
+                </a>
+                <span class="text-xs text-muted-foreground">{c.note}</span>
+              </li>
+            ))
+          }
+        </ul>
       </section>
     </article>
   </main>

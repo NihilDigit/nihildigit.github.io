@@ -17,19 +17,27 @@ There is no dedicated test directory. Use checks, linting, and builds as the ver
 
 ## Build, Test, and Development Commands
 
-Use `bun` for all project workflows.
+Use `deno` for all project workflows. Dependencies stay declared in
+`package.json`; `deno.json` only pins `nodeModulesDir` and the `@/` alias.
 
 ```bash
-bun install          # install dependencies
-bun run dev          # start local Astro dev server
-bun run build        # astro check, build, Pagefind index, copy search assets
-bun run preview      # preview the production build
-bun run astro check  # type-check Astro content and pages
-bun run lint         # run ESLint
-bun run format       # format with Prettier
+deno install          # install dependencies into node_modules
+deno task dev         # start local Astro dev server
+deno task build       # astro check, build, Pagefind index, copy search assets
+deno task preview     # preview the production build
+deno task astro check # type-check Astro content and pages
+deno task lint        # run ESLint
+deno task format      # format with Prettier
 ```
 
-Run `bun run astro check` before shipping. Run `bun run build` for route, content, search, or static asset changes.
+`sharp` has a post-install script, so a fresh clone needs
+`deno install --allow-scripts=npm:sharp` once.
+
+Deno resolves bare specifiers only for declared dependencies, so a package used
+by a project-level file (for example `@eslint/js` in `eslint.config.js`) must be
+in `package.json` rather than riding on a transitive install.
+
+Run `deno task astro check` before shipping. Run `deno task build` for route, content, search, or static asset changes.
 
 ## Coding Style & Naming Conventions
 
@@ -41,9 +49,9 @@ Formatting uses Prettier with Astro and Tailwind plugins. Use two-space indentat
 
 There are no unit tests yet. Verification means:
 
-1. `bun run astro check`
-2. `bun run lint` when touching TypeScript, Astro components, or config
-3. `bun run build` when changing pages, content, Pagefind, or public assets
+1. `deno task astro check`
+2. `deno task lint` when touching TypeScript, Astro components, or config
+3. `deno task build` when changing pages, content, Pagefind, or public assets
 
 For visual changes, inspect the dev server on desktop and mobile widths.
 

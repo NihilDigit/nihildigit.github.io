@@ -1,18 +1,258 @@
 [
   {
+    "status": "done",
+    "diffstat": "+309/-25",
+    "label": "fix(desktop): isolate bundled Linux libraries from the global search path",
+    "detail": "",
+    "date": "2026-08-03",
+    "links": [
+      {
+        "label": "#3261",
+        "href": "https://github.com/open-ani/animeko/pull/3261"
+      }
+    ],
+    "sortLines": 334,
+    "sortTime": 1785758254000
+  },
+  {
+    "status": "done",
+    "diffstat": "+284/-44",
+    "label": "feat(player): add a playback speed scope toggle and digit shortcuts",
+    "detail": "",
+    "date": "2026-07-29",
+    "links": [
+      {
+        "label": "#3227",
+        "href": "https://github.com/open-ani/animeko/pull/3227"
+      }
+    ],
+    "sortLines": 328,
+    "sortTime": 1785323832000
+  },
+  {
+    "status": "done",
+    "diffstat": "+80/-40",
+    "label": "perf(theme): generate the color scheme once per theme scope",
+    "detail": "",
+    "date": "2026-07-29",
+    "links": [
+      {
+        "label": "#3236",
+        "href": "https://github.com/open-ani/animeko/pull/3236"
+      }
+    ],
+    "sortLines": 120,
+    "sortTime": 1785295898000
+  },
+  {
+    "status": "done",
+    "diffstat": "+7/-0",
+    "label": "fix(desktop): keep the CMP internals resolved reflectively by the touch bridge",
+    "detail": "",
+    "date": "2026-07-29",
+    "links": [
+      {
+        "label": "#3234",
+        "href": "https://github.com/open-ani/animeko/pull/3234"
+      }
+    ],
+    "sortLines": 7,
+    "sortTime": 1785291473000
+  },
+  {
+    "status": "done",
+    "diffstat": "+508/-224",
+    "label": "feat(desktop): publish Windows ARM64 packages and rework WoA64 SQLite",
+    "detail": "",
+    "date": "2026-07-28",
+    "links": [
+      {
+        "label": "#3222",
+        "href": "https://github.com/open-ani/animeko/pull/3222"
+      }
+    ],
+    "sortLines": 732,
+    "sortTime": 1785218901000
+  },
+  {
+    "status": "done",
+    "diffstat": "+371/-144",
+    "label": "fix(player): swipe-to-seek cancelled when drag starts inside the cancel area",
+    "detail": "",
+    "date": "2026-07-28",
+    "links": [
+      {
+        "label": "#3212",
+        "href": "https://github.com/open-ani/animeko/pull/3212"
+      }
+    ],
+    "sortLines": 515,
+    "sortTime": 1785218732000
+  },
+  {
+    "status": "done",
+    "diffstat": "+330/-21",
+    "label": "fix(desktop): make the bundled sqlite guard structurally precede the driver",
+    "detail": "",
+    "date": "2026-07-27",
+    "links": [
+      {
+        "label": "#3216",
+        "href": "https://github.com/open-ani/animeko/pull/3216"
+      }
+    ],
+    "sortLines": 351,
+    "sortTime": 1785152288000
+  },
+  {
     "status": "active",
+    "diffstat": "+891/-178",
+    "label": "fix(input): handle touch and mouse transitions",
+    "detail": "",
+    "date": "2026-07-27",
+    "links": [
+      {
+        "label": "#3223",
+        "href": "https://github.com/open-ani/animeko/pull/3223"
+      }
+    ],
+    "sortLines": 1069,
+    "sortTime": 1785143794000
+  },
+  {
+    "status": "done",
+    "diffstat": "+69/-5",
+    "label": "fix(desktop): handle touch on Windows caption buttons",
+    "detail": "",
+    "date": "2026-07-27",
+    "links": [
+      {
+        "label": "#3221",
+        "href": "https://github.com/open-ani/animeko/pull/3221"
+      }
+    ],
+    "sortLines": 74,
+    "sortTime": 1785140913000
+  },
+  {
+    "status": "done",
+    "diffstat": "+11/-0",
+    "label": "fix(mpv): default hwdec-threads=1 on Windows ARM64",
+    "detail": "",
+    "date": "2026-07-27",
+    "links": [
+      {
+        "label": "#52",
+        "href": "https://github.com/open-ani/mediamp/pull/52"
+      }
+    ],
+    "sortLines": 11,
+    "sortTime": 1785128394000
+  },
+  {
+    "status": "done",
+    "diffstat": "+337/-9",
+    "label": "feat(ffmpeg): bundle dav1d for AV1 software decoding on desktop",
+    "detail": "",
+    "date": "2026-07-27",
+    "links": [
+      {
+        "label": "#53",
+        "href": "https://github.com/open-ani/mediamp/pull/53"
+      }
+    ],
+    "sortLines": 346,
+    "sortTime": 1785128328000
+  },
+  {
+    "status": "done",
+    "diffstat": "+1,319/-511",
+    "label": "feat(player): add configurable playback speed controls",
+    "detail": "",
+    "date": "2026-07-23",
+    "links": [
+      {
+        "label": "#3187",
+        "href": "https://github.com/open-ani/animeko/pull/3187"
+      }
+    ],
+    "sortLines": 1830,
+    "sortTime": 1784822924000
+  },
+  {
+    "status": "done",
+    "diffstat": "+50/-17",
+    "label": "feat(player): enable WSOLA audio time-stretch and embedded subtitles on Android",
+    "detail": "",
+    "date": "2026-07-22",
+    "links": [
+      {
+        "label": "#3204",
+        "href": "https://github.com/open-ani/animeko/pull/3204"
+      }
+    ],
+    "sortLines": 67,
+    "sortTime": 1784721088000
+  },
+  {
+    "status": "done",
+    "diffstat": "+119/-0",
+    "label": "fix(desktop): preload bundled libsqliteJni with RTLD_GLOBAL on Linux",
+    "detail": "",
+    "date": "2026-07-22",
+    "links": [
+      {
+        "label": "#3195",
+        "href": "https://github.com/open-ani/animeko/pull/3195"
+      }
+    ],
+    "sortLines": 119,
+    "sortTime": 1784704605000
+  },
+  {
+    "status": "done",
+    "diffstat": "+40/-108",
+    "label": "feat(desktop): enable mpv backend on Linux x64 and Windows ARM64",
+    "detail": "",
+    "date": "2026-07-22",
+    "links": [
+      {
+        "label": "#3197",
+        "href": "https://github.com/open-ani/animeko/pull/3197"
+      }
+    ],
+    "sortLines": 148,
+    "sortTime": 1784704499000
+  },
+  {
+    "status": "done",
     "diffstat": "+2,179/-2",
     "label": "feat(exoplayer): add opt-in native WSOLA audio time-stretch",
     "detail": "",
-    "date": "2026-07-17",
+    "date": "2026-07-20",
     "links": [
       {
-        "label": "PR #47",
+        "label": "#47",
         "href": "https://github.com/open-ani/mediamp/pull/47"
       }
     ],
     "sortLines": 2181,
-    "sortTime": 1784304873000
+    "sortTime": 1784529870000
+  },
+  {
+    "status": "done",
+    "diffstat": "+2/-1",
+    "label": "fix(mpv): skip event callbacks when no listener is registered",
+    "detail": "",
+    "date": "2026-07-19",
+    "links": [
+      {
+        "label": "#49",
+        "href": "https://github.com/open-ani/mediamp/pull/49"
+      }
+    ],
+    "sortLines": 3,
+    "sortTime": 1784436457000
   },
   {
     "status": "done",
@@ -22,7 +262,7 @@
     "date": "2026-07-17",
     "links": [
       {
-        "label": "PR #3169",
+        "label": "#3169",
         "href": "https://github.com/open-ani/animeko/pull/3169"
       }
     ],
@@ -37,7 +277,7 @@
     "date": "2026-07-16",
     "links": [
       {
-        "label": "PR #45",
+        "label": "#45",
         "href": "https://github.com/open-ani/mediamp/pull/45"
       }
     ],
@@ -52,7 +292,7 @@
     "date": "2026-07-16",
     "links": [
       {
-        "label": "PR #42",
+        "label": "#42",
         "href": "https://github.com/open-ani/mediamp/pull/42"
       }
     ],
@@ -67,7 +307,7 @@
     "date": "2026-07-16",
     "links": [
       {
-        "label": "PR #40",
+        "label": "#40",
         "href": "https://github.com/open-ani/mediamp/pull/40"
       }
     ],
@@ -82,7 +322,7 @@
     "date": "2026-07-15",
     "links": [
       {
-        "label": "PR #3161",
+        "label": "#3161",
         "href": "https://github.com/open-ani/animeko/pull/3161"
       }
     ],
@@ -97,7 +337,7 @@
     "date": "2026-07-15",
     "links": [
       {
-        "label": "PR #3156",
+        "label": "#3156",
         "href": "https://github.com/open-ani/animeko/pull/3156"
       }
     ],
@@ -112,7 +352,7 @@
     "date": "2026-07-15",
     "links": [
       {
-        "label": "PR #3155",
+        "label": "#3155",
         "href": "https://github.com/open-ani/animeko/pull/3155"
       }
     ],
@@ -127,7 +367,7 @@
     "date": "2026-07-14",
     "links": [
       {
-        "label": "PR #3159",
+        "label": "#3159",
         "href": "https://github.com/open-ani/animeko/pull/3159"
       }
     ],
@@ -142,7 +382,7 @@
     "date": "2026-07-13",
     "links": [
       {
-        "label": "PR #3149",
+        "label": "#3149",
         "href": "https://github.com/open-ani/animeko/pull/3149"
       }
     ],
@@ -157,7 +397,7 @@
     "date": "2026-07-13",
     "links": [
       {
-        "label": "PR #3146",
+        "label": "#3146",
         "href": "https://github.com/open-ani/animeko/pull/3146"
       }
     ],
@@ -172,7 +412,7 @@
     "date": "2026-07-13",
     "links": [
       {
-        "label": "PR #3144",
+        "label": "#3144",
         "href": "https://github.com/open-ani/animeko/pull/3144"
       }
     ],
@@ -187,7 +427,7 @@
     "date": "2026-07-12",
     "links": [
       {
-        "label": "PR #3145",
+        "label": "#3145",
         "href": "https://github.com/open-ani/animeko/pull/3145"
       }
     ],
@@ -202,7 +442,7 @@
     "date": "2026-07-12",
     "links": [
       {
-        "label": "PR #3137",
+        "label": "#3137",
         "href": "https://github.com/open-ani/animeko/pull/3137"
       }
     ],
@@ -217,7 +457,7 @@
     "date": "2026-07-11",
     "links": [
       {
-        "label": "PR #3141",
+        "label": "#3141",
         "href": "https://github.com/open-ani/animeko/pull/3141"
       }
     ],
@@ -232,7 +472,7 @@
     "date": "2026-07-09",
     "links": [
       {
-        "label": "PR #3097",
+        "label": "#3097",
         "href": "https://github.com/open-ani/animeko/pull/3097"
       }
     ],
@@ -247,7 +487,7 @@
     "date": "2026-07-06",
     "links": [
       {
-        "label": "PR #35",
+        "label": "#35",
         "href": "https://github.com/open-ani/mediamp/pull/35"
       }
     ],
@@ -262,7 +502,7 @@
     "date": "2026-06-20",
     "links": [
       {
-        "label": "PR #32",
+        "label": "#32",
         "href": "https://github.com/open-ani/mediamp/pull/32"
       }
     ],
@@ -277,7 +517,7 @@
     "date": "2026-05-14",
     "links": [
       {
-        "label": "PR #3",
+        "label": "#3",
         "href": "https://github.com/open-ani/anitorrent/pull/3"
       }
     ],
@@ -292,7 +532,7 @@
     "date": "2026-05-06",
     "links": [
       {
-        "label": "PR #2978",
+        "label": "#2978",
         "href": "https://github.com/open-ani/animeko/pull/2978"
       }
     ],

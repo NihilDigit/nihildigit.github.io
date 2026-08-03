@@ -1,0 +1,131 @@
+---
+import IconGitMerge from "@/assets/icons/octicons/git-merge-16.svg";
+import IconPullRequest from "@/assets/icons/octicons/git-pull-request-16.svg";
+import IconPullRequestClosed from "@/assets/icons/octicons/git-pull-request-closed-16.svg";
+import IconPullRequestDraft from "@/assets/icons/octicons/git-pull-request-draft-16.svg";
+import IconIssue from "@/assets/icons/octicons/issue-opened-16.svg";
+import IconIssueClosed from "@/assets/icons/octicons/issue-closed-16.svg";
+import HrefIcon from "@/components/HrefIcon.astro";
+import type { OpenSourceContribution } from "@/utils/openAniPullRequests";
+
+interface Props {
+  item: OpenSourceContribution;
+}
+
+const { item } = Astro.props;
+
+const statusLabel = {
+  done: "Merged",
+  active: "Open",
+  planned: "Draft",
+  closed: "Closed",
+} as const;
+
+const statusIcon = {
+  done: IconGitMerge,
+  active: IconPullRequest,
+  planned: IconPullRequestDraft,
+  closed: IconPullRequestClosed,
+} as const;
+
+// A few rows are reported issues rather than patches, so the PR glyphs would
+// misdescribe them.
+const issueStatusIcon = {
+  done: IconIssueClosed,
+  active: IconIssue,
+  planned: IconIssue,
+  closed: IconIssueClosed,
+} as const;
+
+const statusColor = {
+  done: "text-state-merged",
+  active: "text-state-open",
+  planned: "text-state-draft",
+  closed: "text-state-closed",
+} as const;
+
+const inlineLinks = (text: string) =>
+  text.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener" class="underline decoration-dotted underline-offset-4 hover:text-accent">$1</a>'
+  );
+
+const diffstat = item.diffstat.match(/^(\+[^/]+)(\/)(-.+)$/);
+
+const isIssueOnly =
+  item.links.length > 0 &&
+  item.links.every(l => !/\/(pull|merge_requests)\/\d+/.test(l.href)) &&
+  item.links.some(l => /\/issues\/\d+/.test(l.href));
+
+const StatusIcon = (isIssueOnly ? issueStatusIcon : statusIcon)[item.status];
+---
+
+<li
+  class="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-x-3 gap-y-1 py-4 sm:grid-cols-[1.25rem_minmax(0,1fr)_7rem_5rem] sm:items-baseline"
+  data-lines={item.sortLines}
+  data-time={item.sortTime}
+>
+  <span class="text-xs leading-6">
+    <StatusIcon
+      class:list={["inline-block size-3.5 align-[-0.15em]", statusColor[item.status]]}
+      role="img"
+      aria-label={statusLabel[item.status]}
+    />
+  </span>
+
+  <div class="min-w-0">
+    <span class="text-sm font-medium text-foreground">{item.label}</span>
+    {
+      item.detail && (
+        <p
+          class="mt-1 text-sm leading-relaxed text-foreground/80"
+          set:html={inlineLinks(item.detail)}
+        />
+      )
+    }
+  </div>
+
+  {/* Diffstat and links share one row under the title on phones; from `sm` up
+      `contents` dissolves this wrapper so they become their own grid tracks and
+      a long title wraps on its own instead of pushing them around. */}
+  <div class="col-start-2 flex items-baseline gap-x-4 whitespace-nowrap sm:contents">
+    {/* The slash is its own centred grid track so it lines up down the column
+        no matter how wide either number is. */}
+    <span class="grid w-28 grid-cols-[1fr_auto_1fr] font-mono text-xs leading-6 text-muted-foreground">
+      {
+        diffstat ? (
+          <>
+            <span class="text-right text-emerald-700/80 dark:text-emerald-300/80">
+              {diffstat[1]}
+            </span>
+            <span class="px-1.5 text-muted-foreground/50">{diffstat[2]}</span>
+            <span class="text-rose-700/75 dark:text-rose-300/75">{diffstat[3]}</span>
+          </>
+        ) : (
+          <span class="col-span-3 text-right">{item.diffstat}</span>
+        )
+      }
+    </span>
+
+    {/* Extra links stack downwards: a second link on one row would otherwise
+        widen this track and shove the diffstat column out of line. */}
+    <span class="flex flex-col items-start gap-2 leading-6">
+      {item.links.map(link => (
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
+          >
+            {/* Icon and label stay adjacent and the slot is left-aligned, so
+                the icons and the `#` line up down the column and only the
+                trailing digits vary. */}
+            <HrefIcon href={link.href} />
+            <span class="underline decoration-dotted underline-offset-4">
+              {link.label}
+            </span>
+          </a>
+      ))}
+    </span>
+  </div>
+</li>

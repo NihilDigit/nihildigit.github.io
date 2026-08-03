@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
+import HrefIcon from "@/components/HrefIcon.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { inlineCode } from "@/utils/inlineCode";
@@ -10,7 +11,6 @@ const all = await getCollection("projects");
 const sorted = all.sort((a, b) => a.data.order - b.data.order);
 
 const spotlight = sorted.filter(p => p.data.spotlight);
-const others = sorted.filter(p => !p.data.spotlight);
 ---
 
 <Layout title={`Projects · ${SITE.title}`}>
@@ -30,34 +30,28 @@ const others = sorted.filter(p => !p.data.spotlight);
     </header>
 
     {spotlight.length > 0 && (
-      <section class="mb-12">
-        <h2 class="mb-8 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Spotlight
-        </h2>
+      <section>
         <ul class="space-y-10">
           {spotlight.map(p => (
             <li class="max-w-prose-app">
-              <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <a
-                  href={`https://github.com/${p.data.repo}`}
-                  target="_blank"
-                  rel="noopener"
-                  class="font-mono text-lg font-medium transition-colors hover:text-accent break-all"
-                >
-                  {p.data.name}
-                </a>
-                <span class="font-mono text-xs text-muted-foreground">
-                  {p.data.language}
-                  {p.data.license && <> · {p.data.license}</>}
-                </span>
-              </div>
               <a
                 href={`https://github.com/${p.data.repo}`}
                 target="_blank"
                 rel="noopener"
-                class="font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
+                class="font-mono text-lg font-medium break-all transition-colors hover:text-accent"
               >
-                github.com/{p.data.repo} ↗
+                {p.data.name}
+              </a>
+              <a
+                href={`https://github.com/${p.data.repo}`}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
+              >
+                <HrefIcon href={`https://github.com/${p.data.repo}`} />
+                <span class="underline decoration-dotted underline-offset-4">
+                  github.com/{p.data.repo}
+                </span>
               </a>
               <p
                 class="mt-3 text-sm leading-relaxed text-foreground/80"
@@ -69,35 +63,6 @@ const others = sorted.filter(p => !p.data.spotlight);
       </section>
     )}
 
-    {others.length > 0 && (
-      <section>
-        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Other
-        </h2>
-        <ul class="divide-y divide-border border-y border-border">
-          {others.map(p => (
-            <li>
-              <a
-                href={`https://github.com/${p.data.repo}`}
-                target="_blank"
-                rel="noopener"
-                class="group flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:gap-6"
-              >
-                <span class="font-mono text-sm font-medium transition-colors group-hover:text-accent sm:w-48 sm:shrink-0">
-                  {p.data.name}
-                </span>
-                <span class="flex-1 text-sm text-foreground/80">
-                  {p.data.description}
-                </span>
-                <span class="font-mono text-xs text-muted-foreground sm:w-24 sm:text-right">
-                  {p.data.language}
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )}
   </main>
   <Footer />
 </Layout>

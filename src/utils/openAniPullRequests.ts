@@ -1,5 +1,5 @@
-import { PROFILE } from "@/data/profile";
-import snapshot from "@/data/openAniPullRequests.json";
+import { PROFILE } from "@/data/profile.ts";
+import snapshot from "@/data/openAniPullRequests.json" with { type: "json" };
 
 export type OpenSourceContribution = {
   status: "done" | "active" | "planned" | "closed";
@@ -34,6 +34,7 @@ type PullResponse = {
   merged_at?: string | null;
   created_at?: string;
   state?: string;
+  draft?: boolean;
 };
 
 const headers = () => {
@@ -66,7 +67,7 @@ export const fetchOpenAniContributions = async (): Promise<SnapshotEntry[]> => {
   }
   const data = (await response.json()) as SearchResponse;
   const items = (data.items ?? []).filter(
-    item => !EXCLUDED_PRS.has(item.html_url),
+    (item) => !EXCLUDED_PRS.has(item.html_url),
   );
 
   const contributions = await Promise.all(
@@ -82,15 +83,15 @@ export const fetchOpenAniContributions = async (): Promise<SnapshotEntry[]> => {
         );
       }
       const pr = (await prResponse.json()) as PullResponse;
+      // Only merged work and PRs actually up for review are worth showing;
+      // drafts and rejected/abandoned PRs are noise here.
+      if (pr.draft || (!pr.merged_at && pr.state !== "open")) return undefined;
+
       const additions = pr.additions ?? 0;
       const deletions = pr.deletions ?? 0;
       const prNumber = item.html_url.split("/").pop();
       const timestamp = pr.merged_at ?? pr.created_at ?? "";
-      const status: SnapshotEntry["status"] = pr.merged_at
-        ? "done"
-        : pr.state === "open"
-          ? "active"
-          : "closed";
+      const status: SnapshotEntry["status"] = pr.merged_at ? "done" : "active";
 
       return {
         status,
@@ -98,7 +99,7 @@ export const fetchOpenAniContributions = async (): Promise<SnapshotEntry[]> => {
         label: item.title,
         detail: "",
         date: timestamp.slice(0, 10),
-        links: [{ label: `PR #${prNumber}`, href: item.html_url }],
+        links: [{ label: `#${prNumber}`, href: item.html_url }],
         sortLines: additions + deletions,
         sortTime: Date.parse(timestamp) || 0,
       };

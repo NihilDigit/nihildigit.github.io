@@ -3,6 +3,9 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import HrefIcon from "@/components/HrefIcon.astro";
+import IconArrowRight from "@/assets/icons/octicons/arrow-right-16.svg";
+import { paperStatusClass, paperStatusLabel } from "@/utils/paperStatus";
 import { SITE } from "@/config";
 
 const papers = await getCollection("papers");
@@ -52,30 +55,12 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
           <ul class="space-y-8 border-t border-border pt-6">
             {grouped[year].map(p => (
               <li>
-                <div class="flex items-baseline gap-3">
-                  {p.data.status === "under-review" && (
-                    <span class="font-mono text-xs uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
-                      Under review
-                    </span>
-                  )}
-                  {p.data.status === "preprint" && (
-                    <span class="font-mono text-xs uppercase tracking-wide text-muted-foreground">
-                      Preprint
-                    </span>
-                  )}
-                  {p.data.status === "accepted" && (
-                    <span class="font-mono text-xs uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
-                      Accepted
-                    </span>
-                  )}
-                  {p.data.status === "published" && (
-                    <span class="font-mono text-xs uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
-                      Published
-                    </span>
-                  )}
-                  <span class="font-mono text-xs text-muted-foreground">
-                    {p.data.venue}
+                <div class="flex flex-wrap items-baseline gap-x-2 font-mono text-xs">
+                  <span class={paperStatusClass(p.data.status)}>
+                    {paperStatusLabel(p.data.status)}
                   </span>
+                  <span class="text-muted-foreground/50" aria-hidden>·</span>
+                  <span class="text-muted-foreground">{p.data.venue}</span>
                 </div>
 
                 <h3 class="mt-2 text-lg font-medium leading-snug">
@@ -106,9 +91,10 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
                   {p.data.hasProjectPage && p.data.projectPageSlug && (
                     <a
                       href={`/${p.data.projectPageSlug}`}
-                      class="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-mono hover:border-accent hover:text-accent"
+                      class="action-chip action-chip-sm"
                     >
-                      Project page →
+                      Project page
+                      <IconArrowRight class="size-3.5 shrink-0" />
                     </a>
                   )}
                   {p.data.links.map(l => (
@@ -116,9 +102,10 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
                       href={l.href}
                       target="_blank"
                       rel="noopener"
-                      class="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-mono hover:border-accent hover:text-accent"
+                      class="action-chip action-chip-sm"
                     >
-                      {l.label} ↗
+                      <HrefIcon href={l.href} />
+                      {l.label}
                     </a>
                   ))}
                 </div>

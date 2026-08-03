@@ -7,7 +7,7 @@
     "build": "astro check && astro build && pagefind --site dist --root-selector '[data-pagefind-body]' && cp -r dist/pagefind public/",
     "preview": "astro preview",
     "sync": "astro sync",
-    "snapshot:open-ani": "bun run scripts/snapshot-open-ani.ts",
+    "snapshot:open-ani": "deno run --allow-net --allow-read --allow-write --allow-env scripts/snapshot-open-ani.ts",
     "astro": "astro",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
+    "@eslint/js": "^10.0.1",
     "@pagefind/default-ui": "^1.4.0",
     "@shikijs/transformers": "^3.20.0",
     "@tailwindcss/typography": "^0.5.19",

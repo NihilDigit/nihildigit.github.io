@@ -4,6 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import AnvilTeaser from "@/components/AnvilTeaser.astro";
+import HrefIcon from "@/components/HrefIcon.astro";
 
 const anvil = await getEntry("papers", "anvil");
 if (!anvil) {
@@ -36,13 +37,9 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         <div class="mt-6 flex flex-wrap gap-2">
           {
             anvil.data.links.map(l => (
-              <a
-                href={l.href}
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-1.5 rounded-md border border-border bg-muted/40 px-3.5 py-1.5 text-sm font-mono hover:border-accent hover:text-accent"
-              >
-                {l.label} <span aria-hidden>↗</span>
+              <a href={l.href} target="_blank" rel="noopener" class="action-chip">
+                <HrefIcon href={l.href} class="size-4 shrink-0" />
+                {l.label}
               </a>
             ))
           }

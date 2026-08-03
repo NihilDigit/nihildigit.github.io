@@ -22,7 +22,7 @@ links:
     href: https://github.com/NihilDigit/anvil
   - label: Mobile Demo
     href: https://github.com/NihilDigit/mpv-android-anvil
-  - label: APK · 8 Gen 3 Only · 155 MB
+  - label: APK (SM8650 Only)
     href: https://github.com/NihilDigit/mpv-android-anvil/releases/download/v1.3.0/anvil-demo-v1.3.0-arm64.apk
 featured: true
 hasProjectPage: true

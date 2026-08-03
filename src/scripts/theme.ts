@@ -79,7 +79,7 @@ function setThemeFeature(): void {
   reflectPreference();
 
   // now this script can find and listen for clicks on the control
-  document.querySelector("#theme-btn")?.addEventListener("click", event => {
+  document.querySelector("#theme-btn")?.addEventListener("click", (event) => {
     const mouseEvent = event as MouseEvent;
     themeValue = themeValue === LIGHT ? DARK : LIGHT;
 
@@ -91,7 +91,7 @@ function setThemeFeature(): void {
     // Circular reveal expanding from the toggle icon, via View Transitions.
     // Keyboard-triggered clicks carry clientX/Y = 0; use the button center.
     const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
     const startViewTransition = (
       document as Document & {
@@ -113,9 +113,7 @@ function setThemeFeature(): void {
     const x = rect
       ? rect.left + rect.width / 2
       : mouseEvent.clientX || innerWidth;
-    const y = rect
-      ? rect.top + rect.height / 2
-      : mouseEvent.clientY || 0;
+    const y = rect ? rect.top + rect.height / 2 : mouseEvent.clientY || 0;
 
     const transition = startViewTransition.call(document, applyTheme);
     document.documentElement.classList.add("theme-reveal");
@@ -123,7 +121,7 @@ function setThemeFeature(): void {
       .then(() => {
         const radius = Math.hypot(
           Math.max(x, window.innerWidth - x),
-          Math.max(y, window.innerHeight - y)
+          Math.max(y, window.innerHeight - y),
         );
         document.documentElement.animate(
           {
@@ -136,7 +134,7 @@ function setThemeFeature(): void {
             duration: 350,
             easing: "cubic-bezier(0.83, 0, 0.17, 1)",
             pseudoElement: "::view-transition-new(root)",
-          }
+          },
         );
       })
       .catch(() => {

@@ -4,8 +4,12 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Socials from "@/components/Socials.astro";
+import IconArrowRight from "@/assets/icons/octicons/arrow-right-16.svg";
 import AnvilTeaser from "@/components/AnvilTeaser.astro";
-import IconGitHub from "@/assets/icons/IconGitHub.svg";
+import ContributionRow from "@/components/ContributionRow.astro";
+import IconGitHub from "@/assets/icons/octicons/mark-github-16.svg";
+import HrefIcon from "@/components/HrefIcon.astro";
+import { paperStatusClass, paperStatusLabel } from "@/utils/paperStatus";
 import { formatStars, getGitHubRepoStats } from "@/utils/githubStats";
 import { resolveFeaturedCollection } from "@/utils/featuredContributions";
 
@@ -29,28 +33,12 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
 
 const padIdx = (n: number) => String(n).padStart(2, "0");
 
-const contributionStatusLabel = {
-  done: "Merged",
-  active: "Active",
-  planned: "Planned",
-  closed: "Closed",
-} as const;
-
 const paperBadgePrefix = (status?: string) => {
   if (status === "under-review") return "Under review at";
   if (status === "accepted") return "Accepted at";
   if (status === "published") return "Published in";
   return "Available as";
 };
-
-const splitDiffstat = (diffstat: string) =>
-  diffstat.match(/^(\+[^/]+)(\/)(-.+)$/);
-
-const inlineLinks = (text: string) =>
-  text.replace(
-    /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
-    '<a href="$2" target="_blank" rel="noopener" class="underline decoration-dotted underline-offset-4 hover:text-accent">$1</a>'
-  );
 
 const isExternalHref = (href: string) => /^https?:\/\//.test(href);
 ---
@@ -65,25 +53,26 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
         Useful, interesting, or efficient —<br class="hidden sm:inline" />
         <span class="text-accent">ideally all three</span>.
       </h1>
-      <p class="hero-rise hero-rise-1 mt-6 font-mono text-sm text-muted-foreground">
-        Undergrad &apos;23 · AI ·
+      <p class="hero-rise hero-rise-1 mt-6 text-sm text-muted-foreground">
+        AI undergraduate at
         <a
           href="https://www.ncst.edu.cn/"
           target="_blank"
           rel="noopener"
           class="underline decoration-dotted underline-offset-4 hover:text-accent"
-        >NCST</a>
+        >North China University of Science and Technology</a>, since 2023.
       </p>
 
-      <div class="hero-rise hero-rise-2 mt-8 flex flex-wrap items-center gap-3">
+      <div class="hero-rise hero-rise-2 mt-8 flex flex-wrap items-center gap-2">
         <a
           href="mailto:spencerliu@stu.ncst.edu.cn"
-          class="inline-flex items-baseline gap-2 rounded-md border border-border bg-muted/30 px-3.5 py-2 text-sm transition-colors hover:border-accent hover:text-accent"
+          class="identity-pill gap-2 px-3.5"
         >
-          <span class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            School email
-          </span>
-          <span class="font-mono">spencerliu@stu.ncst.edu.cn</span>
+          <HrefIcon
+            href="mailto:spencerliu@stu.ncst.edu.cn"
+            class="size-4 shrink-0 text-muted-foreground"
+          />
+          <span class="font-mono text-sm">spencerliu@stu.ncst.edu.cn</span>
         </a>
         <Socials />
       </div>
@@ -119,7 +108,7 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
               rel="noopener"
               class="transition-colors hover:text-accent"
             >
-              <IconGitHub class="mr-2 inline-block h-[0.85em] w-[0.85em] align-[-0.2em]" />
+              <IconGitHub class="mr-2 inline-block h-[0.85em] w-[0.85em] align-[-0.07em]" />
               {anvil?.data.title}
             </a>
           </h3>
@@ -153,21 +142,15 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
           )}
 
           <div class="mt-6 flex flex-wrap gap-2">
-            <a
-              href="/anvil"
-              class="inline-flex items-center gap-1.5 rounded-md bg-foreground px-3.5 py-1.5 text-sm font-medium text-background hover:bg-accent hover:text-accent-foreground"
-            >
-              Read project page →
+            <a href="/anvil" class="action-chip action-chip-primary">
+              Read project page
+              <IconArrowRight class="size-4 shrink-0" />
             </a>
             {anvil?.data.links
               .filter(l => !l.label.includes("APK") && l.label !== "Training Code")
               .map(l => (
-              <a
-                href={l.href}
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-1.5 rounded-md border border-border px-3.5 py-1.5 text-sm font-mono hover:border-accent hover:text-accent"
-              >
+              <a href={l.href} target="_blank" rel="noopener" class="action-chip">
+                <HrefIcon href={l.href} class="size-4 shrink-0" />
                 {l.label}
               </a>
             ))}
@@ -225,7 +208,7 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
                   class="transition-colors hover:text-accent"
                 >
                   {isGitHubTitle && (
-                    <IconGitHub class="mr-2 inline-block h-[0.85em] w-[0.85em] align-[-0.2em]" />
+                    <IconGitHub class="mr-2 inline-block h-[0.85em] w-[0.85em] align-[-0.07em]" />
                   )}
                   {entry.data.title}
                 </a>
@@ -282,25 +265,22 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
 
           {entry.data.contributionsSource === "open-ani" && (
             <div
-              class="mt-4 flex justify-end gap-1.5 font-mono text-xs"
+              class="mt-4 flex items-center justify-end gap-2 font-mono text-xs"
               data-contribution-sort
             >
-              <button
-                type="button"
-                data-sort-by="lines"
-                aria-pressed="false"
-                class="rounded-md border border-border px-2 py-0.5 text-muted-foreground transition-colors hover:border-accent hover:text-accent"
+              <span class="text-muted-foreground/70">Sort</span>
+              <div
+                role="group"
+                aria-label="Sort contributions"
+                class="inline-flex rounded-md border border-border p-0.5"
               >
-                By diff
-              </button>
-              <button
-                type="button"
-                data-sort-by="time"
-                aria-pressed="true"
-                class="rounded-md border border-accent px-2 py-0.5 text-accent"
-              >
-                By date
-              </button>
+                <button type="button" data-sort-by="lines" aria-pressed="false" class="sort-toggle">
+                  By diff
+                </button>
+                <button type="button" data-sort-by="time" aria-pressed="true" class="sort-toggle">
+                  By date
+                </button>
+              </div>
             </div>
           )}
 
@@ -309,7 +289,7 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
               class:list={[
                 "mt-6 max-w-4xl",
                 entry.data.contributions.length > 10 &&
-                  "max-h-[30rem] overflow-y-auto pr-3",
+                  "max-h-[30rem] overflow-y-auto",
               ]}
             >
             <ol
@@ -317,7 +297,6 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
               data-contribution-list
             >
               {entry.data.contributions.map((item, i, items) => {
-                const diffstat = splitDiffstat(item.diffstat);
                 const showGroup =
                   item.group && item.group !== items[i - 1]?.group;
 
@@ -328,76 +307,7 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
                         {item.group}
                       </li>
                     )}
-                  <li
-                    class="grid gap-3 py-4 sm:grid-cols-[5.5rem_minmax(0,1fr)] sm:items-start"
-                    data-lines={item.sortLines}
-                    data-time={item.sortTime}
-                  >
-                    <span class="font-mono text-xs leading-6 text-muted-foreground sm:text-right">
-                      {diffstat ? (
-                        <>
-                          <span class="text-emerald-700/80 dark:text-emerald-300/80">
-                            {diffstat[1]}
-                          </span>
-                          <span class="text-muted-foreground/50">{diffstat[2]}</span>
-                          <span class="text-rose-700/75 dark:text-rose-300/75">
-                            {diffstat[3]}
-                          </span>
-                        </>
-                      ) : (
-                        item.diffstat
-                      )}
-                    </span>
-                    <div class="min-w-0">
-                      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span class="text-sm font-medium text-foreground">
-                          {item.label}
-                        </span>
-                        <span
-                          class:list={[
-                            "font-mono text-[0.65rem] uppercase leading-none tracking-widest",
-                            item.status === "done" &&
-                              "text-accent",
-                            item.status === "active" &&
-                              "text-muted-foreground",
-                            item.status === "planned" &&
-                              "text-muted-foreground",
-                            item.status === "closed" &&
-                              "text-muted-foreground",
-                          ]}
-                        >
-                          {contributionStatusLabel[item.status]}
-                        </span>
-                        {item.date && (
-                          <span class="font-mono text-xs text-muted-foreground">
-                            {item.date}
-                          </span>
-                        )}
-                        {item.links.length > 0 && (
-                          <span class="flex flex-wrap gap-1.5">
-                            {item.links.map(link => (
-                              <>
-                                <a
-                                  href={link.href}
-                                  target="_blank"
-                                  rel="noopener"
-                                  class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-0.5 font-mono text-[0.7rem] leading-5 text-muted-foreground transition-colors hover:border-accent hover:text-accent"
-                                >
-                                  {link.label} ↗
-                                </a>
-                              </>
-                            ))}
-                          </span>
-                        )}
-                      </div>
-                      {item.detail && (
-                        <p
-                          class="mt-1 text-sm leading-relaxed text-foreground/80"
-                          set:html={inlineLinks(item.detail)}
-                        />
-                      )}
-                    </div>
-                  </li>
+                    <ContributionRow item={item} />
                   </>
                 );
               })}
@@ -414,9 +324,12 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
                   href={b.href}
                   target={isExternalHref(b.href) ? "_blank" : undefined}
                   rel={isExternalHref(b.href) ? "noopener" : undefined}
-                  class="font-mono text-xs text-muted-foreground underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+                  class="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
                 >
-                  {b.label}{isExternalHref(b.href) ? " ↗" : ""}
+                  <HrefIcon href={b.href} />
+                  <span class="underline decoration-dotted underline-offset-4">
+                    {b.label}
+                  </span>
                 </a>
                   ) : (
                     <span class="font-mono text-xs text-muted-foreground">
@@ -447,10 +360,10 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
                 href={l.href}
                 target={isExternalHref(l.href) ? "_blank" : undefined}
                 rel={isExternalHref(l.href) ? "noopener" : undefined}
-                class="inline-flex items-center gap-1.5 rounded-md border border-border px-3.5 py-1.5 text-sm font-mono hover:border-accent hover:text-accent"
+                class="action-chip"
               >
+                <HrefIcon href={l.href} class="size-4 shrink-0" />
                 {l.label}
-                {isExternalHref(l.href) && <span aria-hidden>↗</span>}
               </a>
             ))}
           </div>
@@ -470,44 +383,57 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
         </a>
       </div>
 
-      <ul class="space-y-6">
+      <ul class="divide-y divide-border border-y border-border">
         {
           sortedPapers.map(p => (
-            <li>
-              <div class="flex items-baseline gap-3">
-                <span class="font-mono text-xs text-muted-foreground tabular-nums">
-                  {p.data.year}
-                </span>
-                {p.data.status === "under-review" && (
-                  <span class="font-mono text-xs uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
-                    Under review
+            <li class="grid gap-x-4 gap-y-2 py-5 sm:grid-cols-[3.25rem_minmax(0,1fr)_auto] sm:items-baseline">
+              <span class="font-mono text-xs tabular-nums text-muted-foreground">
+                {p.data.year}
+              </span>
+
+              <div class="min-w-0">
+                <h3 class="text-base font-medium leading-snug">
+                  {p.data.hasProjectPage && p.data.projectPageSlug ? (
+                    <a
+                      href={`/${p.data.projectPageSlug}`}
+                      class="transition-colors hover:text-accent"
+                    >
+                      {p.data.title}
+                    </a>
+                  ) : (
+                    p.data.title
+                  )}
+                </h3>
+                <p
+                  class="mt-1 text-sm text-muted-foreground"
+                  set:html={fmtAuthors(p.data.authors)}
+                />
+                <p class="mt-0.5 flex flex-wrap items-center gap-x-2 font-mono text-xs text-muted-foreground">
+                  <span class={paperStatusClass(p.data.status)}>
+                    {paperStatusLabel(p.data.status)}
                   </span>
-                )}
-                {p.data.status === "preprint" && (
-                  <span class="font-mono text-xs uppercase tracking-wide text-muted-foreground">
-                    Preprint
-                  </span>
-                )}
-                {p.data.status === "published" && (
-                  <span class="font-mono text-xs uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
-                    Published
-                  </span>
-                )}
+                  <span aria-hidden>·</span>
+                  <span>{p.data.venue}</span>
+                </p>
               </div>
-              <h3 class="mt-1 text-base font-medium leading-snug">
-                {p.data.hasProjectPage && p.data.projectPageSlug ? (
-                  <a href={`/${p.data.projectPageSlug}`} class="hover:text-accent">
-                    {p.data.title}
-                  </a>
-                ) : (
-                  p.data.title
-                )}
-              </h3>
-              <p
-                class="mt-1 text-sm text-muted-foreground"
-                set:html={fmtAuthors(p.data.authors)}
-              />
-              <p class="font-mono text-xs text-muted-foreground">{p.data.venue}</p>
+
+              {p.data.links && p.data.links.length > 0 && (
+                <span class="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs sm:justify-end">
+                  {p.data.links.slice(0, 2).map(l => (
+                    <a
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener"
+                      class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-accent"
+                    >
+                      <HrefIcon href={l.href} />
+                      <span class="underline decoration-dotted underline-offset-4">
+                        {l.label}
+                      </span>
+                    </a>
+                  ))}
+                </span>
+              )}
             </li>
           ))
         }
@@ -533,14 +459,6 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
         const buttons = controls.querySelectorAll<HTMLButtonElement>(
           "[data-sort-by]"
         );
-        const activeClasses = ["border-accent", "text-accent"];
-        const idleClasses = [
-          "border-border",
-          "text-muted-foreground",
-          "hover:border-accent",
-          "hover:text-accent",
-        ];
-
         buttons.forEach(button => {
           button.addEventListener("click", () => {
             const key = button.dataset.sortBy === "time" ? "time" : "lines";
@@ -554,12 +472,11 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
               )
               .forEach(item => list.append(item));
 
-            buttons.forEach(b => {
-              const active = b === button;
-              b.setAttribute("aria-pressed", String(active));
-              b.classList.remove(...(active ? idleClasses : activeClasses));
-              b.classList.add(...(active ? activeClasses : idleClasses));
-            });
+            // Styling hangs off aria-pressed in CSS, so the state lives in
+            // exactly one place.
+            buttons.forEach(b =>
+              b.setAttribute("aria-pressed", String(b === button))
+            );
           });
         });
       });
