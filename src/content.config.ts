@@ -88,7 +88,7 @@ const featured = defineCollection({
         href: z.string(),
       })
       .optional(),
-    statusVariant: z.enum(["live", "in-progress", "archived"]).optional(),
+    statusVariant: z.enum(["live", "in-progress", "award", "archived"]).optional(),
     summary: z.string(),
     metaTags: z.array(z.string()).default([]),
     badges: z
