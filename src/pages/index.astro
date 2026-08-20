@@ -233,6 +233,7 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
                 "badge mt-3",
                 entry.data.statusVariant === "in-progress" && "badge-progress",
                 entry.data.statusVariant === "live" && "badge-live",
+                entry.data.statusVariant === "award" && "badge-award",
                 entry.data.statusVariant === "archived" && "badge-archived",
               ]}
             >

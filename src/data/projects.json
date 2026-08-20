@@ -18,5 +18,24 @@
     "license": "MIT",
     "spotlight": true,
     "order": 30
+  },
+  {
+    "id": "waybar-ai-usage",
+    "name": "waybar-ai-usage",
+    "description": "A Waybar widget that surfaces remaining quota and reset time for Claude Code, Codex CLI, GitHub Copilot, and OpenCode Zen. Uses browser cookies for Claude and Codex; no API keys required.",
+    "repo": "NihilDigit/waybar-ai-usage",
+    "language": "Python",
+    "spotlight": true,
+    "order": 40,
+    "links": [
+      {
+        "label": "AUR",
+        "href": "https://aur.archlinux.org/packages/waybar-ai-usage"
+      },
+      {
+        "label": "Awesome Codex CLI",
+        "href": "https://github.com/RoggeOhta/awesome-codex-cli"
+      }
+    ]
   }
 ]

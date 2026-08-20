@@ -88,7 +88,7 @@ const featured = defineCollection({
         href: z.string(),
       })
       .optional(),
-    statusVariant: z.enum(["live", "in-progress", "archived"]).optional(),
+    statusVariant: z.enum(["live", "in-progress", "award", "archived"]).optional(),
     summary: z.string(),
     metaTags: z.array(z.string()).default([]),
     badges: z
@@ -145,6 +145,14 @@ const projects = defineCollection({
     spotlight: z.boolean().default(false),
     partOf: z.string().optional(),
     order: z.number().default(0),
+    links: z
+      .array(
+        z.object({
+          label: z.string(),
+          href: z.string(),
+        }),
+      )
+      .default([]),
   }),
 });
 
