@@ -6,6 +6,6 @@ eyebrow: "Product"
 order: 2
 status: "Developing"
 statusVariant: live
-summary: "A native Android bilibili client with a point of view. It shows what you subscribed to and nothing it decided you would like — no recommendation feed, no related videos parked beside the player, no bypassing paid limits. I build it for myself, so what ends up in it is my own judgment about how a client should behave."
+summary: "A native Android bilibili client I build for myself. The user is the one deciding: it shows what you subscribed to, not what it decided you would like. Features get settled as architecture instead of added as special cases, and the implementation follows the platform's current recommended approach rather than working around it."
 links: []
 ---
