@@ -84,7 +84,7 @@
   #experience-entry(
     title: [TongXing - On-device Assistive Agent],
     date: [2025-2026],
-    company: [4C2026 Provincial Second Prize; national round in progress],
+    company: [4C2026 National Second Prize],
   )
 
   - Built the on-device safety loop for blind and low-vision mobility: detection → depth → segmentation → tracking → distance/TTC → warning priority, all on a single Android phone.
@@ -127,7 +127,7 @@
 #let awards = [
   = Awards
 
-  - #cv-link("https://jsjds.blcu.edu.cn/")[4C2026]: Provincial Second Prize; national round in progress.
+  - #cv-link("https://jsjds.blcu.edu.cn/")[4C2026]: National Second Prize (work no. 2026023242).
   - #cv-link("https://jsjds.blcu.edu.cn/")[4C2025]: 3rd Prize, Hebei provincial round.
   - #cv-link("https://www.apmcm.org/")[APMCM 2024]: Second Prize.
 ]
