@@ -145,6 +145,14 @@ const projects = defineCollection({
     spotlight: z.boolean().default(false),
     partOf: z.string().optional(),
     order: z.number().default(0),
+    links: z
+      .array(
+        z.object({
+          label: z.string(),
+          href: z.string(),
+        }),
+      )
+      .default([]),
   }),
 });
 
