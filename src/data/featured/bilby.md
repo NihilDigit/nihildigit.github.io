@@ -2,10 +2,10 @@
 title: "bilby"
 titleHref: "https://github.com/NihilDigit/bilby"
 repo: "NihilDigit/bilby"
-eyebrow: "Android"
+eyebrow: "Product"
 order: 2
 status: "Developing"
 statusVariant: live
-summary: "A native Android bilibili client, and the app I use daily. Compose and Media3, with a subscription-only feed instead of a recommendation stream, listen-to-video on the same player as normal playback, offline caching, and layouts that split by window width. I build it to learn Android development."
+summary: "A native Android bilibili client with a point of view. It shows what you subscribed to and nothing it decided you would like — no recommendation feed, no related videos parked beside the player, no bypassing paid limits. I build it for myself, so what ends up in it is my own judgment about how a client should behave."
 links: []
 ---
