@@ -1,4 +1,4 @@
-#import "../vendor/grotesk-cv/src/lib.typ": cv, experience-entry, education-entry
+#import "../vendor/grotesk-cv/src/lib.typ": cv
 
 #let meta = (
   personal: (
@@ -30,7 +30,7 @@
     accent_color: "#d4d2cc",
     text: (
       font: "DejaVu Sans",
-      size: "8.5pt",
+      size: "10pt",
       color: (
         light: "#ededef",
         medium: "#78787e",
@@ -40,136 +40,146 @@
   ),
   language: (
     en: (
-      subtitle: "Undergraduate Student · Reliable On-device AI Systems & Local Agents",
+      subtitle: "",
       cv_document_name: "CV",
       ai_prompt: "",
     ),
   ),
 )
 
-#let link-color = "#2f6f68"
+#let size-name = 22pt
+#let size-section = 12.5pt
+#let size-entry = 10.5pt
+#let size-meta = 9pt
+
+#let gap-section = 20pt
+#let gap-entry = 16pt
+
+#let color-dark = rgb(meta.layout.text.color.dark)
+#let color-muted = rgb(meta.layout.text.color.medium)
+#let link-color = rgb("#2f6f68")
+
 #let contact-links = (
   "mailto:spencerliu@stu.ncst.edu.cn",
   "https://nihildigit.dev",
   "https://github.com/NihilDigit",
   "https://orcid.org/0009-0004-9426-3713",
 )
-#show link: set text(fill: rgb(link-color))
 #let cv-link(dest, body) = {
   let weight = if dest in contact-links { "medium" } else { "bold" }
-  link(dest)[#text(weight: weight, underline(stroke: 0.35pt + rgb(link-color), offset: 1.5pt, body))]
+  link(dest)[#text(weight: weight, underline(stroke: 0.35pt + link-color, offset: 1.5pt, body))]
 }
 
-#let summary = [
-  = Summary
+// 图标资源与网站共用，里面写的是 fill="currentColor"。Typst 独立渲染 SVG，
+// currentColor 会落到黑色，所以读进来替换成要的颜色再交给 image。
+#let icon(name, color: color-dark, size: 10pt, baseline: 1.5pt) = box(
+  baseline: baseline,
+  image(
+    bytes(read("/src/assets/icons/" + name).replace("currentColor", color.to-hex())),
+    format: "svg",
+    width: size,
+  ),
+)
 
-  Undergraduate student working on reliable on-device AI across mobile perception, NPU inference, and local agents. Focus on latency-critical, privacy-preserving, and accessibility-oriented deployments.
+
+#let proj(dest, name) = link(dest)[#text(fill: link-color, name)#h(1.5pt)#icon(
+  "octicons/arrow-up-right-16.svg",
+  color: link-color,
+  size: 7pt,
+  baseline: -0.5pt,
+)]
+
+#let section(glyph, title) = block(above: gap-section, below: 8pt, stack(
+  dir: ttb,
+  spacing: 5pt,
+  [#icon(glyph, size: 11pt) #text(size: size-section, weight: "bold", fill: color-dark, tracking: 0.02em, title)],
+  line(length: 100%, stroke: 0.6pt + rgb(meta.layout.accent_color)),
+))
+
+#let entry(title, date, role-line) = block(above: gap-entry, below: 11pt)[
+  #if date == none {
+    text(size: size-entry, weight: "bold", fill: color-dark, title)
+  } else {
+    grid(
+      columns: (1fr, auto),
+      column-gutter: 10pt,
+      align: (left + bottom, right + bottom),
+      text(size: size-entry, weight: "bold", fill: color-dark, title),
+      text(size: size-meta, weight: "medium", fill: color-muted, date),
+    )
+  }
+  #v(4pt)
+  #text(fill: color-dark, weight: "medium", role-line)
 ]
 
 #let selected-work = [
-  = Selected Work
+  #section("octicons/briefcase-16.svg")[Projects]
 
-  #experience-entry(
-    title: [ANVIL - Accelerator-Native Video Interpolation],
-    date: [2026],
-    company: [Sole-author #cv-link("https://arxiv.org/abs/2603.26835")[arXiv:2603.26835] preprint],
+  #entry(
+    [#proj("https://nihildigit.dev/anvil")[ANVIL] - Accelerator-Native Video Interpolation],
+    [2026],
+    [#icon("brands/arxiv.svg") Sole-author #cv-link("https://arxiv.org/abs/2603.26835")[arXiv:2603.26835] preprint],
   )
 
-  - Built a 30-to-60 fps video interpolation system under mobile NPU, INT8, and end-to-end playback latency constraints.
-  - Reused H.264 decoder motion vectors as a deployment-friendly motion prior, replacing learned optical flow and GridSample-heavy flow refinement with prealignment plus a convolutional residual network; additive skips cut latency 17-26% in A/B tests.
-  - Forked mpv-android into a real playback harness and ran the full CPU/GPU/NPU pipeline on Xiph 1080p sequences: 12.8 ms 1080p INT8 NPU inference, 28.4 ms median end-to-end latency over 54,623 consecutive frame pairs, 94.9% within the 33.3 ms budget.
+  - Reused H.264 decoder motion vectors as the motion prior, as MEMC and compression-domain methods do, with a convolutional residual network correcting them.
+  - Selected the network's operators by their measured behaviour under INT8 quantization on the target NPU.
+  - Ran the pipeline end to end in a #cv-link("https://github.com/NihilDigit/mpv-android-anvil")[fork of mpv-android]: 94.9% of frame pairs met the 33.3 ms budget at 30-to-60 fps.
 
-  #v(5pt)
-
-  #experience-entry(
-    title: [TongXing - On-device Assistive Agent],
-    date: [2025-2026],
-    company: [4C2026 National Second Prize],
+  #entry(
+    [#proj("https://nihildigit.dev/tongxing")[TongXing] - On-device Intelligent Assistive System for the Visually Impaired],
+    [2025-2026],
+    [#icon("octicons/trophy-16.svg") Project lead, 4C2026 National Second Prize],
   )
 
-  - Built the on-device safety loop for blind and low-vision mobility: detection → depth → segmentation → tracking → distance/TTC → warning priority, all on a single Android phone.
-  - Deployed INT8 vision models on Hexagon NPU and a Q4-quantized Qwen3-1.7B on Adreno GPU via llama.cpp/OpenCL, with offline speech/control on CPU. Safety perception averaged 35.16 ms over 1,636 walking frames, under the 66.7 ms budget for a 15 Hz warning loop.
-  - Closed the digital-accessibility gap in touch-first apps by routing navigation, ride-hailing, transit, weather, and vision tasks through a voice loop backed by MCP tools and Android accessibility actions, while keeping the safety path local and isolated from assistant tasks.
+  - Real-time obstacle warning on a chest-mounted Snapdragon 8 Gen 3: detection, depth, segmentation, tracking and #box[distance/TTC] at 15 Hz, 35.16 ms against a 66.7 ms budget.
+  - Three concurrent workloads on three processors to avoid contention: INT8 vision on the Hexagon NPU, Q4 Qwen3-1.7B on the Adreno GPU, speech and control on the CPU. The safety path is fully on-device; only scene description may call a cloud model.
+  - Voice-only control over MCP tools and Android accessibility actions, with the local model scoped to intent parsing.
 
-  #v(5pt)
-
-  #experience-entry(
-    title: [RAFNet - Dense Classroom Behavior Recognition],
-    date: [2025-2026],
-    company: [Under review at #cv-link("https://link.springer.com/journal/371")[The Visual Computer]],
+  #entry(
+    [#proj("https://github.com/open-ani/animeko")[Animeko] - Kotlin Multiplatform Anime Player],
+    [2026],
+    [#icon("octicons/star-16.svg") Member of the #cv-link("https://github.com/open-ani")[open-ani] organization],
   )
 
-  - Third author; designed evaluation and ablations for gated fusion over #cv-link("https://github.com/boycehbz/GroupRec")[GroupRec (ICCV 2023)] relation context and ConvNeXt appearance features.
-  - Reached 63.08 ± 0.40 Macro F1 on the self-built NCST Classroom dataset (+2.79 over ConvNeXt-only) and 96.76 cross-dataset Macro F1 on SCB3-U.
-]
-
-#let open-source = [
-  = Open Source
-
-  - *#cv-link("https://github.com/open-ani/animeko")[Animeko] / #cv-link("https://github.com/NihilDigit/pikpak-kotlin")[pikpak-kotlin]:* merged PikPak cloud offline-download into open-ani/animeko, an 18k-star app, with streaming, BitTorrent fallback, credential handling, and a Maven-published KMP SDK.
-  - *#cv-link("https://github.com/sinelaw/fresh")[Fresh]:* upstream contributor to a terminal IDE/text editor; added Windows ARM64 release artifacts and is working on vi-mode unnamed-register behavior for delete, change, and yank operations.
-  - *#cv-link("https://github.com/NihilDigit/waybar-ai-usage")[waybar-ai-usage]:* maintains an AUR-packaged Waybar quota widget for coding agents; 40+ stars and 8 accepted external contributions.
+  - 36 merged pull requests into animeko and its #cv-link("https://github.com/open-ani/mediamp")[mediamp] playback runtime, a 20k-star Compose Multiplatform app across Android, Windows, Linux, and macOS.
+  - Added the Windows on Arm target with its hardware-decode backend and release packaging, and fixed Linux startup.
+  - Added Windows touch input through JNA, and reworked how the app picks its device variant.
+  - Added cloud offline download to the BitTorrent engine, with the client extracted as #cv-link("https://github.com/NihilDigit/pikpak-kotlin")[pikpak-kotlin], a KMP SDK on Maven.
+  - Player features: configurable playback speed, screenshots, embedded subtitles, and cancellable seek.
 ]
 
 #let education = [
-  = Education
+  #section("octicons/mortar-board-16.svg")[Education]
 
-  #education-entry(
-    degree: [B.S.#linebreak()Intelligence Science and Technology],
-    date: [2023-2027],
-    institution: [North China University of Science and Technology],
-    location: [Tangshan, China],
+  #entry(
+    [B.S. Intelligence Science and Technology],
+    none,
+    [North China University of Science and Technology, 2023-2027],
   )
 
-  - CET-4: 548.
+  - CET-6: 545.
 ]
 
 #let awards = [
-  = Awards
+  #section("octicons/trophy-16.svg")[Awards]
 
   - #cv-link("https://jsjds.blcu.edu.cn/")[4C2026]: National Second Prize (work no. 2026023242).
-  - #cv-link("https://jsjds.blcu.edu.cn/")[4C2025]: 3rd Prize, Hebei provincial round.
-  - #cv-link("https://www.apmcm.org/")[APMCM 2024]: Second Prize.
+  - #cv-link("https://www.apmcm.org/")[APMCM 2024]: Second Prize (work no. 24201176).
 ]
 
-#let skills = [
-  = Skills
+#show link: set text(fill: link-color)
 
-  *Efficient edge ML:* mobile NPU/GPU heterogeneous pipelines, INT8 quantization, latency-budgeted inference, media/playback integration, profiling and benchmarking.
 
-  *Local agent systems:* on-device LLM deployment, MCP tool-use workflows, Android accessibility automation, offline-first design.
-
-  *Human-centered deployment:* interaction design, accessibility-oriented UX, task-oriented interfaces, user-facing reliability.
-]
-
-#let links = [
-  = Links
-
-  - #cv-link("https://nihildigit.dev/tongxing")[TongXing Showcase]
-  - #cv-link("https://nihildigit.dev/anvil")[ANVIL Showcase]
-  - #cv-link("https://arxiv.org/abs/2603.26835")[ANVIL arXiv]
-  - ANVIL: #cv-link("https://github.com/NihilDigit/anvil")[Code] / #cv-link("https://github.com/NihilDigit/mpv-android-anvil")[Player]
-  - #cv-link("https://github.com/NihilDigit/RAFNet")[RAFNet OSS Repo]
-]
+#set par(leading: 0.8em, spacing: 0.9em)
+#set list(marker: text(fill: color-muted, [‣]), spacing: 1em, body-indent: 0.5em)
 
 #show: cv.with(
   meta,
   use-photo: false,
-  left-pane: [
-    #summary
-    #v(12pt)
-    #selected-work
-    #v(14pt)
-    #open-source
-  ],
+  left-pane: selected-work,
   right-pane: [
     #education
-    #v(12pt)
     #awards
-    #v(12pt)
-    #skills
-    #v(12pt)
-    #links
   ],
-  left-pane-proportion: 68%,
+  left-pane-proportion: 64%,
 )
