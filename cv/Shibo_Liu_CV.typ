@@ -52,8 +52,8 @@
 #let size-entry = 10.5pt
 #let size-meta = 9pt
 
-#let gap-section = 20pt
-#let gap-entry = 16pt
+#let gap-section = 18pt
+#let gap-entry = 14pt
 
 #let color-dark = rgb(meta.layout.text.color.dark)
 #let color-muted = rgb(meta.layout.text.color.medium)
@@ -81,6 +81,20 @@
   ),
 )
 
+
+// Live GitHub figures come in through `--input` from scripts/cv-inputs.ts;
+// the defaults keep a local `typst compile` working without network.
+#let live(key, fallback) = int(sys.inputs.at(key, default: str(fallback)))
+#let thousands(n) = {
+  let s = str(n)
+  if s.len() <= 3 { s } else { s.slice(0, s.len() - 3) + "," + s.slice(s.len() - 3) }
+}
+#let compact(n) = if n >= 1000 { str(calc.floor(n / 100) / 10) + "k" } else { str(n) }
+
+#let animeko-merged = live("animeko_merged", 40)
+#let animeko-stars = live("animeko_stars", 20369)
+#let piko-stars = live("piko_stars", 192)
+#let piko-downloads = live("piko_downloads", 2644)
 
 #let proj(dest, name) = link(dest)[#text(fill: link-color, name)#h(1.5pt)#icon(
   "octicons/arrow-up-right-16.svg",
@@ -121,18 +135,18 @@
     [#icon("brands/arxiv.svg") Sole-author #cv-link("https://arxiv.org/abs/2603.26835")[arXiv:2603.26835] preprint],
   )
 
-  - Reused H.264 decoder motion vectors as the motion prior, as MEMC and compression-domain methods do, with a convolutional residual network correcting them.
+  - Reused H.264 decoder motion vectors as the motion prior, with a convolutional residual network correcting them.
   - Selected the network's operators by their measured behaviour under INT8 quantization on the target NPU.
   - Ran the pipeline end to end in a #cv-link("https://github.com/NihilDigit/mpv-android-anvil")[fork of mpv-android]: 94.9% of frame pairs met the 33.3 ms budget at 30-to-60 fps.
 
   #entry(
-    [#proj("https://nihildigit.dev/tongxing")[TongXing] - On-device Intelligent Assistive System for the Visually Impaired],
+    [#proj("https://nihildigit.dev/tongxing")[TongXing] - On-device Assistive System for the Visually Impaired],
     [2025-2026],
     [#icon("octicons/trophy-16.svg") Project lead, 4C2026 National Second Prize],
   )
 
   - Real-time obstacle warning on a chest-mounted Snapdragon 8 Gen 3: detection, depth, segmentation, tracking and #box[distance/TTC] at 15 Hz, 35.16 ms against a 66.7 ms budget.
-  - Three concurrent workloads on three processors to avoid contention: INT8 vision on the Hexagon NPU, Q4 Qwen3-1.7B on the Adreno GPU, speech and control on the CPU. The safety path is fully on-device; only scene description may call a cloud model.
+  - INT8 vision on the Hexagon NPU, Q4 Qwen3-1.7B on the Adreno GPU, and speech on the CPU, so the three never contend.
   - Voice-only control over MCP tools and Android accessibility actions, with the local model scoped to intent parsing.
 
   #entry(
@@ -141,11 +155,19 @@
     [#icon("octicons/star-16.svg") Member of the #cv-link("https://github.com/open-ani")[open-ani] organization],
   )
 
-  - 36 merged pull requests into animeko and its #cv-link("https://github.com/open-ani/mediamp")[mediamp] playback runtime, a 20k-star Compose Multiplatform app across Android, Windows, Linux, and macOS.
-  - Added the Windows on Arm target with its hardware-decode backend and release packaging, and fixed Linux startup.
-  - Added Windows touch input through JNA, and reworked how the app picks its device variant.
+  - #animeko-merged merged pull requests into animeko and its #cv-link("https://github.com/open-ani/mediamp")[mediamp] playback runtime, a #compact(animeko-stars)-star Compose Multiplatform app across Android, Windows, Linux, and macOS.
+  - Added the Windows on Arm target with hardware decoding and packaging, Windows touch input, and Linux startup fixes.
   - Added cloud offline download to the BitTorrent engine, with the client extracted as #cv-link("https://github.com/NihilDigit/pikpak-kotlin")[pikpak-kotlin], a KMP SDK on Maven.
-  - Player features: configurable playback speed, screenshots, embedded subtitles, and cancellable seek.
+
+  #entry(
+    [#proj("https://github.com/NihilDigit/piko")[piko] - Cross-platform PikPak Client],
+    [2026],
+    [#icon("octicons/star-16.svg") Author, #piko-stars stars and #thousands(piko-downloads) downloads],
+  )
+
+  - Kotlin and Compose Multiplatform client for Android, Windows, and macOS, built on pikpak-kotlin.
+  - Per-platform interface in Material 3 Expressive: keyboard-and-mouse layouts on desktop, a simpler touch layout on phones.
+  - Transfers that route around slow nodes on weak networks, and a clip feed of random stretches from a folder's videos.
 ]
 
 #let education = [
@@ -170,8 +192,8 @@
 #show link: set text(fill: link-color)
 
 
-#set par(leading: 0.8em, spacing: 0.9em)
-#set list(marker: text(fill: color-muted, [‣]), spacing: 1em, body-indent: 0.5em)
+#set par(leading: 0.78em, spacing: 0.85em)
+#set list(marker: text(fill: color-muted, [‣]), spacing: 0.95em, body-indent: 0.5em)
 
 #show: cv.with(
   meta,
@@ -181,5 +203,5 @@
     #education
     #awards
   ],
-  left-pane-proportion: 64%,
+  left-pane-proportion: 66%,
 )

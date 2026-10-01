@@ -1,0 +1,78 @@
+[
+  {
+    "id": "cmake-liblzma-arm64",
+    "project": "CMake",
+    "label": "Enable ARM64 BCJ filters in bundled liblzma",
+    "status": "done",
+    "diffstat": "+54/-0",
+    "links": [
+      {
+        "label": "!12202",
+        "href": "https://gitlab.kitware.com/cmake/cmake/-/merge_requests/12202"
+      }
+    ]
+  },
+  {
+    "id": "fresh-vi-mode",
+    "project": "fresh",
+    "label": "Vi-mode register behavior and Windows ARM64 releases",
+    "status": "done",
+    "diffstat": "+847/-179",
+    "links": [
+      {
+        "label": "#2368",
+        "href": "https://github.com/sinelaw/fresh/pull/2368"
+      },
+      { "label": "#2353", "href": "https://github.com/sinelaw/fresh/pull/2353" }
+    ]
+  },
+  {
+    "id": "pikpakcli-time-range",
+    "project": "pikpakcli",
+    "label": "Download a clipped time range of a remote video",
+    "status": "done",
+    "diffstat": "+496/-140",
+    "links": [
+      { "label": "#64", "href": "https://github.com/52funny/pikpakcli/pull/64" }
+    ]
+  },
+  {
+    "id": "media-kit-arm64",
+    "project": "media-kit",
+    "label": "Windows ARM64 libmpv for Kazumi",
+    "status": "done",
+    "diffstat": "+45/-4",
+    "links": [
+      {
+        "label": "#34",
+        "href": "https://github.com/Predidit/media-kit/pull/34"
+      }
+    ]
+  },
+  {
+    "id": "dms-wifi-progress",
+    "project": "DankMaterialShell",
+    "label": "Show WiFi connection progress",
+    "status": "done",
+    "diffstat": "+59/-13",
+    "links": [
+      {
+        "label": "#2684",
+        "href": "https://github.com/AvengeMedia/DankMaterialShell/pull/2684"
+      }
+    ]
+  },
+  {
+    "id": "llama-cpp-cjk-tool-call",
+    "project": "llama.cpp",
+    "label": "Diagnose CJK tool-call history pollution",
+    "status": "closed",
+    "diffstat": "",
+    "links": [
+      {
+        "label": "#19391",
+        "href": "https://github.com/ggml-org/llama.cpp/issues/19391"
+      }
+    ]
+  }
+]

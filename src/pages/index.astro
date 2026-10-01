@@ -3,23 +3,38 @@ import { getCollection, getEntry } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
 import IconArrowRight from "@/assets/icons/octicons/arrow-right-16.svg";
 import AnvilTeaser from "@/components/AnvilTeaser.astro";
 import ContributionRow from "@/components/ContributionRow.astro";
+import KeyNumbers from "@/components/KeyNumbers.astro";
+import FeaturedCard from "@/components/FeaturedCard.astro";
 import IconGitHub from "@/assets/icons/octicons/mark-github-16.svg";
 import HrefIcon from "@/components/HrefIcon.astro";
 import { paperStatusClass, paperStatusLabel } from "@/utils/paperStatus";
-import { formatStars, getGitHubRepoStats } from "@/utils/githubStats";
+import { getGitHubReleaseDownloads, getGitHubRepoStats } from "@/utils/githubStats";
 import { resolveFeaturedCollection } from "@/utils/featuredContributions";
 
 const anvil = await getEntry("papers", "anvil");
 
 const allFeatured = await resolveFeaturedCollection(await getCollection("featured"));
 const sortedFeatured = allFeatured.sort((a, b) => a.data.order - b.data.order);
+const ANVIL_REPO = "NihilDigit/anvil";
 const featuredRepoStats = await getGitHubRepoStats(
   sortedFeatured.map(entry => entry.data.repo).filter(repo => repo !== undefined)
 );
+const featuredDownloads = new Map(
+  await Promise.all(
+    sortedFeatured
+      .filter(entry => entry.data.showDownloads && entry.data.repo)
+      .map(async entry => [entry.id, await getGitHubReleaseDownloads(entry.data.repo!)] as const)
+  )
+);
+
+const starsOf = (entry: (typeof sortedFeatured)[number]) =>
+  (entry.data.repo ? featuredRepoStats.get(entry.data.repo)?.stars : undefined) ??
+  entry.data.fallbackStars;
+
+const upstream = await getCollection("upstream");
 
 const allPapers = await getCollection("papers");
 const sortedPapers = allPapers.sort(
@@ -31,79 +46,18 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
     .map(a => (a.isMe ? `<strong class="text-foreground">${a.name}</strong>` : a.name))
     .join(", ");
 
-const padIdx = (n: number) => String(n).padStart(2, "0");
-
-const paperBadgePrefix = (status?: string) => {
-  if (status === "under-review") return "Under review at";
-  if (status === "accepted") return "Accepted at";
-  if (status === "published") return "Published in";
-  return "Available as";
-};
-
-const isExternalHref = (href: string) => /^https?:\/\//.test(href);
 ---
 
 <Layout>
   <Header />
   <main id="main-content" class="app-layout">
-    <!-- Hero -->
-    <section id="hero" class="pt-12 pb-16 sm:pt-20 sm:pb-24">
-      <h1 class="hero-rise text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-        I build systems.<br class="hidden sm:inline" />
-        Useful, interesting, or efficient —<br class="hidden sm:inline" />
-        <span class="text-accent">ideally all three</span>.
-      </h1>
-      <p class="hero-rise hero-rise-1 mt-6 text-sm text-muted-foreground">
-        AI undergraduate at
-        <a
-          href="https://www.ncst.edu.cn/"
-          target="_blank"
-          rel="noopener"
-          class="underline decoration-dotted underline-offset-4 hover:text-accent"
-        >North China University of Science and Technology</a>, since 2023.
-      </p>
-
-      <div class="hero-rise hero-rise-2 mt-8 flex flex-wrap items-center gap-2">
-        <a
-          href="mailto:spencerliu@stu.ncst.edu.cn"
-          class="identity-pill gap-2 px-3.5"
-        >
-          <HrefIcon
-            href="mailto:spencerliu@stu.ncst.edu.cn"
-            class="size-4 shrink-0 text-muted-foreground"
-          />
-          <span class="font-mono text-sm">spencerliu@stu.ncst.edu.cn</span>
-        </a>
-        <Socials />
-      </div>
-    </section>
-
-    <!-- Featured · 01 — Research (ANVIL) -->
-    <section id="featured-anvil" class="border-t border-border pt-10 pb-16" data-reveal>
-      <div class="mb-6 flex items-baseline justify-between">
-        <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Featured · 01 — Research
-        </h2>
-        <a href="/anvil" class="text-xs text-muted-foreground hover:text-accent">
-          Project page →
-        </a>
-      </div>
-
-      <div class="space-y-6">
-        {anvil?.data.teaserVideo && (
-          <div class="max-w-4xl">
-            <AnvilTeaser
-              src={anvil.data.teaserVideo}
-              poster={anvil.data.teaserPoster}
-              priority
-            />
-          </div>
-        )}
-
+    <!-- Featured: ANVIL -->
+    <section id="featured-anvil" class="py-10" data-reveal>
+      <div>
         <div>
           <h3 class="max-w-4xl text-2xl font-semibold tracking-tight sm:text-3xl">
             <a
-              href="https://github.com/NihilDigit/anvil"
+              href={`https://github.com/${ANVIL_REPO}`}
               target="_blank"
               rel="noopener"
               class="transition-colors hover:text-accent"
@@ -112,282 +66,82 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
               {anvil?.data.title}
             </a>
           </h3>
-          <div class="badge badge-live mt-3">
-            <span class="badge-dot" />
-            <span>{paperBadgePrefix(anvil?.data.status)}</span>
-            {anvil?.data.venueHref ? (
-              <a
-                href={anvil.data.venueHref}
-                target="_blank"
-                rel="noopener"
-                class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
-              >
-                {anvil.data.venue}
-              </a>
-            ) : (
-              anvil?.data.venue
+
+          <div class="mt-5 grid gap-5 md:grid-cols-2">
+            {anvil?.data.teaserVideo && (
+              <AnvilTeaser
+                src={anvil.data.teaserVideo}
+                poster={anvil.data.teaserPoster}
+                priority
+              />
             )}
-          </div>
-          <p class="mt-4 max-w-4xl text-foreground/80">{anvil?.data.tldr}</p>
 
-          {anvil?.data.keyNumbers && (
-            <dl class="mt-6 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
-              {anvil.data.keyNumbers.map(n => (
-                <div class="border-t border-border pt-3">
-                  <dt class="metric-value text-2xl text-foreground">{n.value}</dt>
-                  <dd class="mt-1 text-xs text-muted-foreground">{n.caption}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
+            {/* Stretched to the video's height so the buttons sit on its bottom edge. */}
+            <div class="flex flex-col justify-between">
+              <p class="text-foreground/80">{anvil?.data.tldr}</p>
 
-          <div class="mt-6 flex flex-wrap gap-2">
-            <a href="/anvil" class="action-chip action-chip-primary">
-              Read project page
-              <IconArrowRight class="size-4 shrink-0" />
-            </a>
-            {anvil?.data.links
-              .filter(l => !l.label.includes("APK") && l.label !== "Training Code")
-              .map(l => (
-              <a href={l.href} target="_blank" rel="noopener" class="action-chip">
-                <HrefIcon href={l.href} class="size-4 shrink-0" />
-                {l.label}
-              </a>
-            ))}
+              <div class="mt-5 flex flex-wrap justify-end gap-2">
+                <a href="/anvil" class="action-chip action-chip-primary">
+                  Read project page
+                  <IconArrowRight class="size-4 shrink-0" />
+                </a>
+                {anvil?.data.links
+                  // The project page lists code, demo, and APK; the card keeps only the paper.
+                  .filter(l => l.label === "arXiv")
+                  .map(l => (
+                  <a href={l.href} target="_blank" rel="noopener" class="action-chip">
+                    <HrefIcon href={l.href} class="size-4 shrink-0" />
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
+
+          {anvil?.data.keyNumbers && <KeyNumbers items={anvil.data.keyNumbers} />}
         </div>
       </div>
     </section>
 
-    <!-- Featured · 02..N — from featured collection -->
-    {
-      sortedFeatured.map((entry, i) => {
-        const repoStats = entry.data.repo
-          ? featuredRepoStats.get(entry.data.repo)
-          : undefined;
-        const stars = repoStats?.stars ?? entry.data.fallbackStars;
-        const isGitHubTitle = entry.data.titleHref?.includes("github.com");
+    <!-- Featured: the rest, from the featured collection -->
+    {sortedFeatured.map(entry => <FeaturedCard
+        entry={entry}
+        stars={starsOf(entry)}
+        downloads={featuredDownloads.get(entry.id)}
+      />)}
 
-        return (
-        <section
-          id={`featured-${entry.id}`}
-          class="border-t border-border pt-10 pb-16"
-          data-reveal
-        >
-          <div class="mb-6 flex items-baseline justify-between">
-            <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-              Featured · {padIdx(i + 2)}
-              {entry.data.eyebrow && (
-                <span>
-                  {" "}
-                  —{" "}
-                  {entry.data.eyebrowHref ? (
-                    <a
-                      href={entry.data.eyebrowHref}
-                      target="_blank"
-                      rel="noopener"
-                      class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
-                    >
-                      {entry.data.eyebrow}
-                    </a>
-                  ) : (
-                    entry.data.eyebrow
-                  )}
-                </span>
-              )}
-            </h2>
-          </div>
+    <!-- Upstream contributions: small patches outside the featured projects -->
+    <section id="upstream" class="border-t border-border py-10" data-reveal>
+      <div class="mb-6 flex items-baseline justify-between">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Upstream contributions
+        </h2>
+      </div>
 
-          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-            <h3 class="text-2xl font-semibold tracking-tight sm:text-3xl">
-              {entry.data.titleHref ? (
-                <a
-                  href={entry.data.titleHref}
-                  target={isExternalHref(entry.data.titleHref) ? "_blank" : undefined}
-                  rel={isExternalHref(entry.data.titleHref) ? "noopener" : undefined}
-                  class="transition-colors hover:text-accent"
-                >
-                  {isGitHubTitle && (
-                    <IconGitHub class="mr-2 inline-block h-[0.85em] w-[0.85em] align-[-0.07em]" />
-                  )}
-                  {entry.data.title}
-                </a>
-              ) : (
-                entry.data.title
-              )}
-            </h3>
-
-            {stars !== undefined && (
-              <span class="inline-flex items-baseline gap-1 font-mono text-sm text-muted-foreground">
-                <span aria-hidden class="text-foreground/80">
-                  ★
-                </span>
-                <span>{formatStars(stars)}</span>
-              </span>
-            )}
-          </div>
-
-          {entry.data.status && (
-            <span
-              class:list={[
-                "badge mt-3",
-                entry.data.statusVariant === "in-progress" && "badge-progress",
-                entry.data.statusVariant === "live" && "badge-live",
-                entry.data.statusVariant === "award" && "badge-award",
-                entry.data.statusVariant === "archived" && "badge-archived",
-              ]}
-            >
-              <span class="badge-dot" />
-              {entry.data.status}
-              {entry.data.statusLink && (
-                <a
-                  href={entry.data.statusLink.href}
-                  target="_blank"
-                  rel="noopener"
-                  class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
-                >
-                  {entry.data.statusLink.label}
-                </a>
-              )}
-            </span>
-          )}
-
-          {entry.data.metaTags.length > 0 && (
-            <ul class="mt-3 flex flex-wrap gap-x-2 gap-y-1 font-mono text-xs text-muted-foreground">
-              {entry.data.metaTags.map(t => (
-                <li class="before:mr-2 before:content-['·'] before:text-muted-foreground/40 first:before:hidden">
-                  {t}
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <p class="mt-4 max-w-4xl text-foreground/80">{entry.data.summary}</p>
-
-          {entry.data.contributionsSource === "open-ani" && (
-            <div
-              class="mt-4 flex items-center justify-end gap-2 font-mono text-xs"
-              data-contribution-sort
-            >
-              <span class="text-muted-foreground/70">Sort</span>
-              <div
-                role="group"
-                aria-label="Sort contributions"
-                class="inline-flex rounded-md border border-border p-0.5"
-              >
-                <button type="button" data-sort-by="lines" aria-pressed="false" class="sort-toggle">
-                  By diff
-                </button>
-                <button type="button" data-sort-by="time" aria-pressed="true" class="sort-toggle">
-                  By date
-                </button>
-              </div>
-            </div>
-          )}
-
-          {entry.data.contributions.length > 0 && (
-            <div
-              class:list={[
-                "mt-6 max-w-4xl",
-                entry.data.contributions.length > 10 &&
-                  "max-h-[30rem] overflow-y-auto",
-              ]}
-            >
-            <ol
-              class="divide-y divide-border border-y border-border"
-              data-contribution-list
-            >
-              {entry.data.contributions.map((item, i, items) => {
-                const showGroup =
-                  item.group && item.group !== items[i - 1]?.group;
-
-                return (
-                  <>
-                    {showGroup && (
-                      <li class="pt-4 pb-1 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground first:pt-2">
-                        {item.group}
-                      </li>
-                    )}
-                    <ContributionRow item={item} />
-                  </>
-                );
-              })}
-            </ol>
-            </div>
-          )}
-
-          {entry.data.badges.length > 0 && (
-            <div class="mt-4 flex flex-wrap gap-2">
-              {entry.data.badges.map(b =>
-                b.label ? (
-                  b.href ? (
-                <a
-                  href={b.href}
-                  target={isExternalHref(b.href) ? "_blank" : undefined}
-                  rel={isExternalHref(b.href) ? "noopener" : undefined}
-                  class="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
-                >
-                  <HrefIcon href={b.href} />
-                  <span class="underline decoration-dotted underline-offset-4">
-                    {b.label}
-                  </span>
-                </a>
-                  ) : (
-                    <span class="font-mono text-xs text-muted-foreground">
-                      {b.label}
-                    </span>
-                  )
-                ) : b.href && b.src ? (
-                  <a
-                    href={b.href}
-                    target={isExternalHref(b.href) ? "_blank" : undefined}
-                    rel={isExternalHref(b.href) ? "noopener" : undefined}
-                    aria-label={b.alt}
-                  >
-                    <img src={b.src} alt={b.alt ?? ""} class="h-5" />
-                  </a>
-                ) : b.src ? (
-                  <img src={b.src} alt={b.alt ?? ""} class="h-5" />
-                ) : (
-                  null
-                )
-              )}
-            </div>
-          )}
-
-          <div class="mt-6 flex flex-wrap gap-2">
-            {entry.data.links.map(l => (
-              <a
-                href={l.href}
-                target={isExternalHref(l.href) ? "_blank" : undefined}
-                rel={isExternalHref(l.href) ? "noopener" : undefined}
-                class="action-chip"
-              >
-                <HrefIcon href={l.href} class="size-4 shrink-0" />
-                {l.label}
-              </a>
-            ))}
-          </div>
-        </section>
-        );
-      })
-    }
+      <ol class="max-w-4xl divide-y divide-border/70">
+        {upstream.map(u => (
+          <ContributionRow
+            item={{
+              ...u.data,
+              label: `${u.data.project}: ${u.data.label}`,
+            }}
+          />
+        ))}
+      </ol>
+    </section>
 
     <!-- Publications -->
-    <section id="publications" class="border-t border-border pt-10 pb-20" data-reveal>
+    <section id="publications" class="border-t border-border pt-10 pb-16" data-reveal>
       <div class="mb-6 flex items-baseline justify-between">
         <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Publications
         </h2>
-        <a href="/papers" class="text-xs text-muted-foreground hover:text-accent">
-          All publications →
-        </a>
       </div>
 
-      <ul class="divide-y divide-border border-y border-border">
+      <ul class="divide-y divide-border/70">
         {
           sortedPapers.map(p => (
-            <li class="grid gap-x-4 gap-y-2 py-5 sm:grid-cols-[3.25rem_minmax(0,1fr)_auto] sm:items-baseline">
+            <li class="grid gap-x-4 gap-y-2 py-3 sm:grid-cols-[3.25rem_minmax(0,1fr)_auto] sm:items-baseline">
               <span class="font-mono text-xs tabular-nums text-muted-foreground">
                 {p.data.year}
               </span>
@@ -485,6 +239,41 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
 
   initContributionSort();
   document.addEventListener("astro:page-load", initContributionSort);
+
+  // Rows wrap to different heights on narrow screens, so a fixed max-height
+  // shows a different number of rows per width. The class max-height stays as
+  // the no-JS fallback; this measures the first N rows and overrides it.
+  function fitVisibleRows(box: HTMLElement) {
+    const count = Number(box.dataset.visibleRows);
+    const rows = box.querySelectorAll<HTMLElement>("li[data-lines]");
+    const last = rows[Math.min(count, rows.length) - 1];
+    if (!last) return;
+    const height =
+      last.getBoundingClientRect().bottom - box.getBoundingClientRect().top;
+    box.style.maxHeight = `${Math.ceil(height + box.scrollTop)}px`;
+  }
+
+  function initVisibleRows() {
+    document
+      .querySelectorAll<HTMLElement>("[data-visible-rows]")
+      .forEach(box => {
+        if (box.dataset.bound === "true") return;
+        box.dataset.bound = "true";
+        fitVisibleRows(box);
+        new ResizeObserver(() => fitVisibleRows(box)).observe(
+          box.querySelector("ol") ?? box
+        );
+        // Sorting reorders rows without resizing the list, so the observer
+        // does not fire; the leading rows may now have different heights.
+        new MutationObserver(() => fitVisibleRows(box)).observe(
+          box.querySelector("ol") ?? box,
+          { childList: true }
+        );
+      });
+  }
+
+  initVisibleRows();
+  document.addEventListener("astro:page-load", initVisibleRows);
 
   function initReveal() {
     const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");

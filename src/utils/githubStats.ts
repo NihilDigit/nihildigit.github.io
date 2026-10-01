@@ -69,3 +69,41 @@ export const getGitHubRepoStats = async (repos: string[]) => {
 
   return stats;
 };
+
+type GitHubReleaseResponse = {
+  assets?: { download_count?: number }[];
+}[];
+
+// GitHub has no repo-level download counter; the total is the sum of every
+// release asset's download_count, paged because old releases still count.
+export const getGitHubReleaseDownloads = async (repo: string) => {
+  const authMode = process.env.GITHUB_TOKEN ? "authenticated" : "anonymous";
+  try {
+    let total = 0;
+    for (let page = 1; ; page++) {
+      const response = await fetch(
+        `https://api.github.com/repos/${repo}/releases?per_page=100&page=${page}`,
+        { headers: githubHeaders() },
+      );
+      if (!response.ok) {
+        console.warn(
+          `[github-stats] ${repo} releases: ${response.status} ${response.statusText} (${authMode})`,
+        );
+        return undefined;
+      }
+      const releases = (await response.json()) as GitHubReleaseResponse;
+      for (const release of releases) {
+        for (const asset of release.assets ?? []) {
+          total += asset.download_count ?? 0;
+        }
+      }
+      if (releases.length < 100) break;
+    }
+    console.info(`[github-stats] ${repo}: ${total} downloads (${authMode})`);
+    return total;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "unknown error";
+    console.warn(`[github-stats] ${repo} releases: ${message} (${authMode})`);
+    return undefined;
+  }
+};

@@ -1,0 +1,20 @@
+---
+import IconStar from "@/assets/icons/octicons/star-16.svg";
+import { formatStars } from "@/utils/githubStats";
+
+interface Props {
+  stars?: number;
+}
+
+const { stars } = Astro.props;
+---
+
+{
+  stars !== undefined && (
+    <span class="inline-flex items-center gap-1.5 text-lg font-semibold text-foreground/85">
+      <IconStar class="size-4 shrink-0" aria-hidden="true" />
+      {formatStars(stars)}
+      <span class="sr-only">stars</span>
+    </span>
+  )
+}

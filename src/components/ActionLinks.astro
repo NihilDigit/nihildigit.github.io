@@ -1,0 +1,42 @@
+---
+import IconArrowRight from "@/assets/icons/octicons/arrow-right-16.svg";
+import HrefIcon from "@/components/HrefIcon.astro";
+import { formatStars } from "@/utils/githubStats";
+
+interface Props {
+  links: { label: string; href: string }[];
+  // Total release downloads, shown inside the first button since that is
+  // where those downloads come from.
+  downloads?: number;
+}
+
+const { links, downloads } = Astro.props;
+const isExternalHref = (href: string) => /^https?:\/\//.test(href);
+---
+
+{
+  links.length > 0 && (
+    <div class="mt-5 flex flex-wrap justify-end gap-2">
+      {links.map((l, i) => {
+        // The first link is the card's main action and gets the same black
+        // button as ANVIL's project page; the rest stay secondary chips.
+        const external = isExternalHref(l.href);
+        return (
+          <a
+            href={l.href}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener" : undefined}
+            class:list={["action-chip", i === 0 && "action-chip-primary"]}
+          >
+            {external && <HrefIcon href={l.href} class="size-4 shrink-0" />}
+            {l.label}
+            {i === 0 && downloads !== undefined && (
+              <span class="font-normal">{formatStars(downloads)} downloads</span>
+            )}
+            {!external && <IconArrowRight class="size-4 shrink-0" />}
+          </a>
+        );
+      })}
+    </div>
+  )
+}

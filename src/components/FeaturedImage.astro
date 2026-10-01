@@ -1,0 +1,43 @@
+---
+interface Props {
+  image: {
+    src: string;
+    darkSrc?: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
+}
+
+const { image } = Astro.props;
+---
+
+<!--
+  The theme is a data-theme attribute that the visitor can toggle, so
+  <picture media="(prefers-color-scheme)"> would not follow it. A display:none
+  lazy image is never fetched, so only one variant loads.
+-->
+<div class="overflow-hidden rounded-md border border-border">
+  <img
+    src={image.src}
+    alt={image.alt}
+    width={image.width}
+    height={image.height}
+    loading="lazy"
+    decoding="async"
+    class:list={["h-auto w-full", image.darkSrc && "dark:hidden"]}
+  />
+  {
+    image.darkSrc && (
+      <img
+        src={image.darkSrc}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        loading="lazy"
+        decoding="async"
+        class="hidden h-auto w-full dark:block"
+      />
+    )
+  }
+</div>

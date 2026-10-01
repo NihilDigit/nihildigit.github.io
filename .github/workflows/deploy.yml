@@ -37,7 +37,11 @@ jobs:
         run: deno install --frozen --allow-scripts=npm:sharp
 
       - name: Build CV PDF
-        run: typst compile --root . cv/Shibo_Liu_CV.typ public/Shibo_Liu_CV.pdf
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          inputs=$(deno run --allow-net --allow-read --allow-env scripts/cv-inputs.ts)
+          typst compile --root . $inputs cv/Shibo_Liu_CV.typ public/Shibo_Liu_CV.pdf
 
       - name: Build
         env:

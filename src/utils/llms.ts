@@ -4,7 +4,7 @@ import { PROFILE } from "@/data/profile";
 
 type Paper = CollectionEntry<"papers">;
 type Featured = CollectionEntry<"featured">;
-type Project = CollectionEntry<"projects">;
+type Upstream = CollectionEntry<"upstream">;
 
 const site = SITE.website.replace(/\/$/, "");
 
@@ -18,7 +18,7 @@ const paperHref = (paper: Paper) => {
     return absoluteUrl(`/${paper.data.projectPageSlug}/`);
   }
 
-  return paper.data.links[0]?.href ?? absoluteUrl("/papers/");
+  return paper.data.links[0]?.href ?? absoluteUrl("/#publications");
 };
 
 const featuredHref = (entry: Featured) =>
@@ -41,6 +41,12 @@ const keyNumbers = (paper: Paper) =>
 const linkLines = (links: { label: string; href: string }[]) =>
   links.map((link) => `- ${link.label}: ${absoluteUrl(link.href)}`).join("\n");
 
+const upstreamLines = (upstream: Upstream[]) =>
+  upstream.map((u) => {
+    const links = u.data.links.map((link) => link.href).join(", ");
+    return `- ${u.data.project}: ${u.data.label} (${u.data.status}${u.data.diffstat ? `, ${u.data.diffstat}` : ""}). ${links}`;
+  });
+
 const contributionLines = (entry: Featured) =>
   entry.data.contributions
     .map((item) => {
@@ -49,18 +55,18 @@ const contributionLines = (entry: Featured) =>
         .join("; ");
       const suffix = links ? ` Links: ${links}.` : "";
       const diffstat = item.diffstat ? ` ${item.diffstat}.` : "";
-      return `- ${item.label}: ${item.status}.${diffstat} ${item.detail}${suffix}`;
+      return `- ${item.label}: ${item.status}.${diffstat}${item.detail ? ` ${item.detail}` : ""}${suffix}`;
     })
     .join("\n");
 
 export function buildLlmsTxt({
   papers,
   featured,
-  projects,
+  upstream,
 }: {
   papers: Paper[];
   featured: Featured[];
-  projects: Project[];
+  upstream: Upstream[];
 }) {
   const sortedPapers = [...papers].sort(
     (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf(),
@@ -68,9 +74,6 @@ export function buildLlmsTxt({
   const sortedFeatured = [...featured].sort(
     (a, b) => a.data.order - b.data.order,
   );
-  const spotlightProjects = [...projects]
-    .filter((project) => project.data.spotlight)
-    .sort((a, b) => a.data.order - b.data.order);
 
   return [
     `# ${SITE.title}`,
@@ -96,12 +99,9 @@ export function buildLlmsTxt({
       return `- [${paper.data.title}](${paperHref(paper)}): ${status(paper)}. ${paper.data.tldr ?? paper.data.abstract}${numbers ? ` Key numbers: ${numbers}.` : ""}`;
     }),
     "",
-    "## Selected open source",
+    "## Upstream contributions",
     "",
-    ...spotlightProjects.map(
-      (project) =>
-        `- [${project.data.name}](${repoHref(project.data.repo)}): ${project.data.description}`,
-    ),
+    ...upstreamLines(upstream),
     "",
     "## Site",
     "",
@@ -109,8 +109,6 @@ export function buildLlmsTxt({
     `- About: ${absoluteUrl("/about/")}`,
     `- ANVIL project page: ${absoluteUrl("/anvil/")}`,
     `- TongXing project page: ${absoluteUrl("/tongxing/")}`,
-    `- Papers: ${absoluteUrl("/papers/")}`,
-    `- Projects: ${absoluteUrl("/projects/")}`,
     `- Notes archive: ${absoluteUrl("/notes/")}`,
     `- RSS feed: ${absoluteUrl("/rss.xml")}`,
     "",
@@ -120,11 +118,11 @@ export function buildLlmsTxt({
 export function buildLlmsFullTxt({
   papers,
   featured,
-  projects,
+  upstream,
 }: {
   papers: Paper[];
   featured: Featured[];
-  projects: Project[];
+  upstream: Upstream[];
 }) {
   const sortedPapers = [...papers].sort(
     (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf(),
@@ -132,19 +130,12 @@ export function buildLlmsFullTxt({
   const sortedFeatured = [...featured].sort(
     (a, b) => a.data.order - b.data.order,
   );
-  const sortedProjects = [...projects].sort(
-    (a, b) => a.data.order - b.data.order,
-  );
-
   const featuredSections = sortedFeatured.map((entry) => {
     const lines = [
       `### ${entry.data.title}`,
       "",
       `- Page: ${featuredHref(entry)}`,
       entry.data.repo ? `- Repository: ${repoHref(entry.data.repo)}` : "",
-      entry.data.status
-        ? `- Status: ${entry.data.status}${entry.data.statusLink ? ` ${entry.data.statusLink.label} (${entry.data.statusLink.href})` : ""}.`
-        : "",
       entry.data.links.length ? linkLines(entry.data.links) : "",
       "",
       entry.data.summary,
@@ -226,14 +217,9 @@ export function buildLlmsFullTxt({
     "",
     ...featuredSections,
     "",
-    "## Projects",
+    "## Upstream Contributions",
     "",
-    ...sortedProjects.map((project) => {
-      const meta = [project.data.language, project.data.license]
-        .filter(Boolean)
-        .join(", ");
-      return `- ${project.data.name}: ${repoHref(project.data.repo)}${meta ? ` (${meta})` : ""}. ${project.data.description}`;
-    }),
+    ...upstreamLines(upstream),
     "",
     "## Site Map",
     "",
@@ -241,8 +227,6 @@ export function buildLlmsFullTxt({
     `- About: ${absoluteUrl("/about/")}`,
     `- ANVIL project page: ${absoluteUrl("/anvil/")}`,
     `- TongXing project page: ${absoluteUrl("/tongxing/")}`,
-    `- Papers: ${absoluteUrl("/papers/")}`,
-    `- Projects: ${absoluteUrl("/projects/")}`,
     `- Notes archive: ${absoluteUrl("/notes/")}`,
     `- RSS: ${absoluteUrl("/rss.xml")}`,
     "",

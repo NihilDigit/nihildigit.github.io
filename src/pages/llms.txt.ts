@@ -4,13 +4,13 @@ import { buildLlmsTxt } from "@/utils/llms";
 import { resolveFeaturedCollection } from "@/utils/featuredContributions";
 
 export const GET: APIRoute = async () => {
-  const [papers, featured, projects] = await Promise.all([
+  const [papers, featured, upstream] = await Promise.all([
     getCollection("papers"),
     getCollection("featured").then(resolveFeaturedCollection),
-    getCollection("projects"),
+    getCollection("upstream"),
   ]);
 
-  return new Response(buildLlmsTxt({ papers, featured, projects }), {
+  return new Response(buildLlmsTxt({ papers, featured, upstream }), {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
     },

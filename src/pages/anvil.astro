@@ -20,13 +20,10 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
 <Layout title={`${anvil.data.title} · ${anvil.data.venue}`} description={anvil.data.tldr}>
   <Header />
   <main id="main-content" class="app-layout">
-    <article class="pt-10 pb-20">
+    <article class="pt-8 pb-16">
       <!-- Title block -->
-      <header class="pb-10">
-        <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          {anvil.data.venueDetail}
-        </p>
-        <h1 class="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+      <header class="pb-8">
+        <h1 class="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
           {anvil.data.title}
         </h1>
         <p
@@ -46,41 +43,40 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         </div>
       </header>
 
-      <!-- Teaser video -->
-      {anvil.data.teaserVideo && (
-        <div class="mb-12">
+      <!-- Teaser and TL;DR side by side from md up -->
+      <div class="mb-10 grid gap-5 md:grid-cols-2 md:items-start">
+        {anvil.data.teaserVideo && (
           <AnvilTeaser
             src={anvil.data.teaserVideo}
             poster={anvil.data.teaserPoster}
             caption="Real-time 30 to 60 fps frame doubling on Snapdragon 8 Gen 3 (mpv-android-anvil)."
             priority
           />
-        </div>
-      )}
+        )}
 
-      <!-- TL;DR -->
-      {anvil.data.tldr && (
-        <section class="mb-12 rounded-md border border-border bg-muted/30 p-5">
-          <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            TL;DR
-          </h2>
-          <p class="mt-2 max-w-prose-app text-lg text-foreground">{anvil.data.tldr}</p>
-        </section>
-      )}
+        {anvil.data.tldr && (
+          <section class="rounded-md bg-muted/60 px-5 py-4">
+            <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              TL;DR
+            </h2>
+            <p class="mt-2 text-foreground">{anvil.data.tldr}</p>
+          </section>
+        )}
+      </div>
 
       <!-- Key numbers -->
       {anvil.data.keyNumbers && (
-        <section class="mb-14">
-          <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <section class="mb-10">
+          <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
             Key Numbers
           </h2>
-          <dl class="grid grid-cols-1 gap-6 border-t border-border pt-6 sm:grid-cols-3">
+          <dl class="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {anvil.data.keyNumbers.map(n => (
-              <div>
+              <div class="rounded-md bg-muted/60 px-4 py-3">
                 <dt class="metric-value text-3xl text-foreground sm:text-4xl">
                   {n.value}
                 </dt>
-                <dd class="mt-2 text-sm text-muted-foreground">{n.caption}</dd>
+                <dd class="mt-1 text-sm text-muted-foreground">{n.caption}</dd>
               </div>
             ))}
           </dl>
@@ -88,13 +84,10 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       )}
 
       <!-- The problem -->
-      <section class="mb-14 max-w-prose-app">
-        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          The Problem
-        </h2>
-        <h3 class="mb-4 text-2xl font-semibold tracking-tight">
+      <section class="mb-10 max-w-prose-app">
+        <h2 class="mb-4 text-2xl font-semibold tracking-tight">
           Real-time 1080p frame interpolation on a phone is structurally hard
-        </h3>
+        </h2>
         <div class="space-y-4 text-base leading-relaxed text-foreground">
           <p>
             Doubling 30 fps video to 60 fps on a phone gives you a hard 33.3 ms budget per
@@ -135,13 +128,10 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       </section>
 
       <!-- The idea -->
-      <section class="mb-14 max-w-prose-app">
-        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          The Idea
-        </h2>
-        <h3 class="mb-4 text-2xl font-semibold tracking-tight">
+      <section class="mb-10 max-w-prose-app">
+        <h2 class="mb-4 text-2xl font-semibold tracking-tight">
           The motion vectors are already in the bitstream. Use them.
-        </h3>
+        </h2>
         <div class="space-y-4 text-base leading-relaxed text-foreground">
           <p>
             The H.264/AVC decoder produces block-level motion vectors as a byproduct of normal
@@ -164,19 +154,19 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       </section>
 
       <!-- Architecture figure -->
-      <section class="mb-14">
-        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <section class="mb-10">
+        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Architecture
         </h2>
-        <figure class="rounded-md border border-border bg-muted/20 p-4 sm:p-6">
+        <figure class="rounded-md bg-muted/40 p-4 sm:p-5">
           <img
             src="/anvil/figures/architecture.png"
             alt="UNet-v3b architecture diagram showing 4-level encoder, ResBlock bottleneck, and decoder with additive skip connections"
             class="w-full dark:brightness-75"
             loading="lazy"
           />
-          <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
-            <span class="font-mono text-xs uppercase tracking-widest">Fig. 1 &mdash; UNet-v3b residual network.</span>
+          <figcaption class="mt-3 max-w-prose-app text-sm text-muted-foreground">
+            <span class="font-medium text-foreground">Fig. 1 &mdash; UNet-v3b residual network.</span>
             Six channels in (the two prealigned frames stacked), three channels out (a residual added
             to the average of the prealigned pair). Encoder widths are
             <code class="font-mono text-xs">[16, 32, 64, 64]</code> for ANVIL-S and
@@ -190,19 +180,19 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       </section>
 
       <!-- System pipeline -->
-      <section class="mb-14">
-        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <section class="mb-10">
+        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           System Pipeline
         </h2>
-        <figure class="rounded-md border border-border bg-muted/20 p-4 sm:p-6">
+        <figure class="rounded-md bg-muted/40 p-4 sm:p-5">
           <img
             src="/anvil/figures/pipeline.png"
             alt="Three-processor pipeline: H.264 decode and CPU prealign, GPU smoothing and warp, HTP INT8 inference, GPU post-process"
             class="w-full dark:brightness-75"
             loading="lazy"
           />
-          <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
-            <span class="font-mono text-xs uppercase tracking-widest">Fig. 2 &mdash; Three-processor pipeline.</span>
+          <figcaption class="mt-3 max-w-prose-app text-sm text-muted-foreground">
+            <span class="font-medium text-foreground">Fig. 2 &mdash; Three-processor pipeline.</span>
             CPU densifies the H.264 motion vectors, downsamples 4&times;, and packs the YUV input
             (~2.9 ms). GPU does median-5 + Gaussian smoothing and the sub-pixel warp via a Vulkan
             compute shader, finishing with INT8 quantization in the same dispatch (~3.7 ms). HTP
@@ -215,18 +205,18 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       </section>
 
       <!-- Results -->
-      <section class="mb-14">
-        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <section class="mb-10">
+        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Results
         </h2>
 
         <h3 class="mb-3 text-xl font-semibold tracking-tight">End-to-end latency on Snapdragon 8 Gen 3</h3>
-        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground">
+        <p class="mb-4 max-w-prose-app text-base leading-relaxed text-foreground">
           Median over 54,623 consecutive frame pairs (30-minute continuous 1080p playback,
           SM8650, ANVIL-S INT8). 94.9% of frame pairs complete within the 33.3 ms budget; the
           5.1% that don&rsquo;t are concentrated in the late thermal phase.
         </p>
-        <div class="mb-6 overflow-x-auto rounded-md border border-border">
+        <div class="mb-4 overflow-x-auto">
           <table class="w-full text-sm">
             <thead class="bg-muted/40 font-mono text-xs uppercase tracking-wider text-muted-foreground">
               <tr>
@@ -276,13 +266,13 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
           </table>
         </div>
 
-        <h3 class="mt-10 mb-3 text-xl font-semibold tracking-tight">NPU forward-pass latency at 1080p INT8</h3>
-        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground">
+        <h3 class="mt-8 mb-3 text-xl font-semibold tracking-tight">NPU forward-pass latency at 1080p INT8</h3>
+        <p class="mb-4 max-w-prose-app text-base leading-relaxed text-foreground">
           Network-only inference, three Snapdragon generations. RIFE has to drop to 360p to even
           attempt the budget. ANVIL holds 1080p across two generations. Older HTP V69 silicon
           fails for everyone.
         </p>
-        <div class="mb-6 overflow-x-auto rounded-md border border-border">
+        <div class="mb-4 overflow-x-auto">
           <table class="w-full text-sm">
             <thead class="bg-muted/40 font-mono text-xs uppercase tracking-wider text-muted-foreground">
               <tr>
@@ -329,8 +319,8 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
           point is that the operator set is portable.
         </p>
 
-        <h3 class="mt-10 mb-3 text-xl font-semibold tracking-tight">Quality vs. RIFE on Vimeo90K and Xiph 1080p</h3>
-        <div class="mb-6 overflow-x-auto rounded-md border border-border">
+        <h3 class="mt-8 mb-3 text-xl font-semibold tracking-tight">Quality vs. RIFE on Vimeo90K and Xiph 1080p</h3>
+        <div class="mb-4 overflow-x-auto">
           <table class="w-full text-sm">
             <thead class="bg-muted/40 font-mono text-xs uppercase tracking-wider text-muted-foreground">
               <tr>
@@ -393,16 +383,16 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
           property of residual VFI rather than a capacity issue.
         </p>
 
-        <h3 class="mt-10 mb-3 text-xl font-semibold tracking-tight">Visual comparison</h3>
-        <figure class="rounded-md border border-border bg-muted/20 p-4 sm:p-6">
+        <h3 class="mt-8 mb-3 text-xl font-semibold tracking-tight">Visual comparison</h3>
+        <figure class="rounded-md bg-muted/40 p-4 sm:p-5">
           <img
             src="/anvil/figures/qualitative.jpg"
             alt="Visual comparison of ANVIL-M, RIFE HDv3, and ground truth on three Xiph 1080p sequences"
             class="w-full rounded-sm"
             loading="lazy"
           />
-          <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
-            <span class="font-mono text-xs uppercase tracking-widest">Fig. 3 &mdash; Three failure modes on Xiph 1080p (3&times; insets).</span>
+          <figcaption class="mt-3 max-w-prose-app text-sm text-muted-foreground">
+            <span class="font-medium text-foreground">Fig. 3 &mdash; Three failure modes on Xiph 1080p (3&times; insets).</span>
             <em>old_town_cross</em> (slow pan): ANVIL&rsquo;s smoothing suppresses noise (+0.7 dB
             vs. RIFE) but loses fine detail. <em>tractor</em> (large rigid motion): ANVIL
             over-smooths edges; RIFE produces ghosting. <em>riverbed</em> (stochastic texture):
@@ -411,16 +401,16 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
           </figcaption>
         </figure>
 
-        <h3 class="mt-10 mb-3 text-xl font-semibold tracking-tight">Capacity scaling</h3>
-        <figure class="rounded-md border border-border bg-muted/20 p-4 sm:p-6">
+        <h3 class="mt-8 mb-3 text-xl font-semibold tracking-tight">Capacity scaling</h3>
+        <figure class="rounded-md bg-muted/40 p-4 sm:p-5">
           <img
             src="/anvil/figures/scaling.png"
             alt="Vimeo90K PSNR vs. parameter count for ANVIL variants, RIFE HDv3, and NAFNet ceiling"
             class="mx-auto max-w-xl dark:brightness-75"
             loading="lazy"
           />
-          <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
-            <span class="font-mono text-xs uppercase tracking-widest">Fig. 4 &mdash; PSNR vs. parameter count on Vimeo90K.</span>
+          <figcaption class="mt-3 max-w-prose-app text-sm text-muted-foreground">
+            <span class="font-medium text-foreground">Fig. 4 &mdash; PSNR vs. parameter count on Vimeo90K.</span>
             Quality scales smoothly with capacity from 1.8K to 2.66M params; smoothed prealignment
             shifts the entire curve up. ANVIL-S/M sit close to the RIFE HDv3 reference line at
             comparable parameter counts and trend toward the 17.1M NAFNet ceiling. The framework
@@ -430,13 +420,10 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       </section>
 
       <!-- The quantization story -->
-      <section class="mb-14 max-w-prose-app">
-        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          The Quantization Story
-        </h2>
-        <h3 class="mb-4 text-2xl font-semibold tracking-tight">
+      <section class="mb-10 max-w-prose-app">
+        <h2 class="mb-4 text-2xl font-semibold tracking-tight">
           Why iterative flow methods break under INT8
-        </h3>
+        </h2>
         <div class="space-y-4 text-base leading-relaxed text-foreground">
           <p>
             INT8 post-training quantization usually loses fractions of a dB on classification and
@@ -471,8 +458,8 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       </section>
 
       <!-- Components -->
-      <section class="mb-14 max-w-prose-app">
-        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <section class="mb-10 max-w-prose-app">
+        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Components
         </h2>
         <div class="space-y-8">
@@ -525,7 +512,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       </section>
 
       <!-- Abstract -->
-      <section class="mb-14 max-w-prose-app">
+      <section class="mb-10 max-w-prose-app">
         <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Abstract
         </h2>
@@ -535,7 +522,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       </section>
 
       <!-- Limitations -->
-      <section class="mb-14 max-w-prose-app">
+      <section class="mb-10 max-w-prose-app">
         <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Limitations
         </h2>
@@ -565,7 +552,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
 
       <!-- BibTeX -->
       {anvil.data.bibtex && (
-        <section class="mt-16 border-t border-border pt-10">
+        <section class="border-t border-border pt-8">
           <div class="mb-3 flex items-baseline justify-between">
             <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
               BibTeX
@@ -578,7 +565,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
               Copy
             </button>
           </div>
-          <pre class="overflow-x-auto rounded-md border border-border bg-muted/30 p-4 text-xs leading-relaxed"><code data-bibtex-text>{anvil.data.bibtex}</code></pre>
+          <pre class="overflow-x-auto rounded-md bg-muted/60 p-4 text-xs leading-relaxed"><code data-bibtex-text>{anvil.data.bibtex}</code></pre>
         </section>
       )}
     </article>

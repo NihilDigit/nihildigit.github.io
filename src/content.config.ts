@@ -1,5 +1,5 @@
 import { defineCollection, z } from "astro:content";
-import { glob, file } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 import { SITE } from "@/config";
 
 export const NOTES_PATH = "src/data/notes";
@@ -76,20 +76,30 @@ const featured = defineCollection({
   schema: z.object({
     title: z.string(),
     titleHref: z.string().optional(),
+    titleIcon: z.enum(["trophy"]).optional(),
     repo: z.string().optional(),
     fallbackStars: z.number().optional(),
-    eyebrow: z.string().optional(),
-    eyebrowHref: z.string().optional(),
+    showDownloads: z.boolean().default(false),
     order: z.number().default(0),
-    status: z.string().optional(),
-    statusLink: z
+    summary: z.string(),
+    keyNumbers: z
+      .array(
+        z.object({
+          value: z.string(),
+          caption: z.string(),
+          href: z.string().optional(),
+        }),
+      )
+      .default([]),
+    image: z
       .object({
-        label: z.string(),
-        href: z.string(),
+        src: z.string(),
+        darkSrc: z.string().optional(),
+        alt: z.string(),
+        width: z.number(),
+        height: z.number(),
       })
       .optional(),
-    statusVariant: z.enum(["live", "in-progress", "award", "archived"]).optional(),
-    summary: z.string(),
     metaTags: z.array(z.string()).default([]),
     badges: z
       .array(
@@ -108,7 +118,7 @@ const featured = defineCollection({
           status: z.enum(["done", "active", "planned", "closed"]),
           diffstat: z.string().default(""),
           label: z.string(),
-          detail: z.string(),
+          detail: z.string().optional(),
           group: z.string().optional(),
           date: z.string().optional(),
           links: z
@@ -133,27 +143,17 @@ const featured = defineCollection({
   }),
 });
 
-const projects = defineCollection({
-  loader: file("src/data/projects.json"),
+const upstream = defineCollection({
+  loader: file("src/data/upstream.json"),
   schema: z.object({
-    id: z.string(),
-    name: z.string(),
-    description: z.string(),
-    repo: z.string(),
-    language: z.string().optional(),
-    license: z.string().optional(),
-    spotlight: z.boolean().default(false),
-    partOf: z.string().optional(),
-    order: z.number().default(0),
+    project: z.string(),
+    label: z.string(),
+    status: z.enum(["done", "active", "planned", "closed"]),
+    diffstat: z.string().default(""),
     links: z
-      .array(
-        z.object({
-          label: z.string(),
-          href: z.string(),
-        }),
-      )
+      .array(z.object({ label: z.string(), href: z.string() }))
       .default([]),
   }),
 });
 
-export const collections = { notes, papers, featured, projects };
+export const collections = { notes, papers, featured, upstream };

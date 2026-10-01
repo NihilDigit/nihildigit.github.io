@@ -1,0 +1,31 @@
+---
+interface Props {
+  items: { value: string; caption: string; href?: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="mt-6 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
+  {
+    items.map(n => (
+      <div class="rounded-md bg-muted/60 px-4 py-3">
+        <dt class="metric-value text-xl text-foreground">{n.value}</dt>
+        <dd class="mt-1 text-xs text-muted-foreground">
+          {n.href ? (
+            <a
+              href={n.href}
+              target="_blank"
+              rel="noopener"
+              class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+            >
+              {n.caption}
+            </a>
+          ) : (
+            n.caption
+          )}
+        </dd>
+      </div>
+    ))
+  }
+</dl>

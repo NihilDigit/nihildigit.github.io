@@ -5,7 +5,7 @@ export type OpenSourceContribution = {
   status: "done" | "active" | "planned" | "closed";
   diffstat: string;
   label: string;
-  detail: string;
+  detail?: string;
   group?: string;
   date?: string;
   sortLines?: number;

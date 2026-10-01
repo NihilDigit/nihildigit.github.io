@@ -1,0 +1,188 @@
+---
+import type { CollectionEntry } from "astro:content";
+import IconGitHub from "@/assets/icons/octicons/mark-github-16.svg";
+import IconTrophy from "@/assets/icons/octicons/trophy-16.svg";
+import ActionLinks from "@/components/ActionLinks.astro";
+import ContributionRow from "@/components/ContributionRow.astro";
+import FeaturedImage from "@/components/FeaturedImage.astro";
+import HrefIcon from "@/components/HrefIcon.astro";
+import KeyNumbers from "@/components/KeyNumbers.astro";
+import RepoStats from "@/components/RepoStats.astro";
+import type { OpenSourceContribution } from "@/utils/openAniPullRequests";
+
+interface Props {
+  entry: Omit<CollectionEntry<"featured">, "data"> & {
+    data: Omit<CollectionEntry<"featured">["data"], "contributions"> & {
+      contributions: OpenSourceContribution[];
+    };
+  };
+  stars?: number;
+  downloads?: number;
+}
+
+const { entry, stars, downloads } = Astro.props;
+const isGitHubTitle = entry.data.titleHref?.includes("github.com");
+const isExternalHref = (href: string) => /^https?:\/\//.test(href);
+---
+
+<section
+  id={`featured-${entry.id}`}
+  class="border-t border-border py-10"
+  data-reveal
+>
+  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+    <h3 class="text-2xl font-semibold tracking-tight sm:text-3xl">
+      {entry.data.titleHref ? (
+        <a
+          href={entry.data.titleHref}
+          target={isExternalHref(entry.data.titleHref) ? "_blank" : undefined}
+          rel={isExternalHref(entry.data.titleHref) ? "noopener" : undefined}
+          class="transition-colors hover:text-accent"
+        >
+          {isGitHubTitle && (
+            <IconGitHub class="mr-2 inline-block h-[0.85em] w-[0.85em] align-[-0.07em]" />
+          )}
+          {entry.data.titleIcon === "trophy" && (
+            <IconTrophy class="mr-2 inline-block h-[0.85em] w-[0.85em] align-[-0.07em]" />
+          )}
+          {entry.data.title}
+        </a>
+      ) : (
+        entry.data.title
+      )}
+    </h3>
+
+    <RepoStats stars={stars} />
+  </div>
+
+  {entry.data.metaTags.length > 0 && (
+    <ul class="mt-3 flex flex-wrap gap-x-2 gap-y-1 font-mono text-xs text-muted-foreground">
+      {entry.data.metaTags.map(t => (
+        <li class="before:mr-2 before:content-['·'] before:text-muted-foreground/40 first:before:hidden">
+          {t}
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {entry.data.image ? (
+    <div class="mt-5 grid gap-5 md:grid-cols-2">
+      <FeaturedImage image={entry.data.image} />
+      {/* Stretched to the image's height so the buttons sit on its bottom edge. */}
+      <div class="flex flex-col justify-between">
+        <p class="text-foreground/80">{entry.data.summary}</p>
+        <ActionLinks links={entry.data.links} downloads={downloads} />
+      </div>
+    </div>
+  ) : (
+    <div class="mt-5 max-w-4xl">
+      <p class="text-foreground/80">{entry.data.summary}</p>
+      <ActionLinks links={entry.data.links} downloads={downloads} />
+    </div>
+  )}
+
+  {entry.data.keyNumbers.length > 0 && <KeyNumbers items={entry.data.keyNumbers} />}
+
+  {entry.data.contributions.length > 0 && (
+    <details class="group mt-6 max-w-4xl">
+      <summary class="ml-auto flex w-fit cursor-pointer list-none items-center gap-1.5 text-sm font-medium text-accent hover:underline hover:underline-offset-4 [&::-webkit-details-marker]:hidden">
+        <span class="group-open:hidden">Show all {entry.data.contributions.length} PRs</span>
+        <span class="hidden group-open:inline">Hide PRs</span>
+        <span aria-hidden="true" class="transition-transform group-open:rotate-180">↓</span>
+      </summary>
+
+    {entry.data.contributionsSource === "open-ani" && (
+      <div
+        class="mt-4 flex items-center justify-end gap-2 font-mono text-xs"
+        data-contribution-sort
+      >
+        <span class="text-muted-foreground/70">Sort</span>
+        <div
+          role="group"
+          aria-label="Sort contributions"
+          class="inline-flex rounded-md border border-border p-0.5"
+        >
+          <button type="button" data-sort-by="lines" aria-pressed="false" class="sort-toggle">
+            By diff
+          </button>
+          <button type="button" data-sort-by="time" aria-pressed="true" class="sort-toggle">
+            By date
+          </button>
+        </div>
+      </div>
+    )}
+
+    {entry.data.contributions.length > 0 && (
+      <div
+        class:list={[
+          "mt-6 max-w-4xl",
+          entry.data.contributions.length > 10 &&
+            "max-h-[30rem] overflow-y-auto",
+        ]}
+        data-visible-rows={entry.data.contributions.length > 10 ? 5 : undefined}
+      >
+      <ol
+        class="divide-y divide-border/70"
+        data-contribution-list
+      >
+        {entry.data.contributions.map((item, i, items) => {
+          const showGroup =
+            item.group && item.group !== items[i - 1]?.group;
+
+          return (
+            <>
+              {showGroup && (
+                <li class="pt-4 pb-1 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground first:pt-2">
+                  {item.group}
+                </li>
+              )}
+              <ContributionRow item={item} />
+            </>
+          );
+        })}
+      </ol>
+      </div>
+    )}
+    </details>
+  )}
+
+  {entry.data.badges.length > 0 && (
+    <div class="mt-4 flex flex-wrap gap-2">
+      {entry.data.badges.map(b =>
+        b.label ? (
+          b.href ? (
+        <a
+          href={b.href}
+          target={isExternalHref(b.href) ? "_blank" : undefined}
+          rel={isExternalHref(b.href) ? "noopener" : undefined}
+          class="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
+        >
+          <HrefIcon href={b.href} />
+          <span class="underline decoration-dotted underline-offset-4">
+            {b.label}
+          </span>
+        </a>
+          ) : (
+            <span class="font-mono text-xs text-muted-foreground">
+              {b.label}
+            </span>
+          )
+        ) : b.href && b.src ? (
+          <a
+            href={b.href}
+            target={isExternalHref(b.href) ? "_blank" : undefined}
+            rel={isExternalHref(b.href) ? "noopener" : undefined}
+            aria-label={b.alt}
+          >
+            <img src={b.src} alt={b.alt ?? ""} class="h-5" />
+          </a>
+        ) : b.src ? (
+          <img src={b.src} alt={b.alt ?? ""} class="h-5" />
+        ) : (
+          null
+        )
+      )}
+    </div>
+  )}
+
+</section>

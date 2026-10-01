@@ -1,6 +1,111 @@
 [
   {
     "status": "done",
+    "diffstat": "+9,502/-2,986",
+    "label": "feat(pikpak): run PikPak as a torrent engine alongside anitorrent",
+    "detail": "",
+    "date": "2026-09-30",
+    "links": [
+      {
+        "label": "#3444",
+        "href": "https://github.com/open-ani/animeko/pull/3444"
+      }
+    ],
+    "sortLines": 12488,
+    "sortTime": 1790774972000
+  },
+  {
+    "status": "done",
+    "diffstat": "+1,268/-356",
+    "label": "feat(desktop): support multi-touch and pen input on Windows",
+    "detail": "",
+    "date": "2026-09-27",
+    "links": [
+      {
+        "label": "#3461",
+        "href": "https://github.com/open-ani/animeko/pull/3461"
+      }
+    ],
+    "sortLines": 1624,
+    "sortTime": 1790536202000
+  },
+  {
+    "status": "done",
+    "diffstat": "+0/-0",
+    "label": "fix(desktop): ship the windows updater on WoA64",
+    "detail": "",
+    "date": "2026-09-14",
+    "links": [
+      {
+        "label": "#3408",
+        "href": "https://github.com/open-ani/animeko/pull/3408"
+      }
+    ],
+    "sortLines": 0,
+    "sortTime": 1789391320000
+  },
+  {
+    "status": "done",
+    "diffstat": "+195/-5",
+    "label": "fix(exoplayer): read video size from track format under video effects",
+    "detail": "",
+    "date": "2026-09-05",
+    "links": [
+      {
+        "label": "#69",
+        "href": "https://github.com/open-ani/mediamp/pull/69"
+      }
+    ],
+    "sortLines": 200,
+    "sortTime": 1788634550000
+  },
+  {
+    "status": "done",
+    "diffstat": "+959/-190",
+    "label": "fix(input): handle touch and mouse transitions",
+    "detail": "",
+    "date": "2026-08-13",
+    "links": [
+      {
+        "label": "#3223",
+        "href": "https://github.com/open-ani/animeko/pull/3223"
+      }
+    ],
+    "sortLines": 1149,
+    "sortTime": 1786625812000
+  },
+  {
+    "status": "done",
+    "diffstat": "+77/-3",
+    "label": "feat(pikpak): support explicit BT caching over HTTPS",
+    "detail": "",
+    "date": "2026-08-09",
+    "links": [
+      {
+        "label": "#3141",
+        "href": "https://github.com/open-ani/animeko/pull/3141"
+      }
+    ],
+    "sortLines": 80,
+    "sortTime": 1786290977000
+  },
+  {
+    "status": "done",
+    "diffstat": "+3/-0",
+    "label": "feat: add windows arm64 download entry",
+    "detail": "",
+    "date": "2026-08-05",
+    "links": [
+      {
+        "label": "#58",
+        "href": "https://github.com/open-ani/ani-website/pull/58"
+      }
+    ],
+    "sortLines": 3,
+    "sortTime": 1785925205000
+  },
+  {
+    "status": "done",
     "diffstat": "+309/-25",
     "label": "fix(desktop): isolate bundled Linux libraries from the global search path",
     "detail": "",
@@ -103,21 +208,6 @@
     ],
     "sortLines": 351,
     "sortTime": 1785152288000
-  },
-  {
-    "status": "active",
-    "diffstat": "+891/-178",
-    "label": "fix(input): handle touch and mouse transitions",
-    "detail": "",
-    "date": "2026-07-27",
-    "links": [
-      {
-        "label": "#3223",
-        "href": "https://github.com/open-ani/animeko/pull/3223"
-      }
-    ],
-    "sortLines": 1069,
-    "sortTime": 1785143794000
   },
   {
     "status": "done",
@@ -448,21 +538,6 @@
     ],
     "sortLines": 1359,
     "sortTime": 1783827606000
-  },
-  {
-    "status": "active",
-    "diffstat": "+77/-3",
-    "label": "feat(pikpak): support explicit BT caching over HTTPS",
-    "detail": "",
-    "date": "2026-07-11",
-    "links": [
-      {
-        "label": "#3141",
-        "href": "https://github.com/open-ani/animeko/pull/3141"
-      }
-    ],
-    "sortLines": 80,
-    "sortTime": 1783754881000
   },
   {
     "status": "done",

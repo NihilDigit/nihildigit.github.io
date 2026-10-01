@@ -1,16 +1,19 @@
 ---
 title: "TongXing"
 titleHref: "/tongxing"
-eyebrow: "Competition"
+titleIcon: trophy
 order: 0
-status: "National Second Prize"
-statusLink:
-  label: "4C2026"
-  href: "https://jsjds.blcu.edu.cn/"
-statusVariant: award
-summary: "An edge assistive system for blind and low-vision users. TongXing runs NPU perception, GPU AgentCore, and CPU offline speech on one phone, keeping obstacle warning local while a tool-using voice agent closes touch-first app tasks through MCP tools and Android accessibility actions."
+summary: "TongXing bets that the phone a blind or low-vision user already owns can be the whole assistive device, with no smart glasses or electronic cane. Worn on the chest with Bluetooth earphones, it keeps obstacle warning on the phone's own NPU so safety never waits on the network, and a local voice agent completes touch-first app tasks such as navigation and ride-hailing."
+keyNumbers:
+  - value: "National 2nd Prize"
+    caption: "4C2026 national round"
+    href: "https://jsjds.blcu.edu.cn/"
+  - value: "35.16 ms"
+    caption: "Mean obstacle-warning latency on the phone NPU"
+  - value: "3 compute paths"
+    caption: "NPU vision, GPU LLM, and CPU offline speech on one phone"
 links:
-  - label: "Project page"
+  - label: "Read project page"
     href: "/tongxing"
 ---
 

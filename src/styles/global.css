@@ -153,25 +153,6 @@ html[data-theme="dark"] {
 .badge-dot {
   @apply h-1.5 w-1.5 rounded-full;
 }
-.badge-live {
-  @apply text-emerald-700 dark:text-emerald-400;
-}
-.badge-live .badge-dot {
-  @apply bg-emerald-500;
-}
-.badge-progress {
-  @apply text-amber-700 dark:text-amber-400;
-}
-.badge-progress .badge-dot {
-  @apply bg-amber-500;
-}
-.badge-award {
-  @apply text-amber-700 dark:text-amber-400;
-}
-/* Diamond dot keeps an award distinct from the round amber in-progress dot. */
-.badge-award .badge-dot {
-  @apply rotate-45 rounded-[1px] bg-amber-500;
-}
 .badge-archived {
   @apply text-muted-foreground;
 }
@@ -189,9 +170,9 @@ html[data-theme="dark"] {
   scroll-margin-block: 4rem;
 }
 
-/* Hero entrance: 8px rise + fade, ease-out-expo. The global
-   prefers-reduced-motion rule already collapses these to instant. */
-@keyframes hero-rise {
+/* Entrance: 8px rise + fade, ease-out-expo. The global
+   prefers-reduced-motion rule already collapses it to instant. */
+@keyframes rise-in {
   from {
     opacity: 0;
     transform: translateY(8px);
@@ -201,17 +182,6 @@ html[data-theme="dark"] {
     transform: translateY(0);
   }
 }
-.hero-rise {
-  opacity: 0;
-  animation: hero-rise 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-.hero-rise-1 {
-  animation-delay: 100ms;
-}
-.hero-rise-2 {
-  animation-delay: 200ms;
-}
-
 /* Scroll reveal: JS adds .reveal to [data-reveal] blocks (no-JS keeps them
    visible), IntersectionObserver flips .is-visible once. The global
    prefers-reduced-motion rule collapses this to instant. */
@@ -219,7 +189,7 @@ html[data-theme="dark"] {
   opacity: 0;
 }
 .reveal.is-visible {
-  animation: hero-rise 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: rise-in 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Smooth theme toggle */

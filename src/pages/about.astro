@@ -63,102 +63,60 @@ const CONTACTS = [
 
       <section class="space-y-6 text-foreground leading-relaxed">
         <p>
-          I enrolled at
+          I study intelligence science at
           <a
             href="https://www.ncst.edu.cn/"
             target="_blank"
             rel="noopener"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >North China University of Science and Technology</a> in 2023,
-          studying intelligence science.
-        </p>
-
-        <p>
-          <a
-            href="https://github.com/NihilDigit/RAFNet"
-            target="_blank"
-            rel="noopener"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >RAFNet</a> was my first academic project, and also where I
-          learned computer vision by doing it. We built a classifier for
-          student behavior in crowded classrooms on top of
-          <a
-            href="https://github.com/boycehbz/GroupRec"
-            target="_blank"
-            rel="noopener"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >GroupRec</a>, an existing hypergraph encoder, with a gated fusion
-          head; I ran the experiments. It's under review at The Visual
-          Computer.
-        </p>
-
-        <p>
-          <a
-            href="/tongxing"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >TongXing</a> ran in parallel with that work, but from the
-          deployment side. It won a national second prize in 4C2026. The
-          system supports blind and
-          low-vision users with NPU-based obstacle warning, offline speech,
-          and a local LLM agent for closing touch-first app tasks through
-          voice. The project made the
-          potential of mobile NPUs concrete for me, and it made engineering
-          optimization feel like a field with real room for research and
-          product judgment.
+          >North China University of Science and Technology</a>, where I
+          enrolled in 2023. My work centers on on-device AI and multimedia
+          systems.
         </p>
 
         <p>
           <a
             href="/anvil"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >ANVIL</a> came out of the overlap between those two tracks:
-          RAFNet gave me a practical CV foundation, while TongXing made the
-          NPU constraints concrete. Standard flow-based VFI breaks down
-          under INT8 quantization, so I looked for a graph that fit the
-          accelerator instead of forcing the accelerator to imitate a
-          desktop model. The result reuses H.264 decoder motion vectors
-          instead of learning optical flow. The arXiv preprint is public,
-          and I am continuing to reorganize the work into a more systematic
-          version. The project page collects the training code, the Android
-          demo, and the paper artifacts.
+          >ANVIL</a> is a video frame interpolation method designed for
+          mobile NPUs. Flow-based interpolation breaks down under INT8
+          quantization, so ANVIL reuses the motion vectors already produced
+          by the H.264 decoder instead of learning optical flow. The arXiv
+          preprint is public.
         </p>
 
         <p>
           <a
-            href="https://github.com/NihilDigit/waybar-ai-usage"
-            target="_blank"
-            rel="noopener"
+            href="/tongxing"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >waybar-ai-usage</a>, a Waybar widget that shows quota and reset
-          time for Claude Code, Codex CLI, Copilot, and OpenCode Zen, began
-          as a small tool for my own desktop. It became my first real open
-          source maintenance experience after users started filing issues
-          and PRs, including multi-browser support and support for providers
-          they used themselves. It's packaged on AUR.
+          >TongXing</a> is an edge assistive system for blind and low-vision
+          users, awarded a national second prize in 4C2026. It runs obstacle
+          warning, offline speech, and a local LLM agent on a single phone,
+          and the agent completes touch-first app tasks by voice.
         </p>
 
         <p>
-          I also contribute upstream to apps I actually use. As a member of
-          the <a
+          As a member of the
+          <a
             href="https://github.com/open-ani"
             target="_blank"
             rel="noopener"
             class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >open-ani</a> organization, I contribute features and issue fixes
-          to Animeko, an open-source anime player — a precious experience in
-          how multimedia systems serve real-world applications, and in
-          building a large-scale open-source project for real. My work spans
-          animeko, mediamp, and anitorrent: player and cross-platform
-          support (Windows ARM64, Linux rendering, touch interaction) and
-          media acquisition (PikPak cloud download, HLS filtering).
+          >open-ani</a> organization, I contribute to Animeko, an open-source
+          anime player, across animeko, mediamp, and anitorrent. My work
+          covers player and cross-platform support, and media acquisition.
         </p>
 
         <p>
-          A short list of things I'm into: LLMs, Linux, ACGN, and music
-          &mdash; rock, folk, and songs that carry history with them.
-          Beyond just using them, I find different language models
-          genuinely fascinating &mdash; each one has its own character,
-          and I spend a lot of hours just talking to them.
+          <a
+            href="https://github.com/NihilDigit/piko"
+            target="_blank"
+            rel="noopener"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >piko</a> builds on the Kotlin Multiplatform experience from
+          Animeko: a PikPak client for Android, Windows, and macOS, focused
+          on network performance and on the design of its clip feed. Shortly
+          after release it passed 100 stars and 2,000 downloads.
         </p>
       </section>
 
