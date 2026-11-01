@@ -112,6 +112,7 @@ const featured = defineCollection({
       )
       .default([]),
     contributionsSource: z.literal("open-ani").optional(),
+    highlightPrs: z.array(z.string()).default([]),
     contributions: z
       .array(
         z.object({

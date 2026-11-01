@@ -585,21 +585,6 @@
     "sortTime": 1781956399000
   },
   {
-    "status": "active",
-    "diffstat": "+258/-16",
-    "label": "添加 Windows ARM64 native runtime 支持",
-    "detail": "",
-    "date": "2026-05-14",
-    "links": [
-      {
-        "label": "#3",
-        "href": "https://github.com/open-ani/anitorrent/pull/3"
-      }
-    ],
-    "sortLines": 274,
-    "sortTime": 1778755401000
-  },
-  {
     "status": "done",
     "diffstat": "+3,054/-41",
     "label": "feat(pikpak): 引入 PikPak 云端离线下载作为 BT 备选方案",

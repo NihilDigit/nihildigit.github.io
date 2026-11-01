@@ -4,7 +4,8 @@
   "version": "5.5.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build && pagefind --site dist --root-selector '[data-pagefind-body]' && cp -r dist/pagefind public/",
+    "build": "astro check && astro build",
+    "cv": "typst compile --root . cv/Shibo_Liu_CV.typ public/Shibo_Liu_CV.pdf",
     "preview": "astro preview",
     "sync": "astro sync",
     "snapshot:open-ani": "deno run --allow-net --allow-read --allow-write --allow-env scripts/snapshot-open-ani.ts",

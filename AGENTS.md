@@ -23,7 +23,8 @@ Use `deno` for all project workflows. Dependencies stay declared in
 ```bash
 deno install          # install dependencies into node_modules
 deno task dev         # start local Astro dev server
-deno task build       # astro check, build, Pagefind index, copy search assets
+deno task build       # astro check and production static build
+deno task cv          # compile cv/Shibo_Liu_CV.typ to public/Shibo_Liu_CV.pdf
 deno task preview     # preview the production build
 deno task astro check # type-check Astro content and pages
 deno task lint        # run ESLint
@@ -37,7 +38,7 @@ Deno resolves bare specifiers only for declared dependencies, so a package used
 by a project-level file (for example `@eslint/js` in `eslint.config.js`) must be
 in `package.json` rather than riding on a transitive install.
 
-Run `deno task astro check` before shipping. Run `deno task build` for route, content, search, or static asset changes.
+Run `deno task astro check` before shipping. Run `deno task build` for route, content, or static asset changes.
 
 ## Coding Style & Naming Conventions
 
@@ -51,7 +52,7 @@ There are no unit tests yet. Verification means:
 
 1. `deno task astro check`
 2. `deno task lint` when touching TypeScript, Astro components, or config
-3. `deno task build` when changing pages, content, Pagefind, or public assets
+3. `deno task build` when changing pages, content, or public assets
 
 For visual changes, inspect the dev server on desktop and mobile widths.
 

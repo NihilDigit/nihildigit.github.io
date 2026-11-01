@@ -1,5 +1,6 @@
 import { Resvg } from "@resvg/resvg-js";
 import { type CollectionEntry } from "astro:content";
+import renderOgCard, { type OgCardInput } from "./og-templates/card";
 import postOgImage from "./og-templates/post";
 import siteOgImage from "./og-templates/site";
 
@@ -16,5 +17,10 @@ export async function generateOgImageForPost(post: CollectionEntry<"notes">) {
 
 export async function generateOgImageForSite() {
   const svg = await siteOgImage();
+  return svgBufferToPngBuffer(svg);
+}
+
+export async function generateOgImageForCard(input: OgCardInput) {
+  const svg = await renderOgCard(input);
   return svgBufferToPngBuffer(svg);
 }

@@ -48,7 +48,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
 
 ---
 
-<Layout>
+<Layout schemaType="WebSite">
   <Header />
   <main id="main-content" class="app-layout">
     <!-- Featured: ANVIL -->
@@ -81,10 +81,6 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
               <p class="text-foreground/80">{anvil?.data.tldr}</p>
 
               <div class="mt-5 flex flex-wrap justify-end gap-2">
-                <a href="/anvil" class="action-chip action-chip-primary">
-                  Read project page
-                  <IconArrowRight class="size-4 shrink-0" />
-                </a>
                 {anvil?.data.links
                   // The project page lists code, demo, and APK; the card keeps only the paper.
                   .filter(l => l.label === "arXiv")
@@ -94,6 +90,10 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
                     {l.label}
                   </a>
                 ))}
+                <a href="/anvil" class="action-chip action-chip-primary">
+                  Read project page
+                  <IconArrowRight class="size-4 shrink-0" />
+                </a>
               </div>
             </div>
           </div>
@@ -250,6 +250,7 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
     if (!last) return;
     const height =
       last.getBoundingClientRect().bottom - box.getBoundingClientRect().top;
+    if (height <= 0) return;
     box.style.maxHeight = `${Math.ceil(height + box.scrollTop)}px`;
   }
 
@@ -260,6 +261,9 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         if (box.dataset.bound === "true") return;
         box.dataset.bound = "true";
         fitVisibleRows(box);
+        box
+          .closest("details")
+          ?.addEventListener("toggle", () => fitVisibleRows(box));
         new ResizeObserver(() => fitVisibleRows(box)).observe(
           box.querySelector("ol") ?? box
         );

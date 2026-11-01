@@ -17,56 +17,53 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
   class:list={["app-layout", { "mt-auto": !noMarginTop }, className]}
   {...attrs}
 >
-  <div class="border-t border-border py-8 text-sm text-muted-foreground">
-    <div class="grid gap-6 sm:grid-cols-2">
-      <div class="space-y-2">
-        <div class="font-mono text-xs uppercase tracking-wider">Site</div>
-        <ul class="space-y-1">
-          <li>
-            <a href="/notes" class="hover:text-foreground">Notes archive</a>
-          </li>
-        </ul>
-      </div>
-      <div class="space-y-2 sm:text-right">
-        <div class="font-mono text-xs uppercase tracking-wider">© {currentYear}</div>
-        <p class="text-xs">
-          <span class="inline-flex items-center gap-1.5">
-            NihilDigit. Built with
-            <a
-              href="https://claude.com/claude-code"
-              target="_blank"
-              rel="noopener"
-              class="inline-flex items-center gap-1 hover:text-foreground"
-            >
-              <IconClaude class="inline-block h-3.5 w-3.5" />
-              <span>Claude,</span>
-            </a>
-            <a
-              href="https://openai.com/codex/"
-              target="_blank"
-              rel="noopener"
-              class="inline-flex items-center gap-1 hover:text-foreground"
-            >
-              <IconOpenAI class="inline-block h-3.5 w-3.5" />
-              GPT and
-            </a>
-            <a
-              href="https://www.kimi.com/code"
-              target="_blank"
-              rel="noopener"
-              class="inline-flex items-center gap-1 hover:text-foreground"
-            >
-              <IconKimi class="relative -top-px inline-block h-3.5 w-3.5" />
-              Kimi.
-            </a>
-          </span>
-          <br />
+  <div class="border-t border-border py-8 text-xs text-muted-foreground">
+    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <div class="space-y-1">
+        <div class="font-mono uppercase tracking-wider">© {currentYear} NihilDigit</div>
+        <p>
           <a
             href="https://github.com/NihilDigit/nihildigit.github.io"
-            class="hover:text-foreground">Source</a
-          >.
+            target="_blank"
+            rel="noopener"
+            class="hover:text-foreground"
+          >
+            Source
+          </a>
         </p>
       </div>
+      <p class="sm:text-right">
+        <span class="inline-flex flex-wrap items-center gap-1.5">
+          Built with
+          <a
+            href="https://claude.com/claude-code"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1 hover:text-foreground"
+          >
+            <IconClaude class="inline-block h-3.5 w-3.5" />
+            <span>Claude,</span>
+          </a>
+          <a
+            href="https://openai.com/codex/"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1 hover:text-foreground"
+          >
+            <IconOpenAI class="inline-block h-3.5 w-3.5" />
+            GPT and
+          </a>
+          <a
+            href="https://www.kimi.com/code"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1 hover:text-foreground"
+          >
+            <IconKimi class="relative -top-px inline-block h-3.5 w-3.5" />
+            Kimi.
+          </a>
+        </span>
+      </p>
     </div>
   </div>
 </footer>

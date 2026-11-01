@@ -26,7 +26,7 @@ const CONTACTS = [
 ];
 ---
 
-<Layout title={`About · ${SITE.title}`}>
+<Layout title={`About | ${SITE.title}`} schemaType="ProfilePage">
   <Header />
   <main id="main-content" class="app-layout pt-10 pb-20">
     <article class="max-w-prose-app">
@@ -96,6 +96,19 @@ const CONTACTS = [
         </p>
 
         <p>
+          <a
+            href="https://github.com/NihilDigit/piko"
+            target="_blank"
+            rel="noopener"
+            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+          >piko</a> is an independent PikPak client I build and maintain for
+          Android, Windows, and macOS. It has been my main place to run
+          experiments on UI/UX and client architecture, from the clip feed to
+          transfer and playback pipelines, while user feedback across releases
+          has built up practical experience in maintaining a complex system.
+        </p>
+
+        <p>
           As a member of the
           <a
             href="https://github.com/open-ani"
@@ -105,18 +118,6 @@ const CONTACTS = [
           >open-ani</a> organization, I contribute to Animeko, an open-source
           anime player, across animeko, mediamp, and anitorrent. My work
           covers player and cross-platform support, and media acquisition.
-        </p>
-
-        <p>
-          <a
-            href="https://github.com/NihilDigit/piko"
-            target="_blank"
-            rel="noopener"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >piko</a> builds on the Kotlin Multiplatform experience from
-          Animeko: a PikPak client for Android, Windows, and macOS, focused
-          on network performance and on the design of its clip feed. Shortly
-          after release it passed 100 stars and 2,000 downloads.
         </p>
       </section>
 

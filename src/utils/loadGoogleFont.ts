@@ -1,9 +1,10 @@
 async function loadGoogleFont(
   font: string,
   text: string,
-  weight: number,
+  weight: number
 ): Promise<ArrayBuffer> {
-  const API = `https://fonts.googleapis.com/css2?family=${font}:wght@${weight}&text=${encodeURIComponent(text)}`;
+  const uniqueChars = Array.from(new Set(text)).join("");
+  const API = `https://fonts.googleapis.com/css2?family=${font}:wght@${weight}&text=${encodeURIComponent(uniqueChars)}`;
 
   const css = await (
     await fetch(API, {
@@ -15,7 +16,7 @@ async function loadGoogleFont(
   ).text();
 
   const resource = css.match(
-    /src: url\((.+?)\) format\('(opentype|truetype)'\)/,
+    /src: url\((.+?)\) format\('(opentype|truetype)'\)/
   );
 
   if (!resource) throw new Error("Failed to download dynamic font");
@@ -30,22 +31,39 @@ async function loadGoogleFont(
 }
 
 async function loadGoogleFonts(
-  text: string,
+  text: string
 ): Promise<
-  Array<{ name: string; data: ArrayBuffer; weight: number; style: string }>
+  Array<{
+    name: string;
+    data: ArrayBuffer;
+    weight: 400 | 500 | 600 | 700;
+    style: "normal";
+  }>
 > {
   const fontsConfig = [
     {
-      name: "IBM Plex Mono",
-      font: "IBM+Plex+Mono",
-      weight: 400,
-      style: "normal",
+      name: "Inter",
+      font: "Inter",
+      weight: 400 as const,
+      style: "normal" as const,
     },
     {
-      name: "IBM Plex Mono",
-      font: "IBM+Plex+Mono",
-      weight: 700,
-      style: "bold",
+      name: "Inter",
+      font: "Inter",
+      weight: 600 as const,
+      style: "normal" as const,
+    },
+    {
+      name: "JetBrains Mono",
+      font: "JetBrains+Mono",
+      weight: 400 as const,
+      style: "normal" as const,
+    },
+    {
+      name: "JetBrains Mono",
+      font: "JetBrains+Mono",
+      weight: 500 as const,
+      style: "normal" as const,
     },
   ];
 
@@ -53,7 +71,7 @@ async function loadGoogleFonts(
     fontsConfig.map(async ({ name, font, weight, style }) => {
       const data = await loadGoogleFont(font, text, weight);
       return { name, data, weight, style };
-    }),
+    })
   );
 
   return fonts;

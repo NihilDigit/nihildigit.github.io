@@ -3,7 +3,16 @@ import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
 import { SITE } from "@/config";
+import { PROFILE } from "@/data/profile";
 import "@/styles/global.css";
+
+type SchemaType =
+  | "WebSite"
+  | "WebPage"
+  | "ProfilePage"
+  | "ScholarlyArticle"
+  | "TechArticle"
+  | "BlogPosting";
 
 type Props = {
   title?: string;
@@ -15,6 +24,7 @@ type Props = {
   pubDatetime?: Date;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
+  schemaType?: SchemaType;
 };
 
 const {
@@ -27,25 +37,59 @@ const {
   pubDatetime,
   modDatetime,
   scrollSmooth = false,
+  schemaType = pubDatetime ? "BlogPosting" : "WebPage",
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.url);
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: `${title}`,
-  image: `${socialImageURL}`,
-  datePublished: `${pubDatetime?.toISOString()}`,
-  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: [
-    {
-      "@type": "Person",
-      name: `${author}`,
-      ...(profile && { url: profile }),
-    },
-  ],
+const personEntity = {
+  "@type": "Person",
+  name: PROFILE.name,
+  alternateName: PROFILE.handle,
+  url: SITE.website,
+  sameAs: [PROFILE.contact.github, PROFILE.contact.orcid],
 };
+
+const structuredData =
+  schemaType === "ProfilePage"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        name: `${title}`,
+        description: `${description}`,
+        url: `${canonicalURL}`,
+        image: `${socialImageURL}`,
+        mainEntity: personEntity,
+      }
+    : schemaType === "WebSite"
+      ? {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: `${title}`,
+          description: `${description}`,
+          url: `${canonicalURL}`,
+          image: `${socialImageURL}`,
+          author: personEntity,
+        }
+      : {
+          "@context": "https://schema.org",
+          "@type": schemaType,
+          headline: `${title}`,
+          description: `${description}`,
+          url: `${canonicalURL}`,
+          image: `${socialImageURL}`,
+          ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
+          ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+          author: [
+            author === PROFILE.name || author === SITE.author
+              ? personEntity
+              : {
+                  "@type": "Person",
+                  name: `${author}`,
+                  ...(profile && { url: profile }),
+                },
+          ],
+        };
 ---
 
 <!doctype html>

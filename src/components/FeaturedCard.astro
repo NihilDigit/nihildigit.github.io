@@ -1,5 +1,4 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import IconGitHub from "@/assets/icons/octicons/mark-github-16.svg";
 import IconTrophy from "@/assets/icons/octicons/trophy-16.svg";
 import ActionLinks from "@/components/ActionLinks.astro";
@@ -8,14 +7,10 @@ import FeaturedImage from "@/components/FeaturedImage.astro";
 import HrefIcon from "@/components/HrefIcon.astro";
 import KeyNumbers from "@/components/KeyNumbers.astro";
 import RepoStats from "@/components/RepoStats.astro";
-import type { OpenSourceContribution } from "@/utils/openAniPullRequests";
+import type { ResolvedFeatured } from "@/utils/featuredContributions";
 
 interface Props {
-  entry: Omit<CollectionEntry<"featured">, "data"> & {
-    data: Omit<CollectionEntry<"featured">["data"], "contributions"> & {
-      contributions: OpenSourceContribution[];
-    };
-  };
+  entry: ResolvedFeatured;
   stars?: number;
   downloads?: number;
 }
@@ -84,66 +79,86 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
   {entry.data.keyNumbers.length > 0 && <KeyNumbers items={entry.data.keyNumbers} />}
 
   {entry.data.contributions.length > 0 && (
-    <details class="group mt-6 max-w-4xl">
-      <summary class="ml-auto flex w-fit cursor-pointer list-none items-center gap-1.5 text-sm font-medium text-accent hover:underline hover:underline-offset-4 [&::-webkit-details-marker]:hidden">
-        <span class="group-open:hidden">Show all {entry.data.contributions.length} PRs</span>
-        <span class="hidden group-open:inline">Hide PRs</span>
-        <span aria-hidden="true" class="transition-transform group-open:rotate-180">↓</span>
-      </summary>
-
-    {entry.data.contributionsSource === "open-ani" && (
-      <div
-        class="mt-4 flex items-center justify-end gap-2 font-mono text-xs"
-        data-contribution-sort
-      >
-        <span class="text-muted-foreground/70">Sort</span>
-        <div
-          role="group"
-          aria-label="Sort contributions"
-          class="inline-flex rounded-md border border-border p-0.5"
-        >
-          <button type="button" data-sort-by="lines" aria-pressed="false" class="sort-toggle">
-            By diff
-          </button>
-          <button type="button" data-sort-by="time" aria-pressed="true" class="sort-toggle">
-            By date
-          </button>
-        </div>
-      </div>
-    )}
-
-    {entry.data.contributions.length > 0 && (
-      <div
-        class:list={[
-          "mt-6 max-w-4xl",
-          entry.data.contributions.length > 10 &&
-            "max-h-[30rem] overflow-y-auto",
-        ]}
-        data-visible-rows={entry.data.contributions.length > 10 ? 5 : undefined}
-      >
-      <ol
-        class="divide-y divide-border/70"
-        data-contribution-list
-      >
-        {entry.data.contributions.map((item, i, items) => {
-          const showGroup =
-            item.group && item.group !== items[i - 1]?.group;
-
-          return (
-            <>
-              {showGroup && (
-                <li class="pt-4 pb-1 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground first:pt-2">
-                  {item.group}
-                </li>
-              )}
+    <div class="contribution-block mt-6 max-w-4xl">
+      {entry.data.highlightContributions.length > 0 && (
+        <div class="contribution-highlights mb-4">
+          <div class="pb-1 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+            Selected pull requests
+          </div>
+          <ol class="divide-y divide-border/70">
+            {entry.data.highlightContributions.map(item => (
               <ContributionRow item={item} />
-            </>
-          );
-        })}
-      </ol>
-      </div>
-    )}
-    </details>
+            ))}
+          </ol>
+        </div>
+      )}
+
+      <details class="group">
+        <summary class="ml-auto flex w-fit cursor-pointer list-none items-center action-chip [&::-webkit-details-marker]:hidden">
+          <span class="group-open:hidden">
+            Show all {entry.data.contributions.length} merged PRs
+          </span>
+          <span class="hidden group-open:inline">Show selected PRs</span>
+          <span aria-hidden="true" class="transition-transform group-open:rotate-180">↓</span>
+        </summary>
+
+        {entry.data.contributionsSource === "open-ani" && (
+          <div
+            class="mt-4 flex flex-wrap items-center justify-between gap-2 font-mono text-xs"
+            data-contribution-sort
+          >
+            <span class="text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+              All {entry.data.contributions.length} merged pull requests
+            </span>
+            <div class="flex items-center gap-2">
+              <span class="text-muted-foreground/70">Sort</span>
+              <div
+                role="group"
+                aria-label="Sort contributions"
+                class="inline-flex rounded-md border border-border p-0.5"
+              >
+                <button type="button" data-sort-by="lines" aria-pressed="false" class="sort-toggle">
+                  By diff
+                </button>
+                <button type="button" data-sort-by="time" aria-pressed="true" class="sort-toggle">
+                  By date
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div
+          class:list={[
+            "mt-3 max-w-4xl",
+            entry.data.contributions.length > 10 &&
+              "max-h-[30rem] overflow-y-auto",
+          ]}
+          data-visible-rows={entry.data.contributions.length > 10 ? 8 : undefined}
+        >
+          <ol
+            class="divide-y divide-border/70"
+            data-contribution-list
+          >
+            {entry.data.contributions.map((item, i, items) => {
+              const showGroup =
+                item.group && item.group !== items[i - 1]?.group;
+
+              return (
+                <>
+                  {showGroup && (
+                    <li class="pt-4 pb-1 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground first:pt-2">
+                      {item.group}
+                    </li>
+                  )}
+                  <ContributionRow item={item} />
+                </>
+              );
+            })}
+          </ol>
+        </div>
+      </details>
+    </div>
   )}
 
   {entry.data.badges.length > 0 && (
@@ -186,3 +201,9 @@ const isExternalHref = (href: string) => /^https?:\/\//.test(href);
   )}
 
 </section>
+
+<style>
+  .contribution-block:has(details[open]) .contribution-highlights {
+    display: none;
+  }
+</style>

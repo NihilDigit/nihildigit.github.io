@@ -46,9 +46,7 @@ jobs:
       - name: Build
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          deno task astro build
-          deno run -A npm:pagefind --site dist
+        run: deno task astro build
 
       - name: Verify LLM text files
         run: |

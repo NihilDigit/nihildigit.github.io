@@ -2,8 +2,20 @@
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import HrefIcon from "@/components/HrefIcon.astro";
 import ProjectVideo from "@/components/ProjectVideo.astro";
 import ScrollableRow from "@/components/ScrollableRow.astro";
+
+const projectLinks = [
+  {
+    label: "Code",
+    href: "https://github.com/NihilDigit/tongxing",
+  },
+  {
+    label: "Certificate",
+    href: "/tongxing/4c2026-certificate.pdf",
+  },
+];
 
 const safetyDemos = [
   {
@@ -231,6 +243,8 @@ const agentScreens = [
 <Layout
   title="TongXing edge agentic assistive system"
   description="TongXing is an edge assistive system for blind and low-vision users, combining local NPU obstacle warning with an on-device LLM agent that closes touch-first app tasks through MCP tools and Android accessibility actions."
+  ogImage="/og/tongxing.png"
+  schemaType="TechArticle"
 >
   <Header />
   <main id="main-content" class="app-layout">
@@ -245,8 +259,19 @@ const agentScreens = [
             target="_blank"
             rel="noopener"
             class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
-          >4C2026</a> national second prize, work no. 2026023242
+          >4C2026</a> national second prize, certificate no. 2026023242
         </p>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+          {
+            projectLinks.map(l => (
+              <a href={l.href} target="_blank" rel="noopener" class="action-chip">
+                <HrefIcon href={l.href} class="size-4 shrink-0" />
+                {l.label}
+              </a>
+            ))
+          }
+        </div>
       </header>
 
       <section class="mb-10">
@@ -641,6 +666,32 @@ const agentScreens = [
             </section>
           ))}
         </div>
+      </section>
+
+      <section class="max-w-prose-app border-t border-border pt-8">
+        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          Code
+        </h2>
+        <div class="flex flex-wrap items-baseline gap-3">
+          <h3 class="text-xl font-semibold tracking-tight">
+            <code class="font-mono">tongxing</code>
+          </h3>
+          <a
+            href="https://github.com/NihilDigit/tongxing"
+            target="_blank"
+            rel="noopener"
+            class="font-mono text-xs text-muted-foreground hover:text-accent"
+          >
+            github.com/NihilDigit/tongxing &rarr;
+          </a>
+        </div>
+        <p class="mt-3 text-base leading-relaxed text-foreground/80">
+          Apache-2.0 release containing the Android host app, the C++ post-fusion and
+          danger-assessment module (<code class="font-mono text-sm">lightway_safetycore</code>),
+          the on-device ReAct router and MCP tool layer (<code class="font-mono text-sm">lightway_agentcore</code>),
+          and unit, JNI, and on-device validation suites. <code class="font-mono text-sm">models.lock.json</code>
+          and preparation scripts pin SHA-256 hashes and export recipes for all six models.
+        </p>
       </section>
 
     </article>

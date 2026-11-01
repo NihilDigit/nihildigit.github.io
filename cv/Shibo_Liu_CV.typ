@@ -142,7 +142,7 @@
   #entry(
     [#proj("https://nihildigit.dev/tongxing")[TongXing] - On-device Assistive System for the Visually Impaired],
     [2025-2026],
-    [#icon("octicons/trophy-16.svg") Project lead, 4C2026 National Second Prize],
+    [#icon("octicons/trophy-16.svg") Project lead, 4C2026 National Second Prize (#cv-link("https://github.com/NihilDigit/tongxing")[code])],
   )
 
   - Real-time obstacle warning on a chest-mounted Snapdragon 8 Gen 3: detection, depth, segmentation, tracking and #box[distance/TTC] at 15 Hz, 35.16 ms against a 66.7 ms budget.
@@ -185,7 +185,7 @@
 #let awards = [
   #section("octicons/trophy-16.svg")[Awards]
 
-  - #cv-link("https://jsjds.blcu.edu.cn/")[4C2026]: National Second Prize (work no. 2026023242).
+  - #cv-link("https://jsjds.blcu.edu.cn/")[4C2026]: National Second Prize (#cv-link("https://nihildigit.dev/tongxing/4c2026-certificate.pdf")[certificate no. 2026023242]).
   - #cv-link("https://www.apmcm.org/")[APMCM 2024]: Second Prize (work no. 24201176).
 ]
 

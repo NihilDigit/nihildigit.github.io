@@ -83,15 +83,15 @@ export const fetchOpenAniContributions = async (): Promise<SnapshotEntry[]> => {
         );
       }
       const pr = (await prResponse.json()) as PullResponse;
-      // Only merged work and PRs actually up for review are worth showing;
-      // drafts and rejected/abandoned PRs are noise here.
-      if (pr.draft || (!pr.merged_at && pr.state !== "open")) return undefined;
+      // Only merged PRs count toward the showcase and totals, keeping the
+      // metric cards and the expandable list on one consistent number.
+      if (pr.draft || !pr.merged_at) return undefined;
 
       const additions = pr.additions ?? 0;
       const deletions = pr.deletions ?? 0;
       const prNumber = item.html_url.split("/").pop();
-      const timestamp = pr.merged_at ?? pr.created_at ?? "";
-      const status: SnapshotEntry["status"] = pr.merged_at ? "done" : "active";
+      const timestamp = pr.merged_at;
+      const status: SnapshotEntry["status"] = "done";
 
       return {
         status,
@@ -128,7 +128,7 @@ export const getOpenAniContributions = (): Promise<
       console.warn(
         `[open-ani] live fetch failed (${message}); using committed snapshot`,
       );
-      return snapshot as SnapshotEntry[];
+      return (snapshot as SnapshotEntry[]).filter((c) => c.status === "done");
     }
   })();
   return cached;

@@ -17,7 +17,13 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
     .join(", ");
 ---
 
-<Layout title={`${anvil.data.title} · ${anvil.data.venue}`} description={anvil.data.tldr}>
+<Layout
+  title={`${anvil.data.title} | ${anvil.data.venue}`}
+  description={anvil.data.tldr}
+  ogImage="/og/anvil.png"
+  pubDatetime={anvil.data.pubDatetime}
+  schemaType="ScholarlyArticle"
+>
   <Header />
   <main id="main-content" class="app-layout">
     <article class="pt-8 pb-16">

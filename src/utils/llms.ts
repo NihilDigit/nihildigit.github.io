@@ -80,10 +80,7 @@ export function buildLlmsTxt({
     "",
     `> Personal portfolio of ${PROFILE.name} (${PROFILE.handle}), ${PROFILE.summary}`,
     "",
-    PROFILE.llmsAbout[0],
-    PROFILE.llmsAbout[1],
-    PROFILE.llmsAbout[2],
-    PROFILE.llmsAbout[3],
+    ...PROFILE.llmsAbout,
     "",
     "## Featured work",
     "",
@@ -109,7 +106,6 @@ export function buildLlmsTxt({
     `- About: ${absoluteUrl("/about/")}`,
     `- ANVIL project page: ${absoluteUrl("/anvil/")}`,
     `- TongXing project page: ${absoluteUrl("/tongxing/")}`,
-    `- Notes archive: ${absoluteUrl("/notes/")}`,
     `- RSS feed: ${absoluteUrl("/rss.xml")}`,
     "",
   ].join("\n");
@@ -227,7 +223,6 @@ export function buildLlmsFullTxt({
     `- About: ${absoluteUrl("/about/")}`,
     `- ANVIL project page: ${absoluteUrl("/anvil/")}`,
     `- TongXing project page: ${absoluteUrl("/tongxing/")}`,
-    `- Notes archive: ${absoluteUrl("/notes/")}`,
     `- RSS: ${absoluteUrl("/rss.xml")}`,
     "",
   ].join("\n");

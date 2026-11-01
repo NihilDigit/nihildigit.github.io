@@ -2,9 +2,10 @@
 title: "piko"
 titleHref: "https://github.com/NihilDigit/piko"
 repo: "NihilDigit/piko"
+fallbackStars: 192
 showDownloads: true
-order: 2
-summary: "After building up Kotlin Multiplatform experience on Animeko, I set out to write an app of my own: a PikPak client for Android, Windows, and macOS. Much of the work is network tuning, for PikPak itself and for the player. The clip feed, which plays random stretches of the videos in a folder, took the most design work."
+order: 1
+summary: "An independent PikPak client I build and maintain for Android, Windows, and macOS. It is where I run extensive experiments on my own UI/UX and architectural ideas, from the clip feed to transfer and playback design. Shipping releases and working through user feedback has given me practical experience maintaining a complex multi-platform system."
 image:
   src: "/piko/feed.avif"
   darkSrc: "/piko/feed-dark.avif"

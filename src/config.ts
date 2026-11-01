@@ -4,7 +4,7 @@ export const SITE = {
   profile: "https://github.com/NihilDigit",
   desc: "Undergraduate researcher working on edge AI and video systems.",
   title: "NihilDigit",
-  ogImage: "astropaper-og.jpg",
+  ogImage: "",
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 12,
