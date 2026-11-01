@@ -1,4 +1,6 @@
 ---
+import IconArrowUpRight from "@/assets/icons/octicons/arrow-up-right-16.svg";
+
 interface Props {
   items: { value: string; caption: string; href?: string }[];
 }
@@ -6,20 +8,26 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<dl class="mt-6 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
+<dl class="mt-6 grid grid-cols-1 gap-3.5 sm:grid-cols-3 sm:gap-4">
   {
     items.map(n => (
-      <div class="rounded-md bg-muted/60 px-4 py-3">
-        <dt class="metric-value text-xl text-foreground">{n.value}</dt>
-        <dd class="mt-1 text-xs text-muted-foreground">
+      <div class="surface-card flex flex-col justify-between px-4 py-3.5 transition-colors has-[a]:hover:border-accent/45">
+        <dt class="metric-value text-xl leading-snug text-foreground sm:text-2xl">
+          {n.value}
+        </dt>
+        <dd class="mt-2 border-t border-border-subtle pt-2 text-xs leading-relaxed text-muted-foreground">
           {n.href ? (
             <a
               href={n.href}
               target="_blank"
               rel="noopener"
-              class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+              class="group/metric inline-flex items-center gap-1 text-foreground-secondary underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
             >
-              {n.caption}
+              <span>{n.caption}</span>
+              <IconArrowUpRight
+                class="size-3.5 shrink-0 text-muted-foreground transition-transform group-hover/metric:translate-x-0.5 group-hover/metric:-translate-y-0.5 group-hover/metric:text-accent"
+                aria-hidden="true"
+              />
             </a>
           ) : (
             n.caption

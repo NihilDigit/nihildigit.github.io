@@ -43,7 +43,11 @@ const sortedPapers = allPapers.sort(
 
 const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
   authors
-    .map(a => (a.isMe ? `<strong class="text-foreground">${a.name}</strong>` : a.name))
+    .map(a =>
+      a.isMe
+        ? `<strong class="font-medium text-foreground">${a.name}</strong>`
+        : a.name
+    )
     .join(", ");
 
 ---
@@ -52,55 +56,54 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
   <Header />
   <main id="main-content" class="app-layout">
     <!-- Featured: ANVIL -->
-    <section id="featured-anvil" class="py-10" data-reveal>
-      <div>
-        <div>
-          <h3 class="max-w-4xl text-2xl font-semibold tracking-tight sm:text-3xl">
-            <a
-              href={`https://github.com/${ANVIL_REPO}`}
-              target="_blank"
-              rel="noopener"
-              class="transition-colors hover:text-accent"
-            >
-              <IconGitHub class="mr-2 inline-block h-[0.85em] w-[0.85em] align-[-0.07em]" />
-              {anvil?.data.title}
+    <section id="featured-anvil" class="py-11 sm:py-12" data-reveal>
+      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+        <h3 class="max-w-5xl text-2xl font-semibold tracking-tight sm:text-3xl">
+          <a
+            href={`https://github.com/${ANVIL_REPO}`}
+            target="_blank"
+            rel="noopener"
+            class="transition-colors hover:text-accent"
+          >
+            <IconGitHub class="mr-2 inline-block h-[0.85em] w-[0.85em] align-[-0.07em]" />
+            {anvil?.data.title}
+          </a>
+        </h3>
+      </div>
+
+      <div class="mt-5 grid gap-6 md:grid-cols-2">
+        {anvil?.data.teaserVideo && (
+          <AnvilTeaser
+            src={anvil.data.teaserVideo}
+            poster={anvil.data.teaserPoster}
+            rounded="rounded-lg"
+            priority
+          />
+        )}
+
+        {/* Stretched to the video's height so the buttons sit on its bottom edge. */}
+        <div class="flex flex-col justify-between">
+          <p class="leading-relaxed text-foreground-secondary">{anvil?.data.tldr}</p>
+
+          <div class="mt-5 flex flex-wrap justify-end gap-2">
+            {anvil?.data.links
+              // The project page lists code, demo, and APK; the card keeps only the paper.
+              .filter(l => l.label === "arXiv")
+              .map(l => (
+              <a href={l.href} target="_blank" rel="noopener" class="action-chip">
+                <HrefIcon href={l.href} class="size-4 shrink-0" />
+                {l.label}
+              </a>
+            ))}
+            <a href="/anvil" class="action-chip action-chip-primary">
+              Read project page
+              <IconArrowRight class="size-4 shrink-0" />
             </a>
-          </h3>
-
-          <div class="mt-5 grid gap-5 md:grid-cols-2">
-            {anvil?.data.teaserVideo && (
-              <AnvilTeaser
-                src={anvil.data.teaserVideo}
-                poster={anvil.data.teaserPoster}
-                priority
-              />
-            )}
-
-            {/* Stretched to the video's height so the buttons sit on its bottom edge. */}
-            <div class="flex flex-col justify-between">
-              <p class="text-foreground/80">{anvil?.data.tldr}</p>
-
-              <div class="mt-5 flex flex-wrap justify-end gap-2">
-                {anvil?.data.links
-                  // The project page lists code, demo, and APK; the card keeps only the paper.
-                  .filter(l => l.label === "arXiv")
-                  .map(l => (
-                  <a href={l.href} target="_blank" rel="noopener" class="action-chip">
-                    <HrefIcon href={l.href} class="size-4 shrink-0" />
-                    {l.label}
-                  </a>
-                ))}
-                <a href="/anvil" class="action-chip action-chip-primary">
-                  Read project page
-                  <IconArrowRight class="size-4 shrink-0" />
-                </a>
-              </div>
-            </div>
           </div>
-
-          {anvil?.data.keyNumbers && <KeyNumbers items={anvil.data.keyNumbers} />}
         </div>
       </div>
+
+      {anvil?.data.keyNumbers && <KeyNumbers items={anvil.data.keyNumbers} />}
     </section>
 
     <!-- Featured: the rest, from the featured collection -->
@@ -111,14 +114,10 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       />)}
 
     <!-- Upstream contributions: small patches outside the featured projects -->
-    <section id="upstream" class="border-t border-border py-10" data-reveal>
-      <div class="mb-6 flex items-baseline justify-between">
-        <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Upstream contributions
-        </h2>
-      </div>
+    <section id="upstream" class="pt-4 pb-11 sm:pt-6 sm:pb-12" data-reveal>
+      <h2 class="section-eyebrow mb-5">Upstream contributions</h2>
 
-      <ol class="max-w-4xl divide-y divide-border/70">
+      <ol class="surface-card divide-y divide-border-subtle overflow-hidden">
         {upstream.map(u => (
           <ContributionRow
             item={{
@@ -131,23 +130,19 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
     </section>
 
     <!-- Publications -->
-    <section id="publications" class="border-t border-border pt-10 pb-16" data-reveal>
-      <div class="mb-6 flex items-baseline justify-between">
-        <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Publications
-        </h2>
-      </div>
+    <section id="publications" class="pt-4 pb-16 sm:pt-6 sm:pb-20" data-reveal>
+      <h2 class="section-eyebrow mb-5">Publications</h2>
 
-      <ul class="divide-y divide-border/70">
+      <ul class="surface-card divide-y divide-border-subtle overflow-hidden">
         {
           sortedPapers.map(p => (
-            <li class="grid gap-x-4 gap-y-2 py-3 sm:grid-cols-[3.25rem_minmax(0,1fr)_auto] sm:items-baseline">
-              <span class="font-mono text-xs tabular-nums text-muted-foreground">
+            <li class="grid gap-x-4 gap-y-2 px-3.5 py-3.5 transition-colors hover:bg-surface-2/55 sm:grid-cols-[3.5rem_minmax(0,1fr)_auto] sm:items-baseline sm:px-4">
+              <span class="font-mono text-xs font-medium tabular-nums text-muted-foreground">
                 {p.data.year}
               </span>
 
               <div class="min-w-0">
-                <h3 class="text-base font-medium leading-snug">
+                <h3 class="text-base font-medium leading-snug text-foreground">
                   {p.data.hasProjectPage && p.data.projectPageSlug ? (
                     <a
                       href={`/${p.data.projectPageSlug}`}
@@ -160,20 +155,20 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
                   )}
                 </h3>
                 <p
-                  class="mt-1 text-sm text-muted-foreground"
+                  class="mt-1 text-sm leading-relaxed text-muted-foreground"
                   set:html={fmtAuthors(p.data.authors)}
                 />
-                <p class="mt-0.5 flex flex-wrap items-center gap-x-2 font-mono text-xs text-muted-foreground">
+                <p class="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-xs text-muted-foreground">
                   <span class={paperStatusClass(p.data.status)}>
                     {paperStatusLabel(p.data.status)}
                   </span>
-                  <span aria-hidden>·</span>
+                  <span aria-hidden="true" class="h-3 w-px bg-border" />
                   <span>{p.data.venue}</span>
                 </p>
               </div>
 
               {p.data.links && p.data.links.length > 0 && (
-                <span class="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs sm:justify-end">
+                <span class="flex flex-wrap items-center gap-x-4 gap-y-1.5 font-mono text-xs sm:justify-end">
                   {p.data.links.slice(0, 2).map(l => (
                     <a
                       href={l.href}
@@ -254,6 +249,28 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
     box.style.maxHeight = `${Math.ceil(height + box.scrollTop)}px`;
   }
 
+  function initContributionToggles() {
+    document
+      .querySelectorAll<HTMLButtonElement>("[data-contribution-toggle]")
+      .forEach(btn => {
+        if (btn.dataset.bound === "true") return;
+        btn.dataset.bound = "true";
+
+        const block = btn.closest<HTMLElement>(".contribution-block");
+        if (!block) return;
+
+        btn.addEventListener("click", () => {
+          const next = block.dataset.expanded !== "true";
+          block.dataset.expanded = String(next);
+          btn.setAttribute("aria-expanded", String(next));
+          if (next) {
+            const box = block.querySelector<HTMLElement>("[data-visible-rows]");
+            if (box) fitVisibleRows(box);
+          }
+        });
+      });
+  }
+
   function initVisibleRows() {
     document
       .querySelectorAll<HTMLElement>("[data-visible-rows]")
@@ -261,9 +278,6 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
         if (box.dataset.bound === "true") return;
         box.dataset.bound = "true";
         fitVisibleRows(box);
-        box
-          .closest("details")
-          ?.addEventListener("toggle", () => fitVisibleRows(box));
         new ResizeObserver(() => fitVisibleRows(box)).observe(
           box.querySelector("ol") ?? box
         );
@@ -276,12 +290,22 @@ const fmtAuthors = (authors: { name: string; isMe?: boolean }[]) =>
       });
   }
 
+  initContributionToggles();
   initVisibleRows();
-  document.addEventListener("astro:page-load", initVisibleRows);
+  document.addEventListener("astro:page-load", () => {
+    initContributionToggles();
+    initVisibleRows();
+  });
 
   function initReveal() {
-    const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const targets = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-reveal]")
+    ).filter(t => t.dataset.revealBound !== "true");
     if (!targets.length) return;
+
+    targets.forEach(t => {
+      t.dataset.revealBound = "true";
+    });
 
     if (!("IntersectionObserver" in window)) {
       targets.forEach(t => t.classList.add("is-visible"));

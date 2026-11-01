@@ -238,6 +238,9 @@ const agentScreens = [
   },
 ];
 
+const padIndex = (i: number) => String(i + 1).padStart(2, "0");
+const inlineCode =
+  "rounded border border-border-subtle bg-code-bg px-1.5 py-0.5 font-mono text-[0.84em] text-foreground";
 ---
 
 <Layout
@@ -248,183 +251,227 @@ const agentScreens = [
 >
   <Header />
   <main id="main-content" class="app-layout">
-    <article class="pt-8 pb-16">
-      <header class="pb-8">
-        <h1 class="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          TongXing: local perception and a voice agent on one phone
-        </h1>
-        <p class="mt-3 text-sm font-medium text-foreground">
-          <a
-            href="https://jsjds.blcu.edu.cn/"
-            target="_blank"
-            rel="noopener"
-            class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
-          >4C2026</a> national second prize, certificate no. 2026023242
+    <article class="pt-9 pb-20 sm:pt-11">
+      <header class="pb-9">
+        <p class="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-xs tracking-wide text-muted-foreground">
+          <span>
+            <a
+              href="https://jsjds.blcu.edu.cn/"
+              target="_blank"
+              rel="noopener"
+              class="font-medium text-foreground-secondary underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
+            >4C2026</a> national second prize
+          </span>
+          <span aria-hidden="true" class="h-3 w-px bg-border"></span>
+          <span class="tabular-nums">certificate no. 2026023242</span>
         </p>
 
-        <div class="mt-6 flex flex-wrap gap-2">
+        <h1 class="mt-3 text-3xl font-semibold leading-[1.16] tracking-tight text-foreground sm:text-4xl">
+          TongXing: local perception and a voice agent on one phone
+        </h1>
+
+        <div class="mt-5 flex flex-wrap gap-2">
           {
             projectLinks.map(l => (
-              <a href={l.href} target="_blank" rel="noopener" class="action-chip">
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener"
+                class="action-chip"
+              >
                 <HrefIcon href={l.href} class="size-4 shrink-0" />
                 {l.label}
               </a>
             ))
           }
         </div>
+
+        <nav aria-label="On this page" class="jump-nav mt-7">
+          <a href="#evidence">Evidence</a>
+          <a href="#problem">Problem</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#deployment">Deployment</a>
+          <a href="#safetycore">SafetyCore</a>
+          <a href="#agentcore">AgentCore</a>
+          <a href="#performance">Performance</a>
+          <a href="#code">Code</a>
+        </nav>
       </header>
 
-      <section class="mb-10">
-        <div class="mb-4 flex flex-wrap items-baseline justify-between gap-3">
-          <div>
-            <h2 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-              Safety Evidence
-            </h2>
-            <p class="mt-2 max-w-prose-app text-sm leading-relaxed text-muted-foreground">
-              Three walking clips from the test assets. Each one exercises a different failure mode:
-              non-standard obstacles, moving street traffic, and crowded pedestrian flow.
-            </p>
-          </div>
-        </div>
+      <section id="evidence" class="mb-14">
+        <h2 class="section-eyebrow mb-3">Safety Evidence</h2>
+        <p class="mb-5 max-w-prose-app text-sm leading-relaxed text-muted-foreground">
+          Three walking clips from the test assets. Each one exercises a different failure mode:
+          non-standard obstacles, moving street traffic, and crowded pedestrian flow.
+        </p>
         <ScrollableRow ariaLabel="TongXing SafetyCore demo videos">
-          {safetyDemos.map(demo => (
-            <section class="flex h-[34rem] w-[22rem] shrink-0 flex-col rounded-md bg-muted/40 p-3 sm:w-[26rem]">
-              <ProjectVideo
-                src={demo.src}
-                poster={demo.poster}
-                aspectRatio="1302 / 1280"
-                ariaLabel={`Play ${demo.title} demo`}
-                ctaLabel="Play demo"
-              />
-              <h3 class="mt-4 text-lg font-semibold tracking-tight">{demo.title}</h3>
-              <p class="mt-2 max-h-20 overflow-hidden text-sm leading-relaxed text-foreground/80">
-                {demo.caption}
-              </p>
-            </section>
-          ))}
+          {
+            safetyDemos.map(demo => (
+              <section class="surface-card flex w-[min(21.5rem,calc(100vw-3.25rem))] shrink-0 flex-col p-3.5 sm:w-[25.5rem]">
+                <ProjectVideo
+                  src={demo.src}
+                  poster={demo.poster}
+                  aspectRatio="1302 / 1280"
+                  rounded="rounded-md"
+                  ariaLabel={`Play ${demo.title} demo`}
+                  ctaLabel="Play demo"
+                />
+                <div class="mt-3.5 flex-1 border-t border-border-subtle pt-3">
+                  <h3 class="text-base font-semibold tracking-tight text-foreground">
+                    {demo.title}
+                  </h3>
+                  <p class="mt-1.5 text-sm leading-relaxed text-foreground-secondary">
+                    {demo.caption}
+                  </p>
+                </div>
+              </section>
+            ))
+          }
         </ScrollableRow>
       </section>
 
-      <section class="mb-10 max-w-prose-app">
-        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          The Problem
-        </h2>
-        <h3 class="mb-4 text-2xl font-semibold tracking-tight">
-          The missing piece is not another description app. It is an on-device safety loop.
-        </h3>
-        <div class="space-y-4 text-base leading-relaxed text-foreground">
-          <p>
-            A white cane is reliable, but its sensing range is short and mostly near-ground. It
-            does not tell the user whether the object ahead is a parked vehicle, an approaching
-            pedestrian, a pole, or a hanging obstacle.
-          </p>
-          <p>
-            Cloud vision systems can describe rich scenes, but their latency and network dependency
-            are wrong for collision warnings. Safety alerts have to survive tunnels, elevators, and
-            weak signal areas.
-          </p>
-          <p>
-            The same user also faces a digital-accessibility gap in touch-first apps. Navigation,
-            taxi, train, flight, weather, and visual description need one voice loop that can recover
-            from intermediate choices without forcing the user back to the screen.
-          </p>
+      <section id="problem" class="mb-14">
+        <h2 class="section-eyebrow mb-4">The Problem</h2>
+        <div class="max-w-prose-app">
+          <h3 class="mb-4 text-2xl font-semibold tracking-tight text-foreground">
+            The missing piece is not another description app. It is an on-device safety loop.
+          </h3>
+          <div class="space-y-4 text-base leading-relaxed text-foreground-secondary">
+            <p>
+              A white cane is reliable, but its sensing range is short and mostly near-ground. It
+              does not tell the user whether the object ahead is a parked vehicle, an approaching
+              pedestrian, a pole, or a hanging obstacle.
+            </p>
+            <p>
+              Cloud vision systems can describe rich scenes, but their latency and network dependency
+              are wrong for collision warnings. Safety alerts have to survive tunnels, elevators, and
+              weak signal areas.
+            </p>
+            <p>
+              The same user also faces a digital-accessibility gap in touch-first apps. Navigation,
+              taxi, train, flight, weather, and visual description need one voice loop that can recover
+              from intermediate choices without forcing the user back to the screen.
+            </p>
+          </div>
         </div>
-        <div class="mt-6 grid gap-4 sm:grid-cols-2">
-          {closedLoopGaps.map(gap => (
-            <section>
-              <h4 class="text-base font-semibold tracking-tight">
-                {gap.title}
-              </h4>
-              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{gap.copy}</p>
-            </section>
-          ))}
+
+        <div class="mt-7 grid max-w-prose-app gap-x-7 gap-y-5 sm:grid-cols-2">
+          {
+            closedLoopGaps.map((gap, i) => (
+              <section class="border-t border-border-subtle pt-3.5">
+                <div class="flex items-baseline gap-2">
+                  <span class="font-mono text-[0.6875rem] tabular-nums text-muted-foreground">
+                    {padIndex(i)}
+                  </span>
+                  <h4 class="text-base font-semibold tracking-tight text-foreground">
+                    {gap.title}
+                  </h4>
+                </div>
+                <p class="mt-2 text-sm leading-relaxed text-foreground-secondary">
+                  {gap.copy}
+                </p>
+              </section>
+            ))
+          }
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Why Edge
-        </h2>
-        <div class="grid gap-5 md:grid-cols-2">
-          {edgeRationale.map(item => (
-            <section>
-              <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{item.copy}</p>
-            </section>
-          ))}
+      <section class="mb-14">
+        <h2 class="section-eyebrow mb-5">Why Edge</h2>
+        <div class="grid gap-x-8 gap-y-6 md:grid-cols-2">
+          {
+            edgeRationale.map((item, i) => (
+              <section class="border-t border-border-subtle pt-4">
+                <span class="font-mono text-[0.6875rem] tabular-nums text-muted-foreground">
+                  {padIndex(i)}
+                </span>
+                <h3 class="mt-1 text-base font-semibold tracking-tight text-foreground">
+                  {item.title}
+                </h3>
+                <p class="mt-2 text-sm leading-relaxed text-foreground-secondary">
+                  {item.copy}
+                </p>
+              </section>
+            ))
+          }
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Design Constraints
-        </h2>
-        <div class="grid gap-5 md:grid-cols-3">
-          {designPrinciples.map(principle => (
-            <section>
-              <h3 class="text-lg font-semibold tracking-tight">{principle.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-foreground/80">
-                {principle.copy}
-              </p>
-            </section>
-          ))}
+      <section class="mb-14">
+        <h2 class="section-eyebrow mb-5">Design Constraints</h2>
+        <div class="grid gap-x-7 gap-y-6 md:grid-cols-3">
+          {
+            designPrinciples.map((principle, i) => (
+              <section class="border-t border-border-subtle pt-4">
+                <span class="font-mono text-[0.6875rem] tabular-nums text-muted-foreground">
+                  {padIndex(i)}
+                </span>
+                <h3 class="mt-1 text-base font-semibold tracking-tight text-foreground">
+                  {principle.title}
+                </h3>
+                <p class="mt-2 text-sm leading-relaxed text-foreground-secondary">
+                  {principle.copy}
+                </p>
+              </section>
+            ))
+          }
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          System
-        </h2>
-        <figure class="rounded-md bg-muted/40 p-4 sm:p-6">
-          <img
-            src="/tongxing/figures/system-overview-en.png"
-            alt="TongXing system overview showing SafetyCore, AgentCore, user interaction, and audio priority"
-            class="w-full dark:brightness-90"
-            loading="lazy"
-          />
-          <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
+      <section id="system" class="mb-14">
+        <h2 class="section-eyebrow mb-4">System</h2>
+        <figure class="figure-frame">
+          <div class="figure-paper">
+            <img
+              src="/tongxing/figures/system-overview-en.png"
+              alt="TongXing system overview showing SafetyCore, AgentCore, user interaction, and audio priority"
+              class="w-full"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="mt-4 max-w-prose-app text-sm leading-relaxed text-muted-foreground">
             SafetyCore handles local perception and warning priority. AgentCore handles voice intent,
             MCP tools, accessibility actions, and multi-step assistive workflows.
           </figcaption>
         </figure>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Architecture
-        </h2>
-        <figure class="rounded-md bg-muted/40 p-4 sm:p-6">
-          <img
-            src="/tongxing/figures/tech-pipeline-en.png"
-            alt="TongXing architecture diagram for SafetyCore, AgentCore, and voice interaction"
-            class="w-full dark:brightness-90"
-            loading="lazy"
-          />
-          <figcaption class="mt-4 max-w-prose-app text-sm text-muted-foreground">
+      <section id="architecture" class="mb-14">
+        <h2 class="section-eyebrow mb-4">Architecture</h2>
+        <figure class="figure-frame">
+          <div class="figure-paper">
+            <img
+              src="/tongxing/figures/tech-pipeline-en.png"
+              alt="TongXing architecture diagram for SafetyCore, AgentCore, and voice interaction"
+              class="w-full"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="mt-4 max-w-prose-app text-sm leading-relaxed text-muted-foreground">
             SafetyCore, AgentCore, and the voice loop are split across NPU, GPU, and CPU so the
             warning path stays responsive while assistant tasks run.
           </figcaption>
         </figure>
-        <div class="mt-6 grid gap-5 text-base leading-relaxed text-foreground md:grid-cols-3">
-          <div>
-            <h3 class="text-xl font-semibold tracking-tight">SafetyCore</h3>
-            <p class="mt-2 text-foreground/80">
+        <div class="mt-7 grid gap-x-7 gap-y-6 md:grid-cols-3">
+          <div class="border-t border-border-subtle pt-4">
+            <h3 class="text-lg font-semibold tracking-tight text-foreground">SafetyCore</h3>
+            <p class="mt-2 text-sm leading-relaxed text-foreground-secondary">
               YOLOX, MiDaS, and FFNet run as independent INT8 models on the NPU. Post-fusion turns
               category, relative depth, and walkable-area semantics into tracked obstacles, distance
               estimates, TTC, and warning levels.
             </p>
           </div>
-          <div>
-            <h3 class="text-xl font-semibold tracking-tight">AgentCore</h3>
-            <p class="mt-2 text-foreground/80">
+          <div class="border-t border-border-subtle pt-4">
+            <h3 class="text-lg font-semibold tracking-tight text-foreground">AgentCore</h3>
+            <p class="mt-2 text-sm leading-relaxed text-foreground-secondary">
               Qwen3-1.7B drives a ReAct loop over 11 Combo tools and accessibility actions. The
               tool layer compresses MCP outputs, maps long POI IDs to short LIDs, and keeps repeated
               tool definitions warm in KV Cache.
             </p>
           </div>
-          <div>
-            <h3 class="text-xl font-semibold tracking-tight">Voice Loop</h3>
-            <p class="mt-2 text-foreground/80">
+          <div class="border-t border-border-subtle pt-4">
+            <h3 class="text-lg font-semibold tracking-tight text-foreground">Voice Loop</h3>
+            <p class="mt-2 text-sm leading-relaxed text-foreground-secondary">
               Offline ASR and system TTS sit on the CPU path. A safety warning can stop ASR, cancel
               the active LLM request, clear lower-priority speech, and speak immediately.
             </p>
@@ -432,53 +479,59 @@ const agentScreens = [
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Engineering Judgment
-        </h2>
-        <div class="space-y-6">
-          {engineeringJudgments.map(item => (
-            <section class="grid gap-2 md:grid-cols-[14rem_minmax(0,1fr)]">
-              <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
-              <p class="max-w-prose-app text-base leading-relaxed text-foreground/80">
-                {item.copy}
-              </p>
-            </section>
-          ))}
+      <section class="mb-14">
+        <h2 class="section-eyebrow mb-5">Engineering Judgment</h2>
+        <div class="divide-y divide-border-subtle border-y border-border-subtle">
+          {
+            engineeringJudgments.map(item => (
+              <section class="grid gap-2 py-5 md:grid-cols-[15rem_minmax(0,1fr)] md:gap-8">
+                <h3 class="text-base font-semibold tracking-tight text-foreground">
+                  {item.title}
+                </h3>
+                <p class="max-w-prose-app text-base leading-relaxed text-foreground-secondary">
+                  {item.copy}
+                </p>
+              </section>
+            ))
+          }
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Edge Deployment
-        </h2>
-        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground/80">
+      <section id="deployment" class="mb-14">
+        <h2 class="section-eyebrow mb-4">Edge Deployment</h2>
+        <p class="mb-6 max-w-prose-app text-base leading-relaxed text-foreground-secondary">
           The project is a resource-placement exercise, not just a model demo. Six models share one
           Android process. Vision gets the NPU, language gets the GPU, and speech stays on CPU
           because safety audio must keep working while the assistant is generating.
         </p>
         <div class="grid gap-4 lg:grid-cols-3">
-          {modelDeployments.map(item => (
-            <section class="rounded-md bg-muted/40 p-4">
-              <h3 class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                {item.unit}
-              </h3>
-              <p class="mt-3 text-base font-semibold tracking-tight">{item.workload}</p>
-              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{item.detail}</p>
-            </section>
-          ))}
+          {
+            modelDeployments.map(item => (
+              <section class="surface-card flex flex-col justify-between p-5">
+                <div>
+                  <h3 class="section-eyebrow-plain">{item.unit}</h3>
+                  <p class="mt-2.5 text-base font-semibold tracking-tight text-foreground">
+                    {item.workload}
+                  </p>
+                </div>
+                <p class="mt-3 border-t border-border-subtle pt-3 text-sm leading-relaxed text-foreground-secondary">
+                  {item.detail}
+                </p>
+              </section>
+            ))
+          }
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          SafetyCore Details
-        </h2>
-        <div class="grid gap-6 lg:grid-cols-[minmax(18rem,0.85fr)_minmax(0,1.15fr)] lg:items-start">
-          <div class="space-y-5 text-base leading-relaxed text-foreground">
+      <section id="safetycore" class="mb-14">
+        <h2 class="section-eyebrow mb-5">SafetyCore Details</h2>
+        <div class="grid gap-8 lg:grid-cols-[minmax(18rem,0.88fr)_minmax(0,1.12fr)] lg:items-start">
+          <div class="space-y-6">
             <div>
-              <h3 class="text-xl font-semibold tracking-tight">Three models, one warning stream</h3>
-              <p class="mt-2 text-foreground/80">
+              <h3 class="text-lg font-semibold tracking-tight text-foreground">
+                Three models, one warning stream
+              </h3>
+              <p class="mt-2 text-base leading-relaxed text-foreground-secondary">
                 YOLOX supplies object boxes for common categories such as people and vehicles.
                 MiDaS supplies relative depth. FFNet marks walkable ground and structural obstacles
                 such as poles, walls, and fences. The post-fusion layer keeps the three models
@@ -486,18 +539,22 @@ const agentScreens = [
                 network.
               </p>
             </div>
-            <div>
-              <h3 class="text-xl font-semibold tracking-tight">Ground-constrained scale recovery</h3>
-              <p class="mt-2 text-foreground/80">
+            <div class="border-t border-border-subtle pt-5">
+              <h3 class="text-lg font-semibold tracking-tight text-foreground">
+                Ground-constrained scale recovery
+              </h3>
+              <p class="mt-2 text-base leading-relaxed text-foreground-secondary">
                 MiDaS depth is relative, so TongXing uses the chest-mounted camera assumption and
                 FFNet ground pixels to recover a scene scale. A short median history smooths the
                 scale factor. If ground pixels are unreliable, the system falls back conservatively
                 instead of speaking overconfident warnings.
               </p>
             </div>
-            <div>
-              <h3 class="text-xl font-semibold tracking-tight">Tracking before warning</h3>
-              <p class="mt-2 text-foreground/80">
+            <div class="border-t border-border-subtle pt-5">
+              <h3 class="text-lg font-semibold tracking-tight text-foreground">
+                Tracking before warning
+              </h3>
+              <p class="mt-2 text-base leading-relaxed text-foreground-secondary">
                 DeepSORT-style tracking links detections across frames, then the warning layer uses
                 distance, approach speed, central-region constraints, and a short vote window before
                 speaking. This is why the demo emphasizes sustained warnings rather than single-frame
@@ -505,14 +562,16 @@ const agentScreens = [
               </p>
             </div>
           </div>
-          <figure class="rounded-md bg-muted/40 p-4 sm:p-6">
-            <img
-              src="/tongxing/figures/scale-recovery-en.png"
-              alt="Scale recovery diagram using ground pixels and chest-mounted camera geometry"
-              class="w-full dark:brightness-90"
-              loading="lazy"
-            />
-            <figcaption class="mt-4 text-sm text-muted-foreground">
+          <figure class="figure-frame">
+            <div class="figure-paper">
+              <img
+                src="/tongxing/figures/scale-recovery-en.png"
+                alt="Scale recovery diagram using ground pixels and chest-mounted camera geometry"
+                class="w-full"
+                loading="lazy"
+              />
+            </div>
+            <figcaption class="mt-4 text-sm leading-relaxed text-muted-foreground">
               Ground segmentation turns relative monocular depth into a usable distance signal for
               warning thresholds.
             </figcaption>
@@ -520,127 +579,150 @@ const agentScreens = [
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Warning Pipeline
-        </h2>
-        <div class="grid gap-5 md:grid-cols-2">
-          {safetyPipeline.map(item => (
-            <section>
-              <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{item.copy}</p>
-            </section>
-          ))}
+      <section class="mb-14">
+        <h2 class="section-eyebrow mb-5">Warning Pipeline</h2>
+        <div class="grid gap-x-8 gap-y-6 md:grid-cols-2">
+          {
+            safetyPipeline.map((item, i) => (
+              <section class="border-t border-border-subtle pt-4">
+                <span class="font-mono text-[0.6875rem] uppercase tracking-widest text-muted-foreground">
+                  Stage {padIndex(i)}
+                </span>
+                <h3 class="mt-1 text-base font-semibold tracking-tight text-foreground">
+                  {item.title}
+                </h3>
+                <p class="mt-2 text-sm leading-relaxed text-foreground-secondary">
+                  {item.copy}
+                </p>
+              </section>
+            ))
+          }
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          AgentCore Showcase
-        </h2>
-        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground/80">
+      <section id="agentcore" class="mb-14">
+        <h2 class="section-eyebrow mb-3">AgentCore Showcase</h2>
+        <p class="mb-5 max-w-prose-app text-base leading-relaxed text-foreground-secondary">
           AgentCore is tuned to close short app tasks through voice rather than open-ended chat.
         </p>
         <ScrollableRow ariaLabel="TongXing AgentCore showcase">
-          <figure class="flex h-[35.5rem] shrink-0 flex-col rounded-md bg-muted/40 p-3">
-            <div class="h-[32rem] w-[14.55rem] overflow-hidden rounded-sm bg-muted [&>figure]:h-full [&>figure>div]:h-full">
+          <figure class="surface-card flex w-[16.25rem] shrink-0 flex-col p-3.5">
+            <div class="w-full overflow-hidden rounded-md [&>figure]:w-full">
               <ProjectVideo
                 src="/tongxing/videos/navigate-to.mp4"
                 poster="/tongxing/posters/navigate-to.jpg"
                 aspectRatio="1264 / 2780"
+                rounded="rounded-md"
                 ariaLabel="Play voice navigation demo"
                 ctaLabel="Play demo"
               />
             </div>
-            <figcaption class="mt-3">
-              <h3 class="text-base font-semibold tracking-tight">Voice navigation</h3>
+            <figcaption class="mt-3 border-t border-border-subtle pt-2.5">
+              <h3 class="text-sm font-semibold tracking-tight text-foreground">
+                Voice navigation
+              </h3>
             </figcaption>
           </figure>
-          {agentScreens.map(item => (
-            <figure class="flex h-[35.5rem] shrink-0 flex-col rounded-md bg-muted/40 p-3">
-              <div class="overflow-hidden rounded-sm bg-muted">
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  class="h-[32rem] w-auto max-w-none"
-                  loading="lazy"
-                />
-              </div>
-              <figcaption class="mt-3">
-                <h3 class="text-base font-semibold tracking-tight">{item.title}</h3>
-              </figcaption>
-            </figure>
-          ))}
+          {
+            agentScreens.map(item => (
+              <figure class="surface-card flex w-[16.25rem] shrink-0 flex-col p-3.5">
+                <div class="aspect-[1264/2780] w-full overflow-hidden rounded-md border border-border-subtle bg-surface-2">
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    class="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption class="mt-3 border-t border-border-subtle pt-2.5">
+                  <h3 class="text-sm font-semibold tracking-tight text-foreground">
+                    {item.title}
+                  </h3>
+                </figcaption>
+              </figure>
+            ))
+          }
         </ScrollableRow>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          AgentCore Mechanics
-        </h2>
-        <div class="grid gap-5 md:grid-cols-2">
-          {agentMechanisms.map(item => (
-            <section>
-              <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-foreground/80">{item.copy}</p>
-            </section>
-          ))}
+      <section class="mb-14">
+        <h2 class="section-eyebrow mb-5">AgentCore Mechanics</h2>
+        <div class="grid gap-x-8 gap-y-6 md:grid-cols-2">
+          {
+            agentMechanisms.map((item, i) => (
+              <section class="border-t border-border-subtle pt-4">
+                <div class="flex items-baseline gap-2.5">
+                  <span class="font-mono text-[0.6875rem] tabular-nums text-muted-foreground">
+                    {padIndex(i)}
+                  </span>
+                  <h3 class="font-mono text-sm font-semibold tracking-tight text-foreground">
+                    {item.title}
+                  </h3>
+                </div>
+                <p class="mt-2 text-sm leading-relaxed text-foreground-secondary">
+                  {item.copy}
+                </p>
+              </section>
+            ))
+          }
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Product Surface
-        </h2>
+      <section class="mb-14">
+        <h2 class="section-eyebrow mb-3">Product Surface</h2>
         <p class="mb-5 max-w-prose-app text-sm leading-relaxed text-muted-foreground">
           The app surface is deliberately sparse: first-run setup, service switches, speech
           preferences, and a debug view for inspecting the safety pipeline.
         </p>
         <ScrollableRow ariaLabel="TongXing interface screenshots">
-          {interfaceScreens.map(item => (
-            <figure class="flex h-[42rem] w-[16.05rem] shrink-0 flex-col rounded-md bg-muted/40 p-3">
-              <div class="w-fit overflow-hidden rounded-sm bg-muted">
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  class="block h-[32rem] w-auto max-w-none"
-                  loading="lazy"
-                />
-              </div>
-              <figcaption class="mt-3 overflow-hidden">
-                <h3 class="text-base font-semibold tracking-tight">{item.title}</h3>
-                <p class="mt-1 max-h-24 overflow-hidden text-sm leading-relaxed text-muted-foreground">
-                  {item.copy}
-                </p>
-              </figcaption>
-            </figure>
-          ))}
+          {
+            interfaceScreens.map(item => (
+              <figure class="surface-card flex w-[16.5rem] shrink-0 flex-col p-3.5">
+                <div class="aspect-[1264/2780] w-full overflow-hidden rounded-md border border-border-subtle bg-surface-2">
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    class="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption class="mt-3.5 flex-1 border-t border-border-subtle pt-3">
+                  <h3 class="text-sm font-semibold tracking-tight text-foreground">
+                    {item.title}
+                  </h3>
+                  <p class="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                    {item.copy}
+                  </p>
+                </figcaption>
+              </figure>
+            ))
+          }
         </ScrollableRow>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Performance
-        </h2>
-        <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)] lg:items-start">
-          <figure class="rounded-md bg-muted/40 p-4">
-            <img
-              src="/tongxing/figures/safetycore-latency.png"
-              alt="SafetyCore pipeline latency chart"
-              class="w-full dark:brightness-75"
-              loading="lazy"
-            />
-            <figcaption class="mt-3 text-sm text-muted-foreground">
+      <section id="performance" class="mb-14">
+        <h2 class="section-eyebrow mb-5">Performance</h2>
+        <div class="grid gap-7 lg:grid-cols-[minmax(0,1.08fr)_minmax(18rem,0.72fr)] lg:items-start">
+          <figure class="figure-frame">
+            <div class="figure-paper">
+              <img
+                src="/tongxing/figures/safetycore-latency.png"
+                alt="SafetyCore pipeline latency chart"
+                class="w-full"
+                loading="lazy"
+              />
+            </div>
+            <figcaption class="mt-3.5 text-sm leading-relaxed text-muted-foreground">
               35 ms end-to-end obstacle warning, P95 47 ms, P99 54 ms.
             </figcaption>
           </figure>
-          <div class="space-y-4 text-base leading-relaxed text-foreground">
-            <p>
+          <div class="space-y-4 text-base leading-relaxed text-foreground-secondary">
+            <p class="text-foreground">
               The SafetyCore benchmark is the rigorous number on this page: 1,636 effective frames
               from three self-collected walking videos, processed through detection, depth,
               segmentation, feature extraction, tracking, and warning assessment.
             </p>
-            <p class="text-foreground/80">
+            <p>
               The system runs the safety loop at 15 Hz for power and stability, even though the
               measured throughput is higher. The remaining latency variance mostly comes from
               feature processing, because the number of tracked objects changes from frame to frame.
@@ -649,51 +731,56 @@ const agentScreens = [
         </div>
       </section>
 
-      <section class="mb-10">
-        <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Validation
-        </h2>
-        <div class="grid gap-5 md:grid-cols-2">
-          {validationRows.map(row => (
-            <section>
-              <h3 class="text-lg font-semibold tracking-tight">{row.scope}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-foreground/80">
-                <span class="font-medium text-foreground">Evidence:</span> {row.evidence}.
-              </p>
-              <p class="mt-1 text-sm leading-relaxed text-foreground/80">
-                <span class="font-medium text-foreground">Result:</span> {row.result}.
-              </p>
-            </section>
-          ))}
+      <section class="mb-14">
+        <h2 class="section-eyebrow mb-5">Validation</h2>
+        <div class="grid gap-x-8 gap-y-6 md:grid-cols-2">
+          {
+            validationRows.map(row => (
+              <section class="border-t border-border-subtle pt-4">
+                <h3 class="font-mono text-xs font-semibold uppercase tracking-wider text-foreground">
+                  {row.scope}
+                </h3>
+                <dl class="mt-2.5 space-y-1.5 text-sm leading-relaxed">
+                  <div class="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-2">
+                    <dt class="font-mono text-xs text-muted-foreground">Evidence</dt>
+                    <dd class="text-foreground-secondary">{row.evidence}.</dd>
+                  </div>
+                  <div class="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-2">
+                    <dt class="font-mono text-xs text-muted-foreground">Result</dt>
+                    <dd class="text-foreground">{row.result}.</dd>
+                  </div>
+                </dl>
+              </section>
+            ))
+          }
         </div>
       </section>
 
-      <section class="max-w-prose-app border-t border-border pt-8">
-        <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Code
-        </h2>
-        <div class="flex flex-wrap items-baseline gap-3">
-          <h3 class="text-xl font-semibold tracking-tight">
-            <code class="font-mono">tongxing</code>
-          </h3>
-          <a
-            href="https://github.com/NihilDigit/tongxing"
-            target="_blank"
-            rel="noopener"
-            class="font-mono text-xs text-muted-foreground hover:text-accent"
-          >
-            github.com/NihilDigit/tongxing &rarr;
-          </a>
+      <section id="code">
+        <h2 class="section-eyebrow mb-5">Code</h2>
+        <div class="max-w-prose-app border-t border-border-subtle pt-5">
+          <div class="flex flex-wrap items-baseline justify-between gap-3">
+            <h3 class="text-lg font-semibold tracking-tight text-foreground">
+              <code class="font-mono">tongxing</code>
+            </h3>
+            <a
+              href="https://github.com/NihilDigit/tongxing"
+              target="_blank"
+              rel="noopener"
+              class="font-mono text-xs text-muted-foreground underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
+            >
+              github.com/NihilDigit/tongxing &rarr;
+            </a>
+          </div>
+          <p class="mt-2.5 text-base leading-relaxed text-foreground-secondary">
+            Apache-2.0 release containing the Android host app, the C++ post-fusion and
+            danger-assessment module (<code class={inlineCode}>lightway_safetycore</code>),
+            the on-device ReAct router and MCP tool layer (<code class={inlineCode}>lightway_agentcore</code>),
+            and unit, JNI, and on-device validation suites. <code class={inlineCode}>models.lock.json</code>
+            and preparation scripts pin SHA-256 hashes and export recipes for all six models.
+          </p>
         </div>
-        <p class="mt-3 text-base leading-relaxed text-foreground/80">
-          Apache-2.0 release containing the Android host app, the C++ post-fusion and
-          danger-assessment module (<code class="font-mono text-sm">lightway_safetycore</code>),
-          the on-device ReAct router and MCP tool layer (<code class="font-mono text-sm">lightway_agentcore</code>),
-          and unit, JNI, and on-device validation suites. <code class="font-mono text-sm">models.lock.json</code>
-          and preparation scripts pin SHA-256 hashes and export recipes for all six models.
-        </p>
       </section>
-
     </article>
   </main>
   <Footer />

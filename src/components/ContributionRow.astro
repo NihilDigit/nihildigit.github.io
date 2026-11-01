@@ -61,7 +61,7 @@ const StatusIcon = (isIssueOnly ? issueStatusIcon : statusIcon)[item.status];
 ---
 
 <li
-  class="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-x-3 gap-y-1 py-3 sm:grid-cols-[1.25rem_minmax(0,1fr)_7rem_5rem] sm:items-baseline"
+  class="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-x-3 gap-y-1 px-3.5 py-2.5 transition-colors hover:bg-surface-2/55 sm:grid-cols-[1.25rem_minmax(0,1fr)_7.5rem_5.25rem] sm:items-baseline sm:px-4"
   data-lines={item.sortLines}
   data-time={item.sortTime}
 >
@@ -74,11 +74,11 @@ const StatusIcon = (isIssueOnly ? issueStatusIcon : statusIcon)[item.status];
   </span>
 
   <div class="min-w-0">
-    <span class="text-sm font-medium text-foreground">{item.label}</span>
+    <span class="text-sm font-medium leading-snug text-foreground">{item.label}</span>
     {
       item.detail && (
         <p
-          class="mt-1 text-sm leading-relaxed text-foreground/80"
+          class="mt-1 text-sm leading-relaxed text-foreground-secondary"
           set:html={inlineLinks(item.detail)}
         />
       )
@@ -91,15 +91,20 @@ const StatusIcon = (isIssueOnly ? issueStatusIcon : statusIcon)[item.status];
   <div class="col-start-2 flex items-baseline gap-x-4 whitespace-nowrap sm:contents">
     {/* The slash is its own centred grid track so it lines up down the column
         no matter how wide either number is. */}
-    <span class="grid w-28 grid-cols-[1fr_auto_1fr] font-mono text-xs leading-6 text-muted-foreground">
+    <span
+      class:list={[
+        "grid w-[7.5rem] grid-cols-[1fr_auto_1fr] font-mono text-xs leading-6 tabular-nums text-muted-foreground",
+        !item.diffstat && "hidden sm:grid",
+      ]}
+    >
       {
         diffstat ? (
           <>
-            <span class="text-right text-emerald-700/80 dark:text-emerald-300/80">
+            <span class="text-right text-emerald-700/90 dark:text-emerald-400/85">
               {diffstat[1]}
             </span>
-            <span class="px-1.5 text-muted-foreground/50">{diffstat[2]}</span>
-            <span class="text-rose-700/75 dark:text-rose-300/75">{diffstat[3]}</span>
+            <span class="px-1 text-muted-foreground/45">{diffstat[2]}</span>
+            <span class="text-rose-700/85 dark:text-rose-400/80">{diffstat[3]}</span>
           </>
         ) : (
           <span class="col-span-3 text-right">{item.diffstat}</span>
@@ -109,13 +114,13 @@ const StatusIcon = (isIssueOnly ? issueStatusIcon : statusIcon)[item.status];
 
     {/* Extra links stack downwards: a second link on one row would otherwise
         widen this track and shove the diffstat column out of line. */}
-    <span class="flex flex-col items-start gap-2 leading-6">
+    <span class="flex flex-col items-start gap-1.5 leading-6">
       {item.links.map(link => (
           <a
             href={link.href}
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
+            class="inline-flex items-center gap-1 font-mono text-xs tabular-nums text-muted-foreground transition-colors hover:text-accent"
           >
             {/* Icon and label stay adjacent and the slot is left-aligned, so
                 the icons and the `#` line up down the column and only the

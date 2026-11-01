@@ -17,7 +17,7 @@ const { image } = Astro.props;
   <picture media="(prefers-color-scheme)"> would not follow it. A display:none
   lazy image is never fetched, so only one variant loads.
 -->
-<div class="overflow-hidden rounded-md border border-border">
+<div class="overflow-hidden rounded-lg border border-border-subtle bg-surface-1 shadow-xs">
   <img
     src={image.src}
     alt={image.alt}

@@ -17,29 +17,30 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
   class:list={["app-layout", { "mt-auto": !noMarginTop }, className]}
   {...attrs}
 >
-  <div class="border-t border-border py-8 text-xs text-muted-foreground">
-    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-      <div class="space-y-1">
-        <div class="font-mono uppercase tracking-wider">© {currentYear} NihilDigit</div>
-        <p>
-          <a
-            href="https://github.com/NihilDigit/nihildigit.github.io"
-            target="_blank"
-            rel="noopener"
-            class="hover:text-foreground"
-          >
-            Source
-          </a>
-        </p>
+  <div class="border-t border-border-subtle py-9 text-xs text-muted-foreground sm:py-10">
+    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.72rem]">
+        <span class="uppercase tracking-wider text-foreground-secondary">
+          © {currentYear} NihilDigit
+        </span>
+        <span aria-hidden="true" class="h-3 w-px bg-border"></span>
+        <a
+          href="https://github.com/NihilDigit/nihildigit.github.io"
+          target="_blank"
+          rel="noopener"
+          class="underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+        >
+          Source
+        </a>
       </div>
       <p class="sm:text-right">
         <span class="inline-flex flex-wrap items-center gap-1.5">
-          Built with
+          <span>Built with</span>
           <a
             href="https://claude.com/claude-code"
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-1 hover:text-foreground"
+            class="inline-flex items-center gap-1 transition-colors hover:text-foreground"
           >
             <IconClaude class="inline-block h-3.5 w-3.5" />
             <span>Claude,</span>
@@ -48,19 +49,19 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
             href="https://openai.com/codex/"
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-1 hover:text-foreground"
+            class="inline-flex items-center gap-1 transition-colors hover:text-foreground"
           >
             <IconOpenAI class="inline-block h-3.5 w-3.5" />
-            GPT and
+            <span>GPT and</span>
           </a>
           <a
             href="https://www.kimi.com/code"
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-1 hover:text-foreground"
+            class="inline-flex items-center gap-1 transition-colors hover:text-foreground"
           >
             <IconKimi class="relative -top-px inline-block h-3.5 w-3.5" />
-            Kimi.
+            <span>Kimi.</span>
           </a>
         </span>
       </p>

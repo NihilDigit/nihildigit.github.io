@@ -24,22 +24,22 @@ const CONTACTS = [
   },
   { href: "https://t.me/NihilDigit", label: "@NihilDigit", note: "Telegram" },
 ];
+const inlineLink =
+  "font-medium text-foreground underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-accent hover:decoration-accent";
 ---
 
 <Layout title={`About | ${SITE.title}`} schemaType="ProfilePage">
   <Header />
-  <main id="main-content" class="app-layout pt-10 pb-20">
+  <main id="main-content" class="app-layout pt-9 pb-20 sm:pt-11">
     <article class="max-w-prose-app">
-      <header class="mb-12">
-        <p class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          About
-        </p>
+      <header class="mb-10 border-b border-border-subtle pb-8">
+        <p class="section-eyebrow-plain">About</p>
         <div class="mt-3 flex flex-wrap items-start justify-between gap-x-6 gap-y-5">
           <div class="min-w-0 flex-1">
-            <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h1 class="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
               NihilDigit
             </h1>
-            <p class="mt-2 font-mono text-sm text-muted-foreground">Shibo Liu</p>
+            <p class="mt-1.5 font-mono text-sm text-muted-foreground">Shibo Liu</p>
           </div>
           <a
             href="/Shibo_Liu_CV.pdf"
@@ -61,38 +61,33 @@ const CONTACTS = [
         </div>
       </header>
 
-      <section class="space-y-6 text-foreground leading-relaxed">
+      <section class="space-y-5 text-base leading-relaxed text-foreground-secondary">
         <p>
           I study intelligence science at
           <a
             href="https://www.ncst.edu.cn/"
             target="_blank"
             rel="noopener"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+            class={inlineLink}
           >North China University of Science and Technology</a>, where I
           enrolled in 2023. My work centers on on-device AI and multimedia
           systems.
         </p>
 
         <p>
-          <a
-            href="/anvil"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >ANVIL</a> is a video frame interpolation method designed for
-          mobile NPUs. Flow-based interpolation breaks down under INT8
-          quantization, so ANVIL reuses the motion vectors already produced
-          by the H.264 decoder instead of learning optical flow. The arXiv
-          preprint is public.
+          <a href="/anvil" class={inlineLink}>ANVIL</a> is a video frame
+          interpolation method designed for mobile NPUs. Flow-based
+          interpolation breaks down under INT8 quantization, so ANVIL reuses the
+          motion vectors already produced by the H.264 decoder instead of
+          learning optical flow. The arXiv preprint is public.
         </p>
 
         <p>
-          <a
-            href="/tongxing"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
-          >TongXing</a> is an edge assistive system for blind and low-vision
-          users, awarded a national second prize in 4C2026. It runs obstacle
-          warning, offline speech, and a local LLM agent on a single phone,
-          and the agent completes touch-first app tasks by voice.
+          <a href="/tongxing" class={inlineLink}>TongXing</a> is an edge
+          assistive system for blind and low-vision users, awarded a national
+          second prize in 4C2026. It runs obstacle warning, offline speech, and
+          a local LLM agent on a single phone, and the agent completes
+          touch-first app tasks by voice.
         </p>
 
         <p>
@@ -100,7 +95,7 @@ const CONTACTS = [
             href="https://github.com/NihilDigit/piko"
             target="_blank"
             rel="noopener"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+            class={inlineLink}
           >piko</a> is an independent PikPak client I build and maintain for
           Android, Windows, and macOS. It has been my main place to run
           experiments on UI/UX and client architecture, from the clip feed to
@@ -114,54 +109,52 @@ const CONTACTS = [
             href="https://github.com/open-ani"
             target="_blank"
             rel="noopener"
-            class="underline decoration-dotted underline-offset-4 hover:text-accent"
+            class={inlineLink}
           >open-ani</a> organization, I contribute to Animeko, an open-source
-          anime player, across animeko, mediamp, and anitorrent. My work
-          covers player and cross-platform support, and media acquisition.
+          anime player, across animeko, mediamp, and anitorrent. My work covers
+          player and cross-platform support, and media acquisition.
         </p>
       </section>
 
-      <hr class="my-12 border-border" />
-
-      <section>
-        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Education
-        </h2>
-        <dl class="grid grid-cols-[6rem_1fr] gap-x-6 gap-y-2 font-mono text-sm">
-          <dt class="text-muted-foreground tabular-nums">2023 &ndash;</dt>
-          <dd>
-            B.S. in Intelligence Science<br />
-            <span class="text-muted-foreground">
-              College of Science, North China University of Science and
-              Technology<br />
+      <section class="mt-12">
+        <h2 class="section-eyebrow mb-5">Education</h2>
+        <dl class="grid grid-cols-1 gap-x-6 gap-y-1.5 sm:grid-cols-[6.5rem_minmax(0,1fr)] sm:items-baseline">
+          <dt class="font-mono text-sm tabular-nums text-muted-foreground">
+            2023 &ndash;
+          </dt>
+          <dd class="text-sm leading-relaxed">
+            <span class="font-medium text-foreground">B.S. in Intelligence Science</span>
+            <span class="mt-0.5 block text-foreground-secondary">
+              College of Science, North China University of Science and Technology
+            </span>
+            <span class="mt-0.5 block font-mono text-xs text-muted-foreground">
               Tangshan, Hebei, China
             </span>
           </dd>
         </dl>
       </section>
 
-      <hr class="my-12 border-border" />
-
-      <section>
-        <h2 class="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Contact
-        </h2>
-        <ul class="space-y-2.5 font-mono text-sm">
+      <section class="mt-12">
+        <h2 class="section-eyebrow mb-4">Contact</h2>
+        <ul class="divide-y divide-border-subtle border-y border-border-subtle font-mono text-sm">
           {
             CONTACTS.map(c => (
-              <li class="flex flex-wrap items-center gap-x-3">
+              <li class="grid grid-cols-1 gap-x-4 gap-y-0.5 py-2.5 sm:grid-cols-[5.5rem_minmax(0,1fr)] sm:items-center">
+                <span class="text-xs text-muted-foreground">{c.note}</span>
                 <a
                   href={c.href}
                   target={c.href.startsWith("mailto:") ? undefined : "_blank"}
                   rel={c.href.startsWith("mailto:") ? undefined : "noopener"}
-                  class="inline-flex items-center gap-2 transition-colors hover:text-accent"
+                  class="group/contact inline-flex max-w-full min-w-0 w-fit items-center gap-2 text-foreground transition-colors hover:text-accent"
                 >
-                  <HrefIcon href={c.href} class="size-4 shrink-0" />
-                  <span class="underline decoration-dotted underline-offset-4">
+                  <HrefIcon
+                    href={c.href}
+                    class="size-4 shrink-0 text-muted-foreground transition-colors group-hover/contact:text-accent"
+                  />
+                  <span class="break-all underline decoration-border decoration-dotted underline-offset-4 transition-colors group-hover/contact:decoration-accent sm:break-normal">
                     {c.label}
                   </span>
                 </a>
-                <span class="text-xs text-muted-foreground">{c.note}</span>
               </li>
             ))
           }
@@ -204,14 +197,17 @@ const CONTACTS = [
     gap: 0.34rem;
     border: 1px solid var(--border);
     border-radius: 0.375rem;
-    background: var(--background);
+    background: var(--surface-1);
     padding: 0.78rem 0.68rem;
     color: var(--foreground);
-    box-shadow: 0 0.7rem 1.5rem rgb(0 0 0 / 0.08);
+    box-shadow:
+      0 0.7rem 1.5rem rgb(0 0 0 / 0.1),
+      inset 0 1px 0 rgb(255 255 255 / 0.04);
     transform: translate3d(0, 0, 0) rotate(-4deg);
     transition:
       transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
       border-color 180ms ease,
+      background-color 180ms ease,
       color 180ms ease,
       box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -220,7 +216,9 @@ const CONTACTS = [
   .cv-peek:focus-visible .cv-peek__paper {
     border-color: var(--accent);
     color: var(--accent);
-    box-shadow: 0 0.95rem 1.9rem rgb(0 0 0 / 0.12);
+    box-shadow:
+      0 0.95rem 1.95rem rgb(0 0 0 / 0.14),
+      inset 0 1px 0 rgb(255 255 255 / 0.06);
     transform: translate3d(-1.2rem, -1.05rem, 0) rotate(-8deg);
   }
 
@@ -237,7 +235,7 @@ const CONTACTS = [
     height: 1.35rem;
     border-bottom: 1px solid var(--border);
     border-left: 1px solid var(--border);
-    background: var(--muted);
+    background: var(--surface-2);
     clip-path: polygon(100% 0, 0 0, 100% 100%);
     transition: border-color 180ms ease;
   }
@@ -251,8 +249,9 @@ const CONTACTS = [
     width: fit-content;
     border: 1px solid var(--border);
     border-radius: 0.25rem;
+    background: var(--background);
     padding: 0.13rem 0.3rem;
-    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    font-family: var(--font-mono);
     font-size: 0.6rem;
     line-height: 1;
     color: var(--muted-foreground);
@@ -281,7 +280,10 @@ const CONTACTS = [
 
   @media (prefers-reduced-motion: reduce) {
     .cv-peek__paper {
-      transition: border-color 180ms ease, color 180ms ease;
+      transition:
+        border-color 180ms ease,
+        background-color 180ms ease,
+        color 180ms ease;
     }
 
     .cv-peek:hover .cv-peek__paper,

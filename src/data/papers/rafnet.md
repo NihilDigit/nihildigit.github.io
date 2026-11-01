@@ -7,7 +7,7 @@ authors:
     isMe: true
   - name: "Lei Xiao"
 venue: "The Visual Computer"
-venueDetail: "Submitted to The Visual Computer (Springer) · UKM × NCST collaboration"
+venueDetail: "Submitted to The Visual Computer (Springer), UKM and NCST collaboration"
 status: under-review
 year: 2026
 pubDatetime: 2026-01-01

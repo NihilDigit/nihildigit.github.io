@@ -16,7 +16,7 @@ const {
   poster,
   fileSize,
   aspectRatio = "16 / 9",
-  rounded = "rounded-md",
+  rounded = "rounded-lg",
   caption,
   priority = false,
   ariaLabel = "Play project video",
@@ -36,7 +36,7 @@ const {
     data-video-aspect={aspectRatio}
     data-video-rounded={rounded}
     class:list={[
-      "group relative w-full cursor-pointer overflow-hidden border border-border bg-muted transition-colors hover:border-accent/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dashed focus-visible:outline-accent motion-reduce:transition-none",
+      "group relative w-full cursor-pointer overflow-hidden border border-border-subtle bg-surface-1 shadow-xs transition-colors hover:border-accent/45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dashed focus-visible:outline-accent motion-reduce:transition-none",
       rounded,
     ]}
     style={`aspect-ratio: ${aspectRatio};`}
@@ -57,20 +57,30 @@ const {
       )
     }
     <div
-      class="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/45 group-focus-visible:bg-black/45 motion-reduce:transition-none"
+      class="absolute inset-0 flex items-center justify-center bg-black/15 transition-colors duration-200 group-hover:bg-black/35 group-focus-visible:bg-black/35 motion-reduce:transition-none"
     >
       <span
-        class="inline-flex items-center gap-2 rounded-md bg-black/70 px-4 py-2 font-mono text-xs uppercase tracking-widest text-white backdrop-blur"
+        class="inline-flex items-center gap-2.5 rounded-full bg-zinc-950/80 px-4 py-2 font-mono text-xs font-medium uppercase tracking-widest text-white shadow-lg ring-1 ring-white/15 backdrop-blur-md transition-all duration-200 group-hover:scale-[1.03] group-hover:bg-zinc-950/90 group-hover:shadow-xl group-hover:ring-white/25 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
       >
         <svg
-          class="h-3 w-3"
+          class="h-3 w-3 shrink-0"
           viewBox="0 0 12 12"
           fill="currentColor"
           aria-hidden="true"
         >
           <path d="M2 1l9 5-9 5z"></path>
         </svg>
-        {ctaLabel}{fileSize ? ` · ${fileSize}` : ""}
+        <span>{ctaLabel}</span>
+        {
+          fileSize && (
+            <>
+              <span aria-hidden="true" class="h-3 w-px bg-white/25" />
+              <span class="font-normal tracking-wider tabular-nums text-white/70">
+                {fileSize}
+              </span>
+            </>
+          )
+        }
       </span>
     </div>
   </div>
@@ -84,53 +94,63 @@ const {
 </figure>
 
 <script>
-  function initProjectVideo() {
-    const triggers = document.querySelectorAll<HTMLElement>(
-      "[data-project-video]"
-    );
-    triggers.forEach(trigger => {
-      if (trigger.dataset.bound === "true") return;
-      trigger.dataset.bound = "true";
+  type VideoDelegatedWindow = Window & { __projectVideoDelegated?: boolean };
 
-      const activate = () => {
-        const src = trigger.dataset.videoSrc;
-        const poster = trigger.dataset.videoPoster;
-        const aspect = trigger.dataset.videoAspect ?? "16 / 9";
-        const rounded = trigger.dataset.videoRounded ?? "rounded-md";
-        if (!src) return;
+  function activateProjectVideo(trigger: HTMLElement) {
+    const src = trigger.dataset.videoSrc;
+    const poster = trigger.dataset.videoPoster;
+    const aspect = trigger.dataset.videoAspect ?? "16 / 9";
+    const rounded = trigger.dataset.videoRounded ?? "rounded-lg";
+    if (!src) return;
 
-        const reducedMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)"
-        ).matches;
+    // If activated inside an Embla loop clone, expose it to assistive tech
+    // before inserting a focusable <video controls> element.
+    const cloneRoot = trigger.closest<HTMLElement>("[data-embla-clone='true']");
+    cloneRoot?.removeAttribute("aria-hidden");
 
-        const video = document.createElement("video");
-        video.src = src;
-        if (poster) video.poster = poster;
-        video.controls = true;
-        video.autoplay = true;
-        video.muted = true;
-        video.loop = !reducedMotion;
-        video.playsInline = true;
-        video.preload = "auto";
-        video.className = `w-full ${rounded} border border-border bg-black`;
-        video.style.aspectRatio = aspect;
-        trigger.replaceWith(video);
-        video.play().catch(() => {
-          /* user-gesture should already be present from click */
-        });
-      };
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-      trigger.addEventListener("click", activate);
-      trigger.addEventListener("keydown", e => {
-        const k = (e as KeyboardEvent).key;
-        if (k === "Enter" || k === " ") {
-          e.preventDefault();
-          activate();
-        }
-      });
+    const video = document.createElement("video");
+    video.src = src;
+    if (poster) video.poster = poster;
+    video.controls = true;
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = !reducedMotion;
+    video.playsInline = true;
+    video.preload = "auto";
+    video.className = `w-full ${rounded} border border-border-subtle bg-black shadow-xs`;
+    video.style.aspectRatio = aspect;
+    trigger.replaceWith(video);
+    video.play().catch(() => {
+      /* user-gesture should already be present from click */
     });
   }
 
-  initProjectVideo();
-  document.addEventListener("astro:page-load", initProjectVideo);
+  function bindProjectVideoDelegation() {
+    const w = window as VideoDelegatedWindow;
+    if (w.__projectVideoDelegated) return;
+    w.__projectVideoDelegated = true;
+
+    document.addEventListener("click", event => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const trigger = target.closest<HTMLElement>("[data-project-video]");
+      if (trigger) activateProjectVideo(trigger);
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const trigger = target.closest<HTMLElement>("[data-project-video]");
+      if (!trigger) return;
+      event.preventDefault();
+      activateProjectVideo(trigger);
+    });
+  }
+
+  bindProjectVideoDelegation();
 </script>

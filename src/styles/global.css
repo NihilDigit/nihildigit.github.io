@@ -7,13 +7,18 @@
 :root,
 html[data-theme="light"] {
   --background: #ffffff;
-  --foreground: #0a0a0a;
+  --surface-1: #f8f8fa;
+  --surface-2: #f1f1f4;
+  --foreground: #09090b;
+  --foreground-secondary: #3f3f46;
   --muted: #f4f4f5;
   --muted-foreground: #71717a;
   --border: #e4e4e7;
+  --border-subtle: #ececf0;
   --accent: #047857;
+  --accent-subtle: rgba(4, 120, 87, 0.07);
   --accent-foreground: #ffffff;
-  --code-bg: #fafafa;
+  --code-bg: #f6f6f8;
 
   /* GitHub PR/issue state colours (Primer), so a merge reads as a merge. */
   --state-open: #1a7f37;
@@ -27,14 +32,19 @@ html[data-theme="light"] {
 
 /* Dark */
 html[data-theme="dark"] {
-  --background: #0a0a0a;
+  --background: #09090b;
+  --surface-1: #111114;
+  --surface-2: #18181d;
   --foreground: #fafafa;
+  --foreground-secondary: #d4d4d8;
   --muted: #18181b;
   --muted-foreground: #a1a1aa;
   --border: #27272a;
+  --border-subtle: #1e1e23;
   --accent: #34d399;
+  --accent-subtle: rgba(52, 211, 153, 0.09);
   --accent-foreground: #052e1e;
-  --code-bg: #111113;
+  --code-bg: #111114;
 
   --state-open: #3fb950;
   --state-merged: #a371f7;
@@ -54,12 +64,17 @@ html[data-theme="dark"] {
   --font-app: var(--font-sans);
 
   --color-background: var(--background);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
   --color-accent: var(--accent);
+  --color-accent-subtle: var(--accent-subtle);
   --color-accent-foreground: var(--accent-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
   --color-code-bg: var(--code-bg);
   --color-state-open: var(--state-open);
   --color-state-merged: var(--state-merged);
@@ -72,7 +87,7 @@ html[data-theme="dark"] {
   * {
     @apply border-border outline-accent/75;
     scrollbar-width: thin;
-    scrollbar-color: var(--color-muted) transparent;
+    scrollbar-color: var(--color-border) transparent;
   }
   html {
     @apply overflow-y-scroll scroll-smooth;
@@ -98,7 +113,12 @@ html[data-theme="dark"] {
   h5,
   h6 {
     @apply font-sans tracking-tight;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   code,
@@ -111,7 +131,7 @@ html[data-theme="dark"] {
 
   /* Respect users who prefer less motion. Decorative motion stays in the
      codebase for everyone else; this collapses it to a static state without
-     breaking layout. Paired with JS-side gating in AnvilTeaser for video loop. */
+     breaking layout. Paired with JS-side gating in ProjectVideo for video loop. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -124,21 +144,29 @@ html[data-theme="dark"] {
   }
 }
 
-/* Layout utilities */
+/* Layout utilities: wide 72rem (1152px) stage for cards/figures/tables,
+   comfortable 48rem (768px) measure for long-form monograph prose. */
 @utility max-w-app {
-  max-width: 56rem;
+  max-width: 72rem;
 }
 @utility max-w-prose-app {
-  max-width: 56rem;
+  max-width: 48rem;
 }
 @utility app-layout {
-  @apply mx-auto w-full max-w-app px-5 sm:px-8;
+  @apply mx-auto w-full max-w-app px-5 sm:px-8 lg:px-10;
 }
 
-/* Active nav: clean underline (no wavy) */
+/* Active nav: accent text on mobile, crisp 2px bottom bar on sm+ */
 .active-nav {
-  @apply text-foreground;
-  box-shadow: inset 0 -2px 0 var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+@media (min-width: 640px) {
+  .active-nav {
+    color: var(--foreground);
+    font-weight: 500;
+    box-shadow: inset 0 -2px 0 var(--accent);
+  }
 }
 
 /* Mono / metric blocks */
@@ -148,7 +176,7 @@ html[data-theme="dark"] {
 
 /* Status badges */
 .badge {
-  @apply inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wide;
+  @apply inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide;
 }
 .badge-dot {
   @apply h-1.5 w-1.5 rounded-full;
@@ -160,18 +188,11 @@ html[data-theme="dark"] {
   @apply bg-zinc-400;
 }
 
-/* Box-drawing rule (subtle ricing flair) */
-.rule-mono::before {
-  content: "──────────";
-  @apply font-mono text-muted-foreground/40 select-none;
-}
-
 :target {
-  scroll-margin-block: 4rem;
+  scroll-margin-block: 5.5rem;
 }
 
-/* Entrance: 8px rise + fade, ease-out-expo. The global
-   prefers-reduced-motion rule already collapses it to instant. */
+/* Entrance: 8px rise + fade, ease-out-expo. */
 @keyframes rise-in {
   from {
     opacity: 0;
@@ -182,9 +203,6 @@ html[data-theme="dark"] {
     transform: translateY(0);
   }
 }
-/* Scroll reveal: JS adds .reveal to [data-reveal] blocks (no-JS keeps them
-   visible), IntersectionObserver flips .is-visible once. The global
-   prefers-reduced-motion rule collapses this to instant. */
 .reveal {
   opacity: 0;
 }
@@ -199,9 +217,7 @@ body {
     color 200ms ease;
 }
 
-/* Theme circular reveal: disable the default crossfade so the new snapshot
-   can be clip-animated from the toggle icon (see src/scripts/theme.ts).
-   Scoped to .theme-reveal so Astro's navigation transitions stay intact. */
+/* Theme circular reveal */
 html.theme-reveal::view-transition-old(root),
 html.theme-reveal::view-transition-new(root) {
   animation: none;
@@ -215,27 +231,166 @@ html.theme-reveal::view-transition-new(root) {
 }
 
 @layer components {
-  /* One chip shape for every call-to-action button, so buttons on the home
-     page, the project pages and the paper pages read as the same control. */
+  /* Architectural section eyebrow with optional trailing hairline */
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  .section-eyebrow::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--border-subtle);
+  }
+  .section-eyebrow-plain {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+
+  /* Quiet elevated card surface with crisp hairline */
+  .surface-card {
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.5rem;
+    background: var(--surface-1);
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.02),
+      inset 0 1px 0 rgb(255 255 255 / 0.025);
+  }
+
+  /* Architectural matting for technical diagrams & charts */
+  .figure-frame {
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.5rem;
+    background: var(--surface-1);
+    padding: 1rem;
+  }
+  @media (min-width: 640px) {
+    .figure-frame {
+      padding: 1.375rem;
+    }
+  }
+  /* Paper-white inner well so dark-ink white-background diagrams remain legible
+     in dark mode without muddy brightness filters or two-tone background seams */
+  .figure-paper {
+    overflow: hidden;
+    border-radius: 0.375rem;
+    background: #ffffff;
+    padding: 0.75rem;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06);
+  }
+  html[data-theme="dark"] .figure-paper {
+    background: #ffffff;
+    filter: brightness(0.94);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+  }
+
+  /* Framed benchmark data tables */
+  .data-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--surface-1);
+  }
+  .data-table {
+    width: 100%;
+    min-width: 34rem;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .data-table thead {
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--foreground-secondary);
+  }
+  .data-table th {
+    padding: 0.6875rem 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 0.6875rem 1rem;
+  }
+  .data-table td.font-mono {
+    white-space: nowrap;
+  }
+  .data-table tbody tr + tr {
+    border-top: 1px solid var(--border-subtle);
+  }
+  .data-table tbody tr {
+    transition: background-color 120ms ease;
+  }
+  .data-table tbody tr:hover {
+    background: color-mix(in srgb, var(--surface-2) 55%, transparent);
+  }
+  .data-table tbody tr.row-highlight {
+    background: var(--accent-subtle);
+    font-weight: 500;
+  }
+
+  /* On-page section index bar for long technical pages */
+  .jump-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 1rem;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.625rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+  .jump-nav a {
+    transition: color 140ms ease;
+  }
+  .jump-nav a:hover {
+    color: var(--accent);
+  }
+
+  /* One chip shape for every call-to-action button, with tactile hairline depth */
   .action-chip {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    height: 2.375rem;
+    height: 2.3125rem;
     padding: 0 0.875rem;
     border: 1px solid var(--border);
-    border-radius: 0.375rem;
+    border-radius: 0.4375rem;
+    background: var(--background);
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     white-space: nowrap;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.03);
     transition:
       border-color 150ms ease,
       color 150ms ease,
-      background-color 150ms ease;
+      background-color 150ms ease,
+      transform 100ms ease,
+      box-shadow 150ms ease;
   }
   .action-chip:hover {
     border-color: var(--accent);
+    background: var(--surface-1);
     color: var(--accent);
+  }
+  .action-chip:active {
+    transform: translateY(1px);
   }
 
   .action-chip-sm {
@@ -250,7 +405,9 @@ html.theme-reveal::view-transition-new(root) {
     background: var(--foreground);
     color: var(--background);
     font-family: var(--font-sans);
+    font-size: 0.84375rem;
     font-weight: 500;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
   }
   .action-chip-primary:hover {
     border-color: var(--accent);
@@ -258,26 +415,9 @@ html.theme-reveal::view-transition-new(root) {
     color: var(--accent-foreground);
   }
 
-  /* Same shape as .action-chip, used for the contact row in the hero. */
-  .identity-pill {
-    display: inline-flex;
-    align-items: center;
-    height: 2.375rem;
-    border: 1px solid var(--border);
-    border-radius: 0.375rem;
-    background: color-mix(in srgb, var(--muted) 30%, transparent);
-    transition:
-      border-color 150ms ease,
-      color 150ms ease;
-  }
-  .identity-pill:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
   /* Segmented control; the pressed state lives in aria-pressed alone. */
   .sort-toggle {
-    border-radius: 0.25rem;
+    border-radius: 0.3125rem;
     padding: 0.25rem 0.625rem;
     color: var(--muted-foreground);
     transition:
@@ -288,7 +428,7 @@ html.theme-reveal::view-transition-new(root) {
     color: var(--foreground);
   }
   .sort-toggle[aria-pressed="true"] {
-    background: var(--muted);
+    background: var(--surface-2);
     color: var(--foreground);
   }
 }

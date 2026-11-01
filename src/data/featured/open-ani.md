@@ -2,7 +2,7 @@
 title: "open-ani/animeko"
 titleHref: "https://github.com/open-ani/animeko"
 repo: "open-ani/animeko"
-fallbackStars: 20369
+fallbackStars: 21376
 order: 2
 contributionsSource: "open-ani"
 highlightPrs:

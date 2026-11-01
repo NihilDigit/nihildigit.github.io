@@ -91,10 +91,10 @@
 }
 #let compact(n) = if n >= 1000 { str(calc.floor(n / 100) / 10) + "k" } else { str(n) }
 
-#let animeko-merged = live("animeko_merged", 40)
-#let animeko-stars = live("animeko_stars", 20369)
-#let piko-stars = live("piko_stars", 192)
-#let piko-downloads = live("piko_downloads", 2644)
+#let animeko-merged = live("animeko_merged", 42)
+#let animeko-stars = live("animeko_stars", 21376)
+#let piko-stars = live("piko_stars", 629)
+#let piko-downloads = live("piko_downloads", 22472)
 
 #let proj(dest, name) = link(dest)[#text(fill: link-color, name)#h(1.5pt)#icon(
   "octicons/arrow-up-right-16.svg",
